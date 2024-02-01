@@ -1,0 +1,58 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - 4000:4000
+    volumes:
+      - ./backend/src:/app/src
+    env_file:
+      - ./global.env
+    environment:
+      - PGHOST=db
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://backend:4000/graphql?query=%7B__typename%7D -H 'Apollo-Require-Preflight: true' || exit 1",
+        ]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+
+  db:
+    image: postgres
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d inboxartisan -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: inboxartisan
+    ports:
+      - 5433:5432
+    volumes:
+      - inboxArtisanData:/var/lib/postgresql/data
+
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/app/src
+    env_file:
+      - ./global.env
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  inboxArtisanData:
