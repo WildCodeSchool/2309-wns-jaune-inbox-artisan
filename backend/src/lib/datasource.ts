@@ -1,7 +1,5 @@
 import { DataSource } from 'typeorm';
 
-console.log(process.env.PGHOST);
-
 export default new DataSource({
 	type: 'postgres',
 	host: process.env.PGHOST,

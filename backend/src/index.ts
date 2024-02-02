@@ -20,23 +20,15 @@ async function main() {
 		resolvers: [UserResolver],
 		validate: false,
 	});
-	// const server = new ApolloServer({
-	//   schema,
-	// });
 	const server = new ApolloServer<MyContext>({
 		schema,
 		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 	});
-	// const { url } = await startStandaloneServer(server, {
-	//   listen: { port: 4000 },
-	// });
 	await server.start();
 	app.use(
 		'/',
 		cors<cors.CorsRequest>({ origin: '*' }),
 		express.json(),
-		// expressMiddleware accepts the same arguments:
-		// an Apollo Server instance and optional configuration options
 		expressMiddleware(server, {})
 	);
 	await datasource.initialize();

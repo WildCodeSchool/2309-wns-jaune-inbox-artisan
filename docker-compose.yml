@@ -54,5 +54,15 @@ services:
     ports:
       - 8080:8080
 
+  images:
+    build: ./images
+    volumes:
+      - ./images/src:/app/src
+      - ./images/uploads:/app/uploads
+    ports:
+      - 8000:8000
+    env_file:
+      - ./global.env
+
 volumes:
   inboxArtisanData:
