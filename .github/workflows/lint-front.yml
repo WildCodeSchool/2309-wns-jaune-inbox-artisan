@@ -14,11 +14,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Move to Front
-        run: cd frontend
-
       - name: Install Node.js dependencies
-        run: npm i
+        run: cd frontend && npm i
 
       - name: Check lint
-        run: npm run lint
+        run: cd frontend && npm run lint
