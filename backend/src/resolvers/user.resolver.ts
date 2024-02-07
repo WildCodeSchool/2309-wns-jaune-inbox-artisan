@@ -18,4 +18,9 @@ export default class UserResolver {
 	async updateUser(@Arg('user') user: UpdateUserInput) {
 		return await new UserService().updateUser(user);
 	}
+
+	// @Mutation(() => User)
+	// async insertUser(@Arg('user') user: User) {
+	// 	return await new UserService().insertUser(user);
+	// }
 }
