@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import Folder from '../entities/folder.entity';
+import Folder, {CreateFolderInput} from '../entities/folder.entity';
 
 export default class FolderService {
 	db: Repository<Folder>;
@@ -20,7 +20,7 @@ export default class FolderService {
 		if (folder.id) return this.db.update(folder.id, folder);
 	}
 
-	async insertFolder(folder: Folder) {
+	async insertFolder(folder: CreateFolderInput) {
 		return this.db.insert(folder);
 	}
 

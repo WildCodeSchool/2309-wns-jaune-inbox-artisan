@@ -9,6 +9,7 @@ services:
       - ./global.env
     environment:
       - PGHOST=db
+      - PGHOSTEST=dbtest
     healthcheck:
       test:
         [
@@ -35,6 +36,24 @@ services:
       - 5433:5432
     volumes:
       - inboxArtisanData:/var/lib/postgresql/data
+
+  dbtest:
+    image: postgres
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d inboxartisan_test -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: inboxartisan_test
+    ports:
+      - 5434:5432
+    volumes:
+      - inboxArtisanDataTest:/var/lib/postgresql/data
+    
 
   frontend:
     build: ./frontend
@@ -66,3 +85,4 @@ services:
 
 volumes:
   inboxArtisanData:
+  inboxArtisanDataTest:

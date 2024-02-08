@@ -5,7 +5,7 @@ import {
 	ManyToOne,
 	OneToMany,
 } from 'typeorm';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ID, InputType,  ObjectType } from 'type-graphql';
 import User from './user.entity';
 
 @ObjectType()
@@ -24,6 +24,30 @@ export default class Image {
 	url: string;
 
 	@Field((type) => User)
-	@ManyToOne(() => User)
+	@ManyToOne(() => User ,{
+		onDelete: 'CASCADE',
+})
 	user: User;
+}
+
+@InputType()
+export class UpdateImageInput {
+	@Field(() => ID)
+	id: number
+	@Field({ nullable: true})
+	name: string
+	@Field({ nullable: true})
+	url: string
+	@Field((type) => User, { nullable: true})
+	user: User
+}
+
+@InputType()
+export class CreateImageInput {
+	@Field({ nullable: true})
+	name: string
+	@Field({ nullable: true})
+	url: string
+	@Field((type) => User, { nullable: true})
+	user: User
 }

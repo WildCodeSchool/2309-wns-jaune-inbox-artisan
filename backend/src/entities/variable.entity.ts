@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ID, InputType, ObjectType } from 'type-graphql';
 import User from './user.entity';
 
 @ObjectType()
@@ -18,6 +18,30 @@ export default class Variable {
 	value: string;
 
 	@Field((type) => User)
-	@ManyToOne(() => User)
+	@ManyToOne(() => User ,{
+		onDelete: 'CASCADE',
+})
 	user: User;
+}
+
+@InputType()
+export class UpdateVariableInput {
+	@Field(() => ID)
+	id: number
+	@Field({nullable: true})
+	label: string
+	@Field({nullable: true})
+	value: string
+	@Field(() => User, {nullable: true})
+	user: User
+}
+
+@InputType()
+export class CreateVariableInput {
+	@Field({nullable: true})
+	label: string
+	@Field({nullable: true})
+	value: string
+	@Field(() => User, {nullable: true})
+	user: User
 }

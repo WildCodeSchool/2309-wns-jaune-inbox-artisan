@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import Image from '../entities/image.entity';
+import Image,{ CreateImageInput,UpdateImageInput }  from '../entities/image.entity';
 
 export default class ImageService {
 	db: Repository<Image>;
@@ -17,11 +17,11 @@ export default class ImageService {
 		});
 	}
 
-	async updateImage(image: Partial<Image>) {
+	async updateImage(image: UpdateImageInput) {
 		if (image.id) return this.db.update(image.id, image);
 	}
 
-	async insertImage(image: Image) {
+	async insertImage(image: CreateImageInput) {
 		return this.db.insert(image);
 	}
 

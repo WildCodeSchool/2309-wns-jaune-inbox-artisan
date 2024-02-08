@@ -6,7 +6,7 @@ import {
 	ManyToMany,
 	JoinTable,
 } from 'typeorm';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ID, InputType, ObjectType } from 'type-graphql';
 import User from './user.entity';
 import Variable from './variable.entity';
 import Image from './image.entity';
@@ -27,7 +27,7 @@ export default class Template {
 	config: string;
 
 	@Field((type) => User)
-	@ManyToOne(() => User)
+	@ManyToOne(() => User , (user) => user.templates)
 	user: User;
 
 	@Field((type) => [Variable])
@@ -39,4 +39,36 @@ export default class Template {
 	@ManyToMany(() => Image)
 	@JoinTable()
 	images: Image[];
+}
+
+@InputType()
+export class UpdateTemplateInput {
+	@Field(() => ID)
+	id: number;
+	@Field({ nullable: true})
+	name: string
+	@Field({nullable: true})
+	config: string
+	@Field( (type) => User, {nullable: true})
+	user: User
+	@Field(type => [Variable], {nullable: true})
+	variables: Variable[]
+	@Field(type => [Image], {nullable: true})
+	Images: Image[]
+
+
+}
+
+@InputType()
+export class CreateTemplateInput {
+	@Field({ nullable: true})
+	name: string
+	@Field({nullable: true})
+	config: string
+	@Field( (type) => User, {nullable: true})
+	user: User
+	@Field(type => [Variable], {nullable: true})
+	variables: Variable[]
+	@Field(type => [Image], {nullable: true})
+	Images: Image[]
 }

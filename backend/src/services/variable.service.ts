@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import Variable from '../entities/variable.entity';
+import Variable, { CreateVariableInput } from '../entities/variable.entity';
 
 export default class ImageService {
 	db: Repository<Variable>;
@@ -22,7 +22,7 @@ export default class ImageService {
 		if (variable.id) return this.db.update(variable.id, variable);
 	}
 
-	async insertVariable(variable: Variable) {
+	async insertVariable(variable: CreateVariableInput) {
 		return this.db.insert(variable);
 	}
 

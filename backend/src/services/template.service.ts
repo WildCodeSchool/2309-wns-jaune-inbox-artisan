@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import Template from '../entities/template.entity';
+import Template, { CreateTemplateInput } from '../entities/template.entity';
 
-export default class ImageService {
+export default class TemplateService {
 	db: Repository<Template>;
 	constructor() {
 		this.db = datasource.getRepository(Template);
@@ -22,7 +22,7 @@ export default class ImageService {
 		if (template.id) return this.db.update(template.id, template);
 	}
 
-	async insertTemplate(template: Template) {
+	async insertTemplate(template: CreateTemplateInput) {
 		return this.db.insert(template);
 	}
 

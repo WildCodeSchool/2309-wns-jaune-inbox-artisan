@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import User, { UpdateUserInput } from '../entities/user.entity';
+import User, { CreateUserInput, UpdateUserInput } from '../entities/user.entity';
+import assert from "assert"
 
 export default class UserService {
 	db: Repository<User>;
@@ -13,25 +14,33 @@ export default class UserService {
 	}
 
 	async getUserById(id: number) {
-		return this.db.findOneBy({ id: id });
+		const findUser = await this.db.findOneBy({ id: id });
+		assert(findUser,"No user found")
+		return findUser
 	}
+
+	async getUserByEmail(email: string) {
+		return this.db.findOneBy({ email: email });
+	}
+
 
 	async updateUser(user: UpdateUserInput) {
-		if (user.id) {
-			return this.db.update(user.id, user);
-		}
+		console.log("user:", user)
+		assert(user.id,"you need to provide an id")
+		const actualUser = await this.getUserById(user.id)
+
+			return  await this.db.save(this.db.merge(actualUser, user));
 	}
 
-	async insertUser(user: User) {
-		return this.db.save(user);
+	async insertUser(user: CreateUserInput) {
+		const newUser = this.db.create(user);
+		return await this.db.save(newUser);
 	}
 
 	async deleteUser(id: number) {
-		return this.db.delete({ id: id });
+		const user = await this.getUserById(id) as User;
+		await this.db.remove(user)
+		return {...user, id};
 	}
 
-	// login dans resolveur ou dans entité ?
-	// async checkPasswordHash(credentials: Credentials) {
-	// 	return this.db.remove(user);
-	// }
 }

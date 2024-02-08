@@ -4,9 +4,9 @@ import UserResolver from '../../src/resolvers/user.resolver';
 import User from "../../src/entities/user.entity";
 import datasource from "../../src/lib/datasource_test"; //on importe la datasource de test
 import datasourceInitial from "../../src/lib/datasource"; //on importe la datasource 
-import {LIST_USERS} from "./requests"; 
-import {ResponseData} from "./types"; 
+import {LIST_USERS, CREATE_USER, DELETE_USER, UPDATE_USER} from "./requests";
 import assert from 'assert';
+import { ResponseData, ResponseDataCreate, ResponseDataDelete, ResponseDataUpdate } from './types';
 
 
 let server: ApolloServer;
@@ -14,10 +14,10 @@ let server: ApolloServer;
 const baseSchema = buildSchemaSync({
 	resolvers: [UserResolver],
 	authChecker: () => true,
-});
+}); 
 
 beforeAll(async () => {
-	server = new ApolloServer({
+	server = new ApolloServer({ 
 		schema: baseSchema,
 	});
 
@@ -25,8 +25,8 @@ beforeAll(async () => {
 		.spyOn(datasourceInitial, 'getRepository')
 		.mockReturnValue(datasource.getRepository(User));
 
-	await datasource.initialize(); //initialisation de la datasource
-	await datasource.getRepository(User).clear(); //vidage de la table et non drop de la base de donnée complète
+		await datasource.initialize(); //initialisation de la datasource
+		// await datasource.getRepository(User).clear(); //vidage de la table et non drop de la base de donnée complète
 });
 
 afterAll(async () => {
@@ -40,5 +40,68 @@ describe('Test sur les user avec la base de données', () => {
 		});
 		assert(response.body.kind === 'single');
 		expect(response.body.singleResult.data?.users).toHaveLength(0);
+	});
+    
+	it('creation user', async () => {
+		const response = await server.executeOperation<ResponseDataCreate>({
+			query: CREATE_USER, 
+			variables: {
+				user: {
+					email: "test@test.com",
+					password: "password",
+					role: "Freemium",
+					billing_date: "1990-01-01",
+					pseudo: "TestUser"
+				}
+			},			
+		});
+		assert(response.body.kind === 'single');
+		expect(response.body.singleResult.data?.insertUser).not.toBeNull();
+		expect(response.body.singleResult.data?.insertUser.password).not.toBe("password");
+
+		console.log("insert : ", response.body.singleResult.data?.insertUser)
+		expect(response.body.singleResult.data?.insertUser).toMatchObject({
+			email: "test@test.com",
+			role: "Freemium",
+			billing_date: "1990-01-01",
+			pseudo: "TestUser"
+        });
+	});
+
+	it('update user', async () => {
+
+		const response = await server.executeOperation<ResponseDataUpdate>({
+			query: UPDATE_USER, 
+			variables: {
+			user :{
+				id: 1,
+				email: "toto@test.com",
+				pseudo: "tataUser"
+			},},
+		});
+		assert(response.body.kind === 'single');
+		console.log("toto :", response.body.singleResult.errors)
+		console.log("tata :", response.body.singleResult.data)
+		expect(response.body.singleResult.data?.updateUser).not.toBeNull();
+
+		expect(response.body.singleResult.data?.updateUser).toEqual({
+			email: "toto@test.com",
+			pseudo: "tataUser"
+        });
+	});
+    
+	it('delete user', async () => {
+		const response = await server.executeOperation<ResponseDataDelete>({
+			query: DELETE_USER, 
+			variables: {
+				deleteUserId: 1
+			},
+		});
+		assert(response.body.kind === 'single');
+		expect(response.body.singleResult.data?.deleteUser).not.toBeNull();
+
+		expect(response.body.singleResult.data?.deleteUser).toEqual({
+			id: 1,
+        });
 	});
 });

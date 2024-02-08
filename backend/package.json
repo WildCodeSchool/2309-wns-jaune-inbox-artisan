@@ -4,11 +4,13 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --exit-child --watch src --poll src/index.ts",
-    "test": "jest --watch"
+    "test": "jest --watch --detectOpenHandles"
   },
   "license": "MIT",
   "dependencies": {
     "@apollo/server": "^4.9.5",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "class-validator": "^0.14.0",
     "cors": "^2.8.5",
     "graphql": "^16.8.1",
