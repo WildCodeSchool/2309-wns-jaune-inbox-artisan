@@ -1,4 +1,7 @@
 import UserResolver from './resolvers/user.resolver';
+import FolderResolver from './resolvers/folder.resolver';
+import TemplateResolver from './resolvers/template.resolver';
+import ImageResolver from './resolvers/image.resolver';
 import datasource from './lib/datasource';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
@@ -17,26 +20,18 @@ const httpServer = http.createServer(app);
 
 async function main() {
 	const schema = await buildSchema({
-		resolvers: [UserResolver],
+		resolvers: [UserResolver, TemplateResolver,FolderResolver, ImageResolver],
 		validate: false,
 	});
-	// const server = new ApolloServer({
-	//   schema,
-	// });
 	const server = new ApolloServer<MyContext>({
 		schema,
 		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 	});
-	// const { url } = await startStandaloneServer(server, {
-	//   listen: { port: 4000 },
-	// });
 	await server.start();
 	app.use(
 		'/',
 		cors<cors.CorsRequest>({ origin: '*' }),
 		express.json(),
-		// expressMiddleware accepts the same arguments:
-		// an Apollo Server instance and optional configuration options
 		expressMiddleware(server, {})
 	);
 	await datasource.initialize();
