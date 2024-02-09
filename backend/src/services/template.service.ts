@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import Template, { CreateTemplateInput } from '../entities/template.entity';
+import Template, { CreateTemplateInput, UpdateTemplateInput } from '../entities/template.entity';
 
 export default class TemplateService {
 	db: Repository<Template>;
@@ -18,7 +18,7 @@ export default class TemplateService {
 		});
 	}
 
-	async updateTemplate(template: Partial<Template>) {
+	async updateTemplate(template: UpdateTemplateInput) {
 		if (template.id) return this.db.update(template.id, template);
 	}
 

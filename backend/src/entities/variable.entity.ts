@@ -3,6 +3,7 @@ import { Field, ID, InputType, ObjectType } from 'type-graphql';
 import User from './user.entity';
 
 @ObjectType()
+@InputType('VariableInput')
 @Entity()
 export default class Variable {
 	@Field()

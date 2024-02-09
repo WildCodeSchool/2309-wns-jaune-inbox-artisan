@@ -1,20 +1,28 @@
+import LoginLayout from '@/components/layout-elements/LoginLayout';
 import { Button, Typography } from 'antd';
 import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
+import { NextPageWithLayout } from './_app';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
-export default function Home() {
+const Home: NextPageWithLayout = () => {
 	return (
-		<main
-			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-		>
+		<main>
 			<Title>Accueil</Title>
-			<Text>Coucou</Text>
-			<Button>Accueil</Button>
 		</main>
 	);
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+	return (
+		<LoginLayout title='login' fullWidthImage >
+			{page}
+		</LoginLayout>
+	)
+}
+
+export default Home
