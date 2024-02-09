@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
-// import Layout from '@/components/layout-elements/Layout';
+import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import dynamic from 'next/dynamic';
 
 import React from 'react';
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 		uri: 'http://localhost:4000',
 		cache: new InMemoryCache(),
 	});
-	const getLayout = Component.getLayout ?? ((page) => page)
+	const getLayout = Component.getLayout ?? ((page) => (page))
 	return (
 		<ApolloProvider client={client}>
 			{getLayout(<Component {...pageProps} />)}

@@ -7,7 +7,7 @@ const LoginLayout = ({ children, description, fullWidthImage, imageSrc, title }:
   <Row className="h-[100vh]">
     <Col className='flex h-[100%] items-center justify-center' xs={24} lg={12}>
       <div className='w-[400px] m-auto'>
-        <Image src="../../../public/img.png" preview={false} width={140} className="" />
+        <Image src={"/logo.svg"} preview={false} width={140} height={140} className="" />
         <Title level={2}>{title}</Title>
         {!!description && description}
         {children}
