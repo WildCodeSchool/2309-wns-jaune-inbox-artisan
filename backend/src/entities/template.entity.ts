@@ -12,6 +12,7 @@ import Variable from './variable.entity';
 import Image from './image.entity';
 
 @ObjectType()
+@InputType('TemplateInput')
 @Entity()
 export default class Template {
 	@Field()

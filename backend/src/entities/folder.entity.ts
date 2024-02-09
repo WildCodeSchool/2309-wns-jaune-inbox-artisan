@@ -22,7 +22,7 @@ export default class Folder {
 	name: string;
 
 	@Field((type) => User)
-	@ManyToOne(() => User ,{
+	@ManyToOne(() => User, User => User.folders ,{
 		onDelete: 'CASCADE',
 })
 	user: User;

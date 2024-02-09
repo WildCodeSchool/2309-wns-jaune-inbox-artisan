@@ -11,6 +11,7 @@ export type role = 'Freemium' | 'Premium';
 
 
 @ObjectType()
+@InputType("UserInput")
 @Entity()
 export default class User {
 	@Field()
