@@ -6,4 +6,5 @@ export type AuthLayoutProps = {
   fullWidthImage?: boolean;
   imageSrc?: string;
   title: string;
+  subtitle?: string;
 };
