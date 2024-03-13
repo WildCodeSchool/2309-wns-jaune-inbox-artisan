@@ -1,10 +1,11 @@
 import { ReactElement } from "react";
 import { NextPageWithLayout } from "../_app";
 import RegisterLayout from "@/components/layout-elements/LoginLayout";
-import { Button, Checkbox, Flex, Form, Input } from "antd";
+import { Button, Flex, Form, Input } from "antd";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
-import { REGISTER } from "../../../request/mutations/auth.mutations";
+import { InputRegister, RegisterMutation, RegisterMutationVariables } from "@/types/graphql";
+import { REGISTER } from "../../request/mutations/auth.mutations";
 
 const Register: NextPageWithLayout = () => {
   const router = useRouter();
@@ -12,9 +13,21 @@ const Register: NextPageWithLayout = () => {
   const [register, { error }] = useMutation<
     RegisterMutation,
     RegisterMutationVariables
-  >(REGISTER, []);
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  >(REGISTER, {
+    onCompleted: (data) => {
+      console.log(data)
+      router.push("/auth/login");
+    },
+    onError: (error) => {
+      console.log('err: ',error)
+    }
+  }); 
+  const onFinish = (values: InputRegister) => {
+    if (values.mail && values.password && values.username && values.confirmPassword) {
+      register({
+        variables: { user: { mail: values.mail, password: values.password,username: values.username } },
+      });
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -23,7 +36,7 @@ const Register: NextPageWithLayout = () => {
 
   type FieldType = {
     mail?: string;
-    pseudo?: string;
+    username?: string;
     password?: string;
     confirmPassword?: string;
   };
@@ -46,10 +59,10 @@ const Register: NextPageWithLayout = () => {
         </Form.Item>
 
         <Form.Item<FieldType>
-          name="pseudo"
-          rules={[{ required: true, message: "Please enter your pseudo!" }]}
+          name="username"
+          rules={[{ required: true, message: "Please enter your username!" }]}
         >
-          <Input placeholder="Pseudo" />
+          <Input placeholder="Username" />
         </Form.Item>
 
         <Form.Item<FieldType>
