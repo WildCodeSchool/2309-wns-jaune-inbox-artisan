@@ -57,11 +57,11 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: './frontend'
+          context: '{{defaultContext}}:frontend'
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/inboxartisan-front:latest
-      # - name: Build and push back
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     push: true
-      #     context: './backend'
-      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/inboxartisan-back:latest
+      - name: Build and push back
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          context: '{{defaultContext}}:backend'
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/inboxartisan-back:latest
