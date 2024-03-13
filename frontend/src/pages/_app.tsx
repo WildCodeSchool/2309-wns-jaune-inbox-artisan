@@ -7,7 +7,9 @@ import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import dynamic from 'next/dynamic';
 
 import React from 'react';
-// import theme from '@/theme/themeConfig';
+import { ConfigProvider } from 'antd';
+import theme from '../styles/antd-style';
+import { StyleProvider } from '@ant-design/cssinjs';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 	getLayout?: (page: ReactElement) => ReactNode
@@ -25,7 +27,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 	const getLayout = Component.getLayout ?? ((page) => (page))
 	return (
 		<ApolloProvider client={client}>
-			{getLayout(<Component {...pageProps} />)}
+			<ConfigProvider theme={theme}>
+				<StyleProvider hashPriority="high">
+					{getLayout(<Component {...pageProps} />)}
+				</StyleProvider>
+			</ConfigProvider>
 		</ApolloProvider>
 	);
 }
