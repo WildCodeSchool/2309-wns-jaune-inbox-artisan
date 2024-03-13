@@ -36,6 +36,13 @@ export type User = {
   password: Scalars['String']['output'];
 };
 
+export type InputRegister = {
+  __typename?: 'InputRegister';
+  mail: Scalars['String']['input'];
+  pseudo?: Scalars['String']['input'];
+  password?: Scalars['String']['input'];
+}
+
 export type BooksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
