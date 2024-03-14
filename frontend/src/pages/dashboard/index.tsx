@@ -2,11 +2,15 @@ import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import { ReactElement } from 'react';
 
 const Dashboard = () => {
-	return <div>Dashboard</div>;
+	return <div></div>;
 };
 
 Dashboard.getLayout = function getLayout(page: ReactElement) {
-	return <GlobalLayout>{page}</GlobalLayout>;
+	return (
+		<GlobalLayout title="Dashboard" description="this is a dashboard.">
+			{page}
+		</GlobalLayout>
+	);
 };
 
 export default Dashboard;
