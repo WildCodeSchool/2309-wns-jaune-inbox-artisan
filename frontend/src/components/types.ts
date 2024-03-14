@@ -2,17 +2,14 @@ import { ReactNode } from 'react';
 
 export type AuthLayoutProps = {
 	children: ReactNode;
+	title: string;
 	description?: ReactNode;
 	fullWidthImage?: boolean;
 	imageSrc?: string;
-	title: string;
 };
 
-export type GlobalLayoutPropsType = {
+export type GlobalLayoutProps = {
 	children: ReactNode;
-};
-
-export type SidebarPropsType = {
-	setIsMobile: (value: boolean) => void;
-	isMobile: boolean;
+	title: string;
+	description?: ReactNode;
 };

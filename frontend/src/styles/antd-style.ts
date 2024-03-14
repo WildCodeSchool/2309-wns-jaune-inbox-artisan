@@ -3,7 +3,7 @@ const theme = {
 		colorPrimary: '#218380',
 		colorInfo: '#218380',
 		borderRadius: 2,
-		fontFamily: 'Roboto',
+		fontFamily: '"Roboto",arial',
 	},
 	components: {
 		Typography: {
@@ -11,8 +11,6 @@ const theme = {
 			fontSizeHeading1: 48,
 			fontSizeHeading2: 32,
 			fontSize: 20,
-			titleMarginBottom: '',
-			titleMarginTop: '',
 		},
 		Menu: {
 			darkColorBgContainer: '#CACACA',

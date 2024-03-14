@@ -2,7 +2,6 @@ import { Image, Layout, Menu, Space } from 'antd';
 import { useState, Key, ReactNode } from 'react';
 import { MenuItem } from './types';
 import Link from 'next/link';
-import { SidebarPropsType } from '../types';
 import {
 	FormOutlined,
 	HighlightOutlined,

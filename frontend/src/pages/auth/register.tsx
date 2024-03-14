@@ -7,6 +7,7 @@ type FieldType = {
 	username: string;
 	mail: string;
 	password: string;
+	confirmPassword: string;
 };
 function Register() {
 	const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
