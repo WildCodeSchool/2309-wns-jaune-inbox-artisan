@@ -1,20 +1,26 @@
-import {Layout} from "antd"
-import Sidebar from "./Sidebar"
+import { Button, Layout } from 'antd';
+import Sidebar from './Sidebar';
+import { GlobalLayoutPropsType } from '../types';
+import Header from './Header/Header';
+import { useEffect, useState } from 'react';
+import { useBreackPoint } from '@/Contexts/BreackPointContext';
 
-const {Content} = Layout
+const { Content } = Layout;
 
+const GlobalLayout = ({ children }: GlobalLayoutPropsType) => {
+	const { isMobile, setIsMobile } = useBreackPoint();
 
-const GlobalLayout = ({children}) => {
-<Layout hasSider style={{ minHeight: '100vh' }}>
-<Sidebar/>
-<Layout className="site-layout">
-  {/* <Header user={user} /> */}
-  <Content style={{ margin: '0px 16px' }}>
-    <div style={{ padding: 24, minHeight: 360, }}>
-       {children}
-    </div>
-  </Content>
-</Layout>
-</Layout>}
+	return (
+		<Layout style={{ minHeight: '100vh', flexDirection: 'column' }}>
+			<Header user={null} isLayout />
+			<Layout hasSider style={{ width: '100%' }}>
+				<Sidebar />
+				<Content style={{ margin: '0px 16px' }}>
+					<div style={{ padding: 24, minHeight: 360 }}>{children}</div>
+				</Content>
+			</Layout>
+		</Layout>
+	);
+};
 
-export default GlobalLayout
+export default GlobalLayout;
