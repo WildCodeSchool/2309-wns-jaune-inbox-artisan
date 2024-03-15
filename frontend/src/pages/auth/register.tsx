@@ -1,19 +1,26 @@
 
 import { ReactElement } from "react";
 import { NextPageWithLayout } from "../_app";
-import RegisterLayout from "@/components/layout-elements/LoginLayout";
+
 import { Button, Flex, Form, Input } from "antd";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
-import { InputRegister, RegisterMutation, RegisterMutationVariables } from "@/types/graphql";
+import { CreateUserMutation, CreateUserMutationVariables } from "@/types/graphql";
 import { REGISTER } from "../../request/mutations/auth.mutations";
+import LoginLayout from "@/components/layout-elements/LoginLayout";
 
 const Register: NextPageWithLayout = () => {
+  type InputRegister = {
+    mail?: string;
+    username?: string;
+    password?: string;
+    confirmPassword?: string;
+  };
   const router = useRouter();
 
   const [register, { error }] = useMutation<
-    RegisterMutation,
-    RegisterMutationVariables
+  CreateUserMutation,
+  CreateUserMutationVariables
   >(REGISTER, {
     onCompleted: (data) => {
       console.log(data)
@@ -46,13 +53,6 @@ const Register: NextPageWithLayout = () => {
     console.log("Failed:", errorInfo);
   };
 
-  type FieldType = {
-    mail?: string;
-    username?: string;
-    password?: string;
-    confirmPassword?: string;
-  };
-
   return (
     <Flex vertical className="w-[80%]">
       <Form
@@ -63,28 +63,28 @@ const Register: NextPageWithLayout = () => {
         autoComplete="off"
         className="max-w-[600px]"
       >
-        <Form.Item<FieldType>
+        <Form.Item<InputRegister>
           name="mail"
           rules={[{ required: true, message: "Please enter your mail!" }]}
         >
           <Input placeholder="Mail" />
         </Form.Item>
 
-        <Form.Item<FieldType>
+        <Form.Item<InputRegister>
           name="username"
           rules={[{ required: true, message: "Please enter your username!" }]}
         >
           <Input placeholder="Username" />
         </Form.Item>
 
-        <Form.Item<FieldType>
+        <Form.Item<InputRegister>
           name="password"
           rules={[{ required: true, message: "Please enter your password!" }]}
         >
           <Input.Password placeholder="Password" />
         </Form.Item>
 
-        <Form.Item<FieldType>
+        <Form.Item<InputRegister>
           name="confirmPassword"
           rules={[{ required: true, message: "Please confirm your password!" }]}
         >
@@ -98,18 +98,6 @@ const Register: NextPageWithLayout = () => {
         </Form.Item>
       </Form>
     </Flex>
-  );
-};
-
-Register.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <RegisterLayout
-      title="Welcome, new Artisan !"
-      subtitle="Your life is getting easier !"
-      fullWidthImage
-    >
-      {page}
-    </RegisterLayout>
   );
 };
 
