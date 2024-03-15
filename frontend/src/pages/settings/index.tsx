@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { NextPageWithLayout } from "./_app";
+import { NextPageWithLayout } from "../_app";
 import { Button, Checkbox, Form, type FormProps, Input, Space, Typography, FormInstance } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import GlobalLayout from "@/components/layout-elements/GlobalLayout";
@@ -7,22 +7,16 @@ import React from "react";
 
 const { Title } = Typography;
 
-type FieldType = {
-  mail: string;
-  newPassword: string;
-  confirmNewPassword: string;
-};
-
 const Settings: NextPageWithLayout = () => {
-  const [form] = Form.useForm<FieldType>();
+  // const [form] = Form.useForm<FieldType>();
   
   const [submittable, setSubmittable] = React.useState<boolean>(false);
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+  const onFinish: FormProps<UserFieldType>["onFinish"] = (values) => {
     console.log("Success:", values);
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  const onFinishFailed: FormProps<UserFieldType>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
@@ -30,15 +24,13 @@ const Settings: NextPageWithLayout = () => {
   
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between`}
+      className={`flex flex-col items-center justify-between`}
     >
-      <Title level={3} className='lg:text-left'>Account</Title>
+      <Title level={3}>Account</Title>
       <Form
-        form={form}
+        // form={form}
         name="accountForm"
-        labelCol={{ span: 12 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ minWidth:  '20%' }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -47,27 +39,27 @@ const Settings: NextPageWithLayout = () => {
         }}
       >
 
-        <Form.Item<FieldType>
-          label="Mail"
+        <Form.Item<UserFieldType>
+          label=""
           name="mail"
           rules={[{ required: true, message: "Please input your mail!" }]}
         >
-          <Input />
+          <Input placeholder="Mail"/>
         </Form.Item>
 
-        <Form.Item<FieldType>
-          label="New password"
+        <Form.Item<UserFieldType>
+          label=""
           name="newPassword"
           rules={[{ 
-            required: true, 
+            required: true,
             message: "Please input your password!",
           }]}
         >
-          <Input.Password />
+          <Input.Password placeholder="New password"/>
         </Form.Item>
 
-        <Form.Item<FieldType>
-          label="Confirm new password"
+        <Form.Item<UserFieldType>
+          label=""
           name="confirmNewPassword"
           dependencies={['password']}
           rules={[
@@ -86,9 +78,9 @@ const Settings: NextPageWithLayout = () => {
             }),
           ]}
         >
-          <Input.Password />
+          <Input.Password placeholder="Confirm new password"/>
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item style={{textAlign: "center"}}>
           <Button 
             type="primary"
             htmlType="submit"
@@ -99,7 +91,7 @@ const Settings: NextPageWithLayout = () => {
         </Form.Item>
       </Form>
 
-      <Title level={3}>Variables</Title>
+      <Title level={3} className='mt-12'>Variables</Title>
       <Form
         name="dynamic_form_nest_item"
         onFinish={onFinish}
@@ -115,7 +107,7 @@ const Settings: NextPageWithLayout = () => {
               name: "Var 2", 
               value: "Value de Var 2"
             },
-          ] 
+          ]
         }}
       >
         <Form.List name="variables">
@@ -124,17 +116,17 @@ const Settings: NextPageWithLayout = () => {
             <>
               {fields.map(({ key, name, ...restField }) => (
                 <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                  <Form.Item
+                  <Form.Item<VariablesFieldType[]>
                     {...restField}
                     name={[name, 'name']}
                     rules={[{ required: true, message: 'Missing variable name' }]}
                   >
                     <Input placeholder="Variable name" />
                   </Form.Item>
-                  <Form.Item
+                  <Form.Item<VariablesFieldType[]>
                     {...restField}
                     name={[name, 'value']}
-                    rules={[{ required: true, message: 'Value' }]}
+                    rules={[{ required: true, message: 'Missing variable value' }]}
                   >
                     <Input placeholder="Value" />
                   </Form.Item>
@@ -143,15 +135,15 @@ const Settings: NextPageWithLayout = () => {
               ))}
               <Form.Item>
                 <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                  Add field
+                  Add Variable
                 </Button>
               </Form.Item>
             </>
           )}
         </Form.List>
-        <Form.Item>
+        <Form.Item style={{textAlign: "center"}}>
           <Button type="primary" htmlType="submit">
-            Save
+            Save Variables
           </Button>
         </Form.Item>
       </Form>
