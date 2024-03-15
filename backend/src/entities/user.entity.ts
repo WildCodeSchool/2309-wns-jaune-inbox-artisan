@@ -90,6 +90,15 @@ export class UpdateUserInput {
 	billing_date: string;
 }
 
+@ObjectType()
+export class Message {
+  @Field()
+  success: boolean;
+
+  @Field()
+  message: string;
+}
+
 @InputType()
 export class CreateUserInput {
 
@@ -103,4 +112,13 @@ export class CreateUserInput {
 	role: role;
 	@Field({ nullable: true })
 	billing_date: string;
+}
+
+@InputType()
+export class InputLogin {
+  @Field()
+  mail: string;
+
+  @Field()
+  password: string;
 }
