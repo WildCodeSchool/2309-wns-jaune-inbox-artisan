@@ -23,9 +23,20 @@ const Register: NextPageWithLayout = () => {
     }
   }); 
   const onFinish = (values: InputRegister) => {
-    if (values.mail && values.password && values.username && values.confirmPassword) {
+    if (values.mail
+        && values.password
+        && values.username
+        && values.confirmPassword
+        && values.password == values.confirmPassword
+      ) {
       register({
-        variables: { user: { mail: values.mail, password: values.password,username: values.username } },
+        variables: {
+          user:
+          { mail: values.mail,
+            password: values.password,
+            username: values.username
+          }
+        },
       });
     }
   };

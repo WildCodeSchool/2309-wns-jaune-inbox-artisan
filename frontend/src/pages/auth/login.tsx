@@ -14,8 +14,8 @@ const  Login: NextPageWithLayout = () => {
   };
 
   type FieldType = {
-    mail?: string;
-    password?: string;
+    mail: string;
+    password: string;
     remember?: string;
   };
 
