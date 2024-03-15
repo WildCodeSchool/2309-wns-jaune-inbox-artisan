@@ -35,7 +35,12 @@ const Header = ({
 	return (
 		<>
 			<AntHeader
-				style={{ backgroundColor: '#D9D9D9' }}
+				style={{
+					backgroundColor: '#D9D9D9',
+					position: 'sticky',
+					top: 0,
+					zIndex: 1,
+				}}
 				className="!px-2 !h-[7vh]"
 			>
 				<div className="flex items-center justify-between h-full">
@@ -48,7 +53,7 @@ const Header = ({
 								width={45}
 							/>
 						</Link>
-						<Title level={3}>InboxArtisan</Title>
+						{!isMobile ? <Title level={3}>InboxArtisan</Title> : null}
 					</Space>
 					{isLayout ? (
 						<Space>

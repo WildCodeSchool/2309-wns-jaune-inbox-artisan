@@ -1,6 +1,10 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import Template, { CreateTemplateInput, UpdateTemplateInput } from '../entities/template.entity';
+import Template, {
+	CreateTemplateInput,
+	UpdateTemplateInput,
+} from '../entities/template.entity';
+import User from '../entities/user.entity';
 
 export default class TemplateService {
 	db: Repository<Template>;
@@ -8,8 +12,8 @@ export default class TemplateService {
 		this.db = datasource.getRepository(Template);
 	}
 
-	async getAllTemplates() {
-		return this.db.find();
+	async getAllTemplates(user: User) {
+		return this.db.find({ where: { user: user } });
 	}
 
 	async getTemplateById(id: number) {
