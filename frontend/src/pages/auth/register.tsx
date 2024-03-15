@@ -1,3 +1,4 @@
+
 import { ReactElement } from "react";
 import { NextPageWithLayout } from "../_app";
 import RegisterLayout from "@/components/layout-elements/LoginLayout";
@@ -110,6 +111,15 @@ Register.getLayout = function getLayout(page: ReactElement) {
       {page}
     </RegisterLayout>
   );
+};
+
+
+Register.getLayout = function getLayout(page: ReactElement) {
+	return (
+		<LoginLayout title="register" fullWidthImage>
+			{page}
+		</LoginLayout>
+	);
 };
 
 export default Register;

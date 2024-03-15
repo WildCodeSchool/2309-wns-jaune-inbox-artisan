@@ -1,10 +1,16 @@
-import {ReactNode} from 'react'
+import { ReactNode } from 'react';
 
 export type AuthLayoutProps = {
-  children: ReactNode;
-  description?: ReactNode;
-  fullWidthImage?: boolean;
-  imageSrc?: string;
-  title: string;
-  subtitle?: string;
+	children: ReactNode;
+	title: string;
+	description?: ReactNode;
+	fullWidthImage?: boolean;
+	imageSrc?: string;
 };
+
+export type GlobalLayoutProps = {
+	children: ReactNode;
+	title: string;
+	description?: ReactNode;
+};
+

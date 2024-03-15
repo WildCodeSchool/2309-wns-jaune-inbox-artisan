@@ -1,31 +1,38 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import type { ReactElement, ReactNode } from 'react'
-import type { NextPage } from 'next'
-import GlobalLayout from '@/components/layout-elements/GlobalLayout';
-import dynamic from 'next/dynamic';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
 
 import React from 'react';
-// import theme from '@/theme/themeConfig';
+import { ConfigProvider } from 'antd';
+import theme from '@/styles/antd-style';
+import { StyleProvider } from '@ant-design/cssinjs';
+import { BreackPointProvider } from '@/Contexts/BreackPointContext';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-	getLayout?: (page: ReactElement) => ReactNode
-}
+	getLayout?: (page: ReactElement) => ReactNode;
+};
 
 type AppPropsWithLayout = AppProps & {
-	Component: NextPageWithLayout
-}
+	Component: NextPageWithLayout;
+};
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
 	const client = new ApolloClient({
 		uri: 'http://localhost:4000',
 		cache: new InMemoryCache(),
 	});
-	const getLayout = Component.getLayout ?? ((page) => (page))
+	const getLayout = Component.getLayout ?? ((page) => page);
 	return (
 		<ApolloProvider client={client}>
-			{getLayout(<Component {...pageProps} />)}
+			<BreackPointProvider>
+				<StyleProvider hashPriority="high">
+					<ConfigProvider theme={theme}>
+						{getLayout(<Component {...pageProps} />)}
+					</ConfigProvider>
+				</StyleProvider>
+			</BreackPointProvider>
 		</ApolloProvider>
 	);
 }
