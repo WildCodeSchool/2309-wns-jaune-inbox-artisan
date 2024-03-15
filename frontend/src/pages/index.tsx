@@ -1,6 +1,5 @@
 import LoginLayout from '@/components/layout-elements/LoginLayout';
 import { Button, Typography } from 'antd';
-import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
 import { ReactElement, ReactNode } from 'react';
 import { NextPageWithLayout } from './_app';

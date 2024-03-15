@@ -1,4 +1,4 @@
-import { Col, Image, Row, Typography } from 'antd';
+import { Col, Flex, Image, Row, Typography } from 'antd';
 import { AuthLayoutProps } from '../types';
 import Header from './Header/Header';
 const { Title } = Typography;

@@ -20,23 +20,23 @@ export default class User {
 
 	@Field()
 	@Column({ unique: true })
-	email: string;
+	mail: string;
 
 	@Field()
 	@Column()
 	password: string;
 
-	@Field()
-	@Column()
-	role: role;
+	@Field({ nullable: true })
+	@Column({ nullable: true })
+	role?: role;
+
+	@Field({ nullable: true })
+	@Column({ nullable: true, type: 'date' })
+	billing_date?: string;
 
 	@Field()
-	@Column({ type: 'date' })
-	billing_date: string;
-
-	@Field()
 	@Column()
-	pseudo: string;
+	username: string;
 
 	@Field((type) => [Template])
 	@OneToMany(() => Folder, (folder) => folder.user, {
@@ -79,11 +79,11 @@ export class UpdateUserInput {
 	@Field(() => ID)
 	id: number;
 	@Field()
-	email: string;
+	mail: string;
 	@Field({ nullable: true })
 	password: string;
 	@Field({ nullable: true })
-	pseudo: string;
+	username: string;
 	@Field({ nullable: true })
 	role: role;
 	@Field({ nullable: true })
@@ -94,11 +94,11 @@ export class UpdateUserInput {
 export class CreateUserInput {
 
 	@Field()
-	email: string;
+	mail: string;
 	@Field()
 	password: string;
 	@Field()
-	pseudo: string;
+	username: string;
 	@Field({ nullable: true })
 	role: role;
 	@Field({ nullable: true })

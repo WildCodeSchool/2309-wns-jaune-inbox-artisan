@@ -17,15 +17,15 @@ export default class UserResolver {
 	@Mutation(() => User)
 	async updateUser(@Arg('user') user: UpdateUserInput) {
 		
-		const foundUser = await new UserService().getUserByEmail(user.email);
-		if (foundUser) throw new Error('Email is already in use');
+		const foundUser = await new UserService().getUserBymail(user.mail);
+		if (foundUser) throw new Error('mail is already in use');
 
 		return await new UserService().updateUser(user);
 	}
 
 	@Mutation(() => User)
-	async insertUser(@Arg('user') user: CreateUserInput) {
-		return await new UserService().insertUser(user);
+	async CreateUser(@Arg('user') user: CreateUserInput) {
+		return await new UserService().createUser(user);
 	} 
 
 	@Mutation(() => User)

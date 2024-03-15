@@ -19,8 +19,8 @@ export default class UserService {
 		return findUser
 	}
 
-	async getUserByEmail(email: string) {
-		return this.db.findOneBy({ email: email });
+	async getUserBymail(mail: string) {
+		return this.db.findOneBy({ mail: mail });
 	}
 
 
@@ -32,7 +32,7 @@ export default class UserService {
 			return  await this.db.save(this.db.merge(actualUser, user));
 	}
 
-	async insertUser(user: CreateUserInput) {
+	async createUser(user: CreateUserInput) {
 		const newUser = this.db.create(user);
 		return await this.db.save(newUser);
 	}
