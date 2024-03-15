@@ -2,21 +2,21 @@ export const LIST_USERS = `#graphql
     query Users {
         users {
             id
-            pseudo
-            email
+            username
+            mail
         }
     }
 `;
 
 export const CREATE_USER = `#graphql
-    mutation InsertUser($user: CreateUserInput!)  {
-        insertUser (user: $user)  {
+    mutation CreateUser($user: CreateUserInput!)  {
+        createUser (user: $user)  {
             id
-            email
+            mail
             password
             role
             billing_date
-            pseudo
+            username
         }
     }
 `;
@@ -24,8 +24,8 @@ export const CREATE_USER = `#graphql
 export const UPDATE_USER = `#graphql
     mutation UpdateUser($user: UpdateUserInput!)  {
         updateUser (user: $user)  {
-            email
-            pseudo
+            mail
+            username
         }
     }
 `;

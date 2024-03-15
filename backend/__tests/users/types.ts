@@ -1,17 +1,17 @@
 import User, { CreateUserInput } from '../../src/entities/user.entity';
 
 export type ResponseData = {
-  users: Partial<User>[];
+	users: Partial<User>[];
 };
 
 export type ResponseDataCreate = {
-  insertUser: CreateUserInput;
+	createUser: CreateUserInput;
 };
 
 export type ResponseDataDelete = {
-  deleteUser: {id : number};
+	deleteUser: { id: number };
 };
 
 export type ResponseDataUpdate = {
-  updateUser: Partial<User>;
+	updateUser: Partial<User>;
 };

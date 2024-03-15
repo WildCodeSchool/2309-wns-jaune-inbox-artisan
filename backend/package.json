@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "ts-node-dev --exit-child --watch src --poll src/index.ts",
 		"test": "jest --watch --detectOpenHandles",
-		"test-actions": "jest"
+		"test-actions": "jest --detectOpenHandles"
 	},
 	"license": "MIT",
 	"dependencies": {
