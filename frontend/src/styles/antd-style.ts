@@ -3,7 +3,7 @@ const theme = {
 		colorPrimary: '#218380',
 		colorInfo: '#218380',
 		borderRadius: 2,
-		fontFamily: '"Roboto",arial',
+		fontFamily: '"Roboto","Arial"',
 	},
 	components: {
 		Typography: {
