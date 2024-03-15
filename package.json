@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "argon2": "^0.40.1",
-    "cookies": "^0.9.1",
-    "jose": "^5.2.3"
-  }
-}

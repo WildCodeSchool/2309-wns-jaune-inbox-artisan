@@ -61,13 +61,13 @@ describe('Test sur les user avec la base de données', () => {
 			},
 		});
 		assert(response.body.kind === 'single');
-		expect(response.body.singleResult.data?.insertUser).not.toBeNull();
-		expect(response.body.singleResult.data?.insertUser.password).not.toBe(
+		expect(response.body.singleResult.data?.createUser).not.toBeNull();
+		expect(response.body.singleResult.data?.createUser.password).not.toBe(
 			'password'
 		);
 
-		console.log('insert : ', response.body.singleResult.data?.insertUser);
-		expect(response.body.singleResult.data?.insertUser).toMatchObject({
+		console.log('insert : ', response.body.singleResult.data?.createUser);
+		expect(response.body.singleResult.data?.createUser).toMatchObject({
 			mail: 'test@test.com',
 			role: 'Freemium',
 			billing_date: '1990-01-01',

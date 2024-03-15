@@ -2,7 +2,7 @@ export const LIST_USERS = `#graphql
     query Users {
         users {
             id
-            pseudo
+            username
             mail
         }
     }
