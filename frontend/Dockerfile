@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json package.json
 
-RUN npm i
+RUN npm i --verbose
 RUN apk --update --no-cache add curl
 
 COPY src src

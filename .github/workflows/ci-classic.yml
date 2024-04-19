@@ -1,6 +1,10 @@
-name: lint-front CI
+name: Classic CI
 
-on: [pull_request]
+on:
+  pull_request:
+    branches-ignore:
+      - dev
+      - main
 
 jobs:
   test-backend:
