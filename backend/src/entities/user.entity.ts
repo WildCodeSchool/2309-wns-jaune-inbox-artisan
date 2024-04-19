@@ -80,7 +80,7 @@ export default class User {
 export class UpdateUserInput {
 	@Field(() => ID)
 	id: number;
-	@Field()
+	@Field({ nullable: true })
 	mail: string;
 	@Field({ nullable: true })
 	password: string;

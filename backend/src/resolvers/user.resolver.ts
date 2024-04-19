@@ -32,15 +32,15 @@ export default class UserResolver {
 		const isPasswordValid = await bcrypt.compare(infos.password, user.password);
 		const m = new Message();
 		if (isPasswordValid) {
-			const token = await new SignJWT({ email: user.mail })
+			const token = await new SignJWT({ email: user.mail, role: user.role })
 				.setProtectedHeader({ alg: 'HS256', typ: 'jwt' })
 				.setExpirationTime('2h')
-				.sign(new TextEncoder().encode(`${process.env.SECRET_KEY}`));
+				.sign(new TextEncoder().encode(`${process.env.SECRET_KEY || "testbg"}`));
 
 			let cookies = new Cookies(ctx.req, ctx.res);
-			cookies.set('token', token, { httpOnly: true });
-
-			m.message = 'Bienvenue!';
+			cookies.set('token', token, { httpOnly: true})
+			console.log(cookies)
+			m.message = token;
 			m.success = true;
 		} else {
 			m.message = 'Vérifiez vos informations 2';
@@ -51,10 +51,9 @@ export default class UserResolver {
 
 	@Query(() => Message)
 	async logout(@Ctx() ctx: MyContext) {
-		if (ctx.user) {
-			let cookies = new Cookies(ctx.req, ctx.res);
-			cookies.set('token'); //sans valeur, le cookie token sera supprimé
-		}
+		console.log(ctx.user)
+		let cookies = new Cookies(ctx.req, ctx.res);
+		cookies.set('token'); //sans valeur, le cookie token sera supprimé
 		const m = new Message();
 		m.message = 'Vous avez été déconnecté';
 		m.success = true;
@@ -64,10 +63,13 @@ export default class UserResolver {
 
 	@Mutation(() => User)
 	async updateUser(@Arg('user') user: UpdateUserInput) {
-		const foundUser = await new UserService().getUserBymail(user.mail);
-		if (foundUser) throw new Error('mail is already in use');
+		if( user.mail) {
+			const foundUser = await new UserService().getUserBymail(user.mail);
 
-		return await new UserService().updateUser(user);
+			if (foundUser) throw new Error('mail is already in use');
+		}
+			
+			return await new UserService().updateUser(user);
 	}
 
 	@Mutation(() => User)
