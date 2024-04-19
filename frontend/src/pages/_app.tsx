@@ -1,8 +1,8 @@
-import '@/styles/globals.css';
-import type { AppProps } from 'next/app';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import type { ReactElement, ReactNode } from 'react';
-import type { NextPage } from 'next';
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import type { ReactElement, ReactNode } from "react";
+import type { NextPage } from "next";
 
 import React from 'react';
 import { ConfigProvider } from 'antd';
@@ -12,11 +12,11 @@ import { BreackPointProvider } from '@/Contexts/BreackPointContext';
 import { UserProvider } from '@/Contexts/UserContext';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-	getLayout?: (page: ReactElement) => ReactNode;
+  getLayout?: (page: ReactElement) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
-	Component: NextPageWithLayout;
+  Component: NextPageWithLayout;
 };
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {

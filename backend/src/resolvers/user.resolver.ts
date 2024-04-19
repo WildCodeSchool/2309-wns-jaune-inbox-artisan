@@ -74,6 +74,13 @@ export default class UserResolver {
 		}
 
 		return await new UserService().updateUser(user);
+		if( user.mail) {
+			const foundUser = await new UserService().getUserBymail(user.mail);
+
+			if (foundUser) throw new Error('mail is already in use');
+		}
+			
+			return await new UserService().updateUser(user);
 	}
 
 	@Mutation(() => User)
