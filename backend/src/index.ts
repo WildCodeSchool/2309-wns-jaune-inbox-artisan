@@ -15,9 +15,9 @@ import { buildSchema } from 'type-graphql';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import 'reflect-metadata';
 import User from './entities/user.entity';
-import { jwtVerify } from "jose";
+import * as jose from 'jose';
 import UserService from "./services/user.service";
-import Cookies from "cookies"
+import Cookies from "cookies";
 export interface MyContext {
 	req: express.Request;
   	res: express.Response;
@@ -41,9 +41,10 @@ async function main() {
 		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 	});
 	await server.start();
+	app.set('trust proxy', true)
 	app.use(
 		'/',
-		cors<cors.CorsRequest>({ origin: '*' }),
+		cors<cors.CorsRequest>({ origin: 'http://localhost:3000',credentials: true, }),
 		express.json(),
 		expressMiddleware(server, {context: async ({ req, res }) => {
 			let user: User | null = null;
@@ -52,7 +53,7 @@ async function main() {
 			const token = cookies.get("token");
 			if (token) {
 			  try {
-				const verify = await jwtVerify<Payload>(
+				const verify = await jose.jwtVerify<Payload>(
 				  token,
 				  new TextEncoder().encode(process.env.SECRET_KEY)
 				);
