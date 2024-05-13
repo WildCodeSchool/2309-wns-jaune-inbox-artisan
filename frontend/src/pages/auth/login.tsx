@@ -1,10 +1,11 @@
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from '../_app';
 import LoginLayout from '@/components/layout-elements/LoginLayout';
-import { Button, Checkbox, Flex, Form, Input } from 'antd';
+import { Button, Flex, Form, Input } from 'antd';
 import { useLazyQuery } from '@apollo/client';
-import { QueryLoginArgs } from '@/types/graphql';
+import { LoginQuery, QueryLoginArgs } from '@/types/graphql';
 import { LOGIN } from '@/request/queries/auth.queries';
+import { useRouter } from 'next/router';
 
 const Login: NextPageWithLayout = () => {
 	type InputLogin = {
@@ -13,13 +14,22 @@ const Login: NextPageWithLayout = () => {
 		remember?: string;
 	};
 
-	const [login, { data, error }] = useLazyQuery<InputLogin, QueryLoginArgs>(
+	const router = useRouter()
+
+	const [login, { data, error }] = useLazyQuery<LoginQuery, QueryLoginArgs>(
 		LOGIN
 	);
 	const onFinish = (values: any) => {
+		console.log(values)
 		if (values.mail && values.password) {
 			login({
 				variables: { infos: { mail: values.mail, password: values.password } },
+				onCompleted(data) {
+					console.log(data)
+					if (data.login.success) {
+					  router.push("/");
+					}
+				}
 			});
 		}
 	};

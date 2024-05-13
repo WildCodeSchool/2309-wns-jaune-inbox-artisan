@@ -43,7 +43,7 @@ async function main() {
 	await server.start();
 	app.use(
 		'/',
-		cors<cors.CorsRequest>({ origin: '*' }),
+		cors<cors.CorsRequest>({ origin: 'http://localhost:3000', credentials: true }),
 		express.json(),
 		expressMiddleware(server, {context: async ({ req, res }) => {
 			let user: User | null = null;

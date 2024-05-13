@@ -22,6 +22,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 	const client = new ApolloClient({
 		uri: 'http://localhost:4000',
 		cache: new InMemoryCache(),
+		credentials: 'include'
 	});
 	const getLayout = Component.getLayout ?? ((page) => page);
 	return (
