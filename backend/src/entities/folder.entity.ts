@@ -5,8 +5,9 @@ import {
 	PrimaryGeneratedColumn,
 	ManyToOne,
 	ManyToMany,
+	OneToMany,
 } from 'typeorm';
-import { Field, ID, InputType, ObjectType } from 'type-graphql';
+import { Field, Float, ID, InputType, ObjectType } from 'type-graphql';
 import User from './user.entity';
 import Image from './image.entity';
 
@@ -22,36 +23,34 @@ export default class Folder {
 	name: string;
 
 	@Field((type) => User)
-	@ManyToOne(() => User, User => User.folders ,{
+	@ManyToOne(() => User, (User) => User.folders, {
 		onDelete: 'CASCADE',
-})
+	})
 	user: User;
 
 	@Field((type) => [Image])
-	@ManyToMany(() => Image)
-	@JoinTable()
+	@OneToMany(() => Image, (image) => image.folder)
 	images: Image[];
 }
 
 @InputType()
 export class UpdateFolderInput {
-	@Field(()=> ID)
-	id: number
-	@Field({nullable: true})
-	name: string
-	@Field(() => User,{nullable: true})
-	user: User
-	@Field(() => [Image],{nullable: true})
-	images: Image[]
+	@Field(() => ID)
+	id: number;
+	@Field({ nullable: true })
+	name: string;
+	@Field(() => User, { nullable: true })
+	user: User;
+	@Field(() => [Image], { nullable: true })
+	images: Image[];
 }
-
 
 @InputType()
 export class CreateFolderInput {
-	@Field({nullable: true})
-	name: string
-	@Field(() => User,{nullable: true})
-	user: User
-	@Field(() => [Image],{nullable: true})
-	images: Image[]
+	@Field({ nullable: true })
+	name: string;
+	@Field(() => User, { nullable: true })
+	user: User;
+	@Field((type) => Float)
+	userId: number;
 }

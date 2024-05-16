@@ -93,12 +93,25 @@ export class UpdateUserInput {
 }
 
 @ObjectType()
-export class Message {
-  @Field()
-  success: boolean;
+export class LoginResponse {
+	@Field(() => ID)
+	id: number;
+	@Field({ nullable: true })
+	username: string;
+	@Field()
+	expirationDate: string;
+}
 
-  @Field()
-  message: string;
+@ObjectType()
+export class Message {
+	@Field()
+	success: boolean;
+
+	@Field()
+	user: LoginResponse;
+
+	@Field()
+	message: string;
 }
 
 @InputType()
@@ -117,9 +130,9 @@ export class CreateUserInput {
 
 @InputType()
 export class InputLogin {
-  @Field()
-  mail: string;
+	@Field()
+	mail: string;
 
-  @Field()
-  password: string;
+	@Field()
+	password: string;
 }

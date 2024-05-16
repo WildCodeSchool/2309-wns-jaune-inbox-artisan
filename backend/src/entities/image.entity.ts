@@ -4,9 +4,12 @@ import {
 	PrimaryGeneratedColumn,
 	ManyToOne,
 	OneToMany,
+	ManyToMany,
+	JoinTable,
 } from 'typeorm';
-import { Field, ID, InputType,  ObjectType } from 'type-graphql';
+import { Field, Float, ID, InputType, ObjectType } from 'type-graphql';
 import User from './user.entity';
+import Folder from './folder.entity';
 
 @ObjectType()
 @InputType('ImageInput')
@@ -25,30 +28,37 @@ export default class Image {
 	url: string;
 
 	@Field((type) => User)
-	@ManyToOne(() => User ,{
+	@ManyToOne(() => User, {
 		onDelete: 'CASCADE',
-})
+	})
 	user: User;
+
+	@Field((type) => ID)
+	@ManyToOne(() => Folder, (folder) => folder.images, {
+		cascade: true,
+		onDelete: 'CASCADE',
+	})
+	folder: Folder;
 }
 
 @InputType()
 export class UpdateImageInput {
 	@Field(() => ID)
-	id: number
-	@Field({ nullable: true})
-	name: string
-	@Field({ nullable: true})
-	url: string
-	@Field((type) => User, { nullable: true})
-	user: User
+	id: number;
+	@Field()
+	name: string;
+	@Field()
+	url: string;
 }
 
 @InputType()
 export class CreateImageInput {
-	@Field({ nullable: true})
-	name: string
-	@Field({ nullable: true})
-	url: string
-	@Field((type) => User, { nullable: true})
-	user: User
+	@Field()
+	name: string;
+	@Field()
+	url: string;
+	@Field((type) => Float)
+	userId: number;
+	@Field(() => ID)
+	folderId: number;
 }

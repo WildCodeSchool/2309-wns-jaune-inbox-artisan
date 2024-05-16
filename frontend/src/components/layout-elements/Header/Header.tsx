@@ -5,6 +5,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import MenuComponents from './Menu';
 import Link from 'next/link';
 import { useBreackPoint } from '@/Contexts/BreackPointContext';
+import { useUser } from '@/Contexts/UserContext';
 
 const { Header: AntHeader } = Layout;
 
@@ -23,7 +24,6 @@ const Header = ({
 	const screens = useBreakpoint();
 	const breackPoint = Object.entries(screens).filter((screen) => !!screen[1]);
 	const { isMobile, setIsMobile } = useBreackPoint();
-
 	const setBreackPoint = (breackPoint: any[]) => {
 		if (!breackPoint) return;
 		if (breackPoint[1] && breackPoint[1][2] && breackPoint[2])

@@ -35,12 +35,20 @@ export default class UserResolver {
 			const token = await new SignJWT({ email: user.mail, role: user.role })
 				.setProtectedHeader({ alg: 'HS256', typ: 'jwt' })
 				.setExpirationTime('2h')
-				.sign(new TextEncoder().encode(`${process.env.SECRET_KEY || "testbg"}`));
+				.sign(
+					new TextEncoder().encode(`${process.env.SECRET_KEY || 'testbg'}`)
+				);
 
 			let cookies = new Cookies(ctx.req, ctx.res);
-			cookies.set('token', token, { httpOnly: true})
-			console.log(cookies)
+			cookies.set('token', token, { httpOnly: true });
+			const date = new Date();
+			date.setHours(date.getHours() + 2);
 			m.message = token;
+			m.user = {
+				username: user.username,
+				id: user.id,
+				expirationDate: date.toISOString(),
+			};
 			m.success = true;
 		} else {
 			m.message = 'Vérifiez vos informations 2';
@@ -51,7 +59,6 @@ export default class UserResolver {
 
 	@Query(() => Message)
 	async logout(@Ctx() ctx: MyContext) {
-		console.log(ctx.user)
 		let cookies = new Cookies(ctx.req, ctx.res);
 		cookies.set('token'); //sans valeur, le cookie token sera supprimé
 		const m = new Message();
@@ -63,13 +70,13 @@ export default class UserResolver {
 
 	@Mutation(() => User)
 	async updateUser(@Arg('user') user: UpdateUserInput) {
-		if( user.mail) {
+		if (user.mail) {
 			const foundUser = await new UserService().getUserBymail(user.mail);
 
 			if (foundUser) throw new Error('mail is already in use');
 		}
-			
-			return await new UserService().updateUser(user);
+
+		return await new UserService().updateUser(user);
 	}
 
 	@Mutation(() => User)

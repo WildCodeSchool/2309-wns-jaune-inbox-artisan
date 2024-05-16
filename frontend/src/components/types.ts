@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 export type AuthLayoutProps = {
 	children: ReactNode;
@@ -12,4 +12,5 @@ export type GlobalLayoutProps = {
 	children: ReactNode;
 	title: string;
 	description?: ReactNode;
+	action?: ReactElement;
 };
