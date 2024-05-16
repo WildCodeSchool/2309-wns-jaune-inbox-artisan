@@ -29,7 +29,7 @@ async function checkToken(token: string | undefined, request: NextRequest) {
   if (!token) {
     if (
       request.nextUrl.pathname.startsWith("/books/list") ||
-      request.nextUrl.pathname.startsWith("/admin/books")
+      request.nextUrl.pathname.startsWith("/admin/")
     ) {
       response = NextResponse.redirect(new URL("/auth/login", request.url));
     } else {
