@@ -21,11 +21,26 @@ export default class ImageService {
 	}
 
 	async updateVariable(variable: UpdateVariableInput) {
-		if (variable.id) return this.db.update(variable.id, variable);
+		return this.db.update(variable.id, variable);
 	}
 
 	async insertVariable(variable: CreateVariableInput) {
-		return this.db.insert(variable);
+		const newVariable = this.db.create(variable);
+		return await this.db.save(newVariable);
+	}
+
+	async insertVariables(variables: CreateVariableInput[]) {
+		variables.map((variable) => {
+			console.log("-------------------------------------------------------SERVICE---------------------------------------");
+			// console.log(variable.id);
+			// console.log(variable.label);
+			// console.log(variable.value);
+			if(variable.id) {
+				return this.updateVariable(variable as UpdateVariableInput);
+			}
+			return this.insertVariable(variable);
+		});
+		return true;
 	}
 
 	async deleteVariable(id: number) {

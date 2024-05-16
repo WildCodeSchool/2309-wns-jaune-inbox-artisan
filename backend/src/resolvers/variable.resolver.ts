@@ -14,14 +14,15 @@ export default class VariableResolver {
         return await new VariableService().getVariableById(id)
     }
 
-    @Mutation(() => Variable)
-	async updateVariable(@Arg('variable') variable: UpdateVariableInput) {
-		return await new VariableService().updateVariable(variable);
-	}
-
-    @Mutation(() => Variable)
-	async insertVariable(@Arg('variable') variable: CreateVariableInput) {
-		return await new VariableService().insertVariable(variable);
+    @Mutation(() => Boolean)
+	async insertVariables(@Arg('variables', type => [CreateVariableInput]) variables: CreateVariableInput[]) {
+        console.log("---------------------------------------------------------RESOLVER-------------------------------------");
+        // console.log(variables);
+        // console.log(variables[0].id);
+        // console.log(variables[0].label);
+        // console.log(variables[0].value);
+        const newVariables = await new VariableService().insertVariables(variables);
+		return newVariables;
 	}
 
     @Mutation(() => Variable)
