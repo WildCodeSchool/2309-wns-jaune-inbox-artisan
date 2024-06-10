@@ -36,7 +36,6 @@ export default class UserResolver {
 				.setProtectedHeader({ alg: 'HS256', typ: 'jwt' })
 				.setExpirationTime('2h')
 				.sign(new TextEncoder().encode(`${process.env.SECRET_KEY}`));
-
 			let cookies = new Cookies(ctx.req, ctx.res);
 			cookies.set('token', token, { httpOnly: true });
 

@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Card, Col, Image, Row } from 'antd';
 import { ReactElement, useEffect, useState } from 'react';
-import { TemplateType } from './types';
+import { TemplateType } from '../../types/types';
 
 const data = [
 	{ name: 'title 0', photo: 'https://picsum.photos/200/300' },

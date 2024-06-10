@@ -18,6 +18,7 @@ import User from './entities/user.entity';
 import { jwtVerify } from "jose";
 import UserService from "./services/user.service";
 import Cookies from "cookies"
+import  Stripe from 'stripe'
 export interface MyContext {
 	req: express.Request;
   	res: express.Response;
@@ -27,6 +28,8 @@ export interface MyContext {
 export interface Payload {
 	email: string;
   }
+
+  const stripe = new Stripe('sk_test_51PGzIWE3g1sPCd3VquhlSIdb3FmaxcH3jwpdGomn23DdmXPOg1qPh7R2yyiBUFZahp5O4Nhwfdh8tFz5P62oBbBs00vo8NMqAH');
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -42,7 +45,7 @@ async function main() {
 	});
 	await server.start();
 	app.use(
-		'/',
+		'/graphql',
 		cors<cors.CorsRequest>({ origin: '*' }),
 		express.json(),
 		expressMiddleware(server, {context: async ({ req, res }) => {
@@ -67,6 +70,37 @@ async function main() {
 			return { req, res, user };
 		  },})
 	);
+	app.use('/api',
+		cors<cors.CorsRequest>({ origin: '*' }),
+		express.json(),
+		expressMiddleware(server, {
+			context: async ({req, res}) => {
+				if (req.method === 'POST') {
+				  try {
+					// Create Checkout Sessions from body params.
+					const session = await stripe.checkout.sessions.create({
+					  line_items: [
+						{
+						  // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+						  price: 'price_1PH5xLE3g1sPCd3VhLy8qWaq',
+						  quantity: 1,
+						},
+					  ],
+					  mode: 'payment',
+					  success_url: `${req.headers.origin}/?success=true`,
+					  cancel_url: `${req.headers.origin}/?canceled=true`,
+					});
+					res.redirect(303, session.url as string);
+				  } catch (err: any) {
+					res.status(err.statusCode || 500).json(err.message);
+				  }
+				} else {
+				  res.setHeader('Allow', 'POST');
+				  res.status(405).end('Method Not Allowed');
+				}
+				return { req, res, user:null };
+			  }
+		}))
 	await datasource.initialize();
 	await new Promise<void>((resolve) =>
 		httpServer.listen({ port: 4000 }, resolve)

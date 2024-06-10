@@ -6,14 +6,11 @@ import Properties from "@/components/editor/Properties";
 import { useState } from "react";
 
 const Editor: NextPageWithLayout = () => {
-    var parser = new DOMParser();
-    var xml = parser.parseFromString('', 'text/html');
 
-    const [mail, setMail] = useState('');
 
-    const addHeader = () => {
-        
-    }
+    const [mail, setMail] = useState("");
+
+
 
     return (
         <div className="editor">
