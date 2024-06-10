@@ -35,10 +35,7 @@ export default class UserResolver {
 			const token = await new SignJWT({ email: user.mail, role: user.role })
 				.setProtectedHeader({ alg: 'HS256', typ: 'jwt' })
 				.setExpirationTime('2h')
-				.sign(
-					new TextEncoder().encode(`${process.env.SECRET_KEY || 'testbg'}`)
-				);
-
+				.sign(new TextEncoder().encode(`${process.env.SECRET_KEY}`));
 			let cookies = new Cookies(ctx.req, ctx.res);
 			cookies.set('token', token, { httpOnly: true });
 			const date = new Date();
