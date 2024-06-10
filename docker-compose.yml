@@ -7,6 +7,7 @@ services:
       - ./backend/src:/app/src
     env_file:
       - ./global.env
+      - ./backend/.env
     environment:
       - PGHOST=db
       - PGHOSTEST=dbtest
@@ -63,6 +64,10 @@ services:
       - ./frontend/src:/app/src
     env_file:
       - ./global.env
+      - ./frontend/.env
+    environment:
+      - backend=backend
+      - NEXT_PUBLIC_images=images
     depends_on:
       backend:
         condition: service_healthy

@@ -25,11 +25,10 @@ const Register: NextPageWithLayout = () => {
 		CreateUserMutationVariables
 	>(REGISTER, {
 		onCompleted: (data) => {
-			console.log(data);
 			router.push('/auth/login');
 		},
 		onError: (error) => {
-			console.log('err: ', error);
+			console.error('err: ', error);
 		},
 	});
 	const onFinish = (values: InputRegister) => {
@@ -53,7 +52,7 @@ const Register: NextPageWithLayout = () => {
 	};
 
 	const onFinishFailed = (errorInfo: any) => {
-		console.log('Failed:', errorInfo);
+		console.error('Failed:', errorInfo);
 	};
 
 	return (
@@ -93,7 +92,6 @@ const Register: NextPageWithLayout = () => {
 				>
 					<Input.Password placeholder="Confirm your password" />
 				</Form.Item>
-
 				<Form.Item>
 					<Button type="primary" htmlType="submit">
 						Sign up
