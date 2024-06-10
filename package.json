@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@types/stripe-checkout": "^1.0.7"
-  }
-}
