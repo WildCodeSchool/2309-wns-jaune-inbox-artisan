@@ -8,6 +8,6 @@ export default new DataSource({
 	password: 'postgres',
 	database: 'inboxartisan_test',
 	synchronize: true,
-	entities: ['src/entities/*.ts'],
+	entities: [__dirname + '/../entities/*.{js,ts}'],
 	logging: ['query', 'error'],
 });
