@@ -1,6 +1,6 @@
 const stripe = require('stripe')('sk_test_51PGzIWE3g1sPCd3VquhlSIdb3FmaxcH3jwpdGomn23DdmXPOg1qPh7R2yyiBUFZahp5O4Nhwfdh8tFz5P62oBbBs00vo8NMqAH');
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   if (req.method === 'POST') {
     try {
       // Create Checkout Sessions from body params.
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         cancel_url: `${req.headers.origin}/?canceled=true`,
       });
       res.redirect(303, session.url);
-    } catch (err) {
+    } catch (err: any) {
       res.status(err.statusCode || 500).json(err.message);
     }
   } else {
