@@ -15,7 +15,7 @@ import { buildSchema } from 'type-graphql';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import 'reflect-metadata';
 import User from './entities/user.entity';
-import { jwtVerify } from 'jose';
+import jose from 'jose';
 import UserService from './services/user.service';
 import Cookies from 'cookies';
 import Stripe from 'stripe';
