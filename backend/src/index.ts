@@ -45,8 +45,8 @@ async function main() {
 	});
 	await server.start();
 	app.use(
-		'/graphql',
-		cors<cors.CorsRequest>({ origin: '*' }),
+		'/',
+		cors<cors.CorsRequest>({ origin: 'http://localhost:3000' , credentials: true}),
 		express.json(),
 		expressMiddleware(server, {context: async ({ req, res }) => {
 			let user: User | null = null;
@@ -71,7 +71,7 @@ async function main() {
 		  },})
 	);
 	app.use('/api',
-		cors<cors.CorsRequest>({ origin: '*' }),
+		cors<cors.CorsRequest>({ origin: 'http://localhost:3000' , credentials: true}),
 		express.json(),
 		expressMiddleware(server, {
 			context: async ({req, res}) => {
