@@ -51,6 +51,20 @@ app.get('/files/:filename', (req, res) => {
 	});
 });
 
+app.delete('/files/:filename', (req, res) => {
+	const filename = req.params.filename.split('/').reverse()[0];
+	let file = path.join(__dirname + '/../uploads/', filename);
+	fs.rm(file, (err) => {
+		if (err) {
+			res.writeHead(404, { 'Content-Type': 'text' });
+			res.write('File Not Found!');
+			res.end();
+		} else {
+			res.status(201).send({ status: 'success' });
+		}
+	});
+});
+
 app.listen(port, () => {
 	console.info(`Service d'image écoute sur : ${port}`);
 });

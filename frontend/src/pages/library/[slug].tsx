@@ -81,9 +81,12 @@ const Library = () => {
 								/>,
 								<DeleteOutlined
 									key="ellipsis"
-									onClick={() =>
-										el?.id && deleteImage({ variables: { id: el?.id } })
-									}
+									onClick={() => {
+										const filename = el.url.split('/').reverse()[0];
+										fetch('');
+
+										el?.id && deleteImage({ variables: { id: el?.id } });
+									}}
 								/>,
 							]}
 							bodyStyle={{ display: 'none' }}
@@ -98,7 +101,10 @@ const Library = () => {
 
 Library.getLayout = function getLayout(page: ReactElement) {
 	return (
-		<GlobalLayout title="Library" description="This is a library.">
+		<GlobalLayout
+			title="Library"
+			description="Here you have the pictures stored on this folder."
+		>
 			{page}
 		</GlobalLayout>
 	);

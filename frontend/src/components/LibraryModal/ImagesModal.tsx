@@ -16,6 +16,7 @@ import {
 import { useRouter } from 'next/router';
 import { useUser } from '@/Contexts/UserContext';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import Image from 'next/image';
 
 const getBase64 = (file: FileType, callback?: () => void): Promise<string> =>
 	new Promise((resolve, reject) => {
@@ -51,10 +52,8 @@ const LibraryModal: FC<ImageModalPropsType> = ({
 			uid: file.uid,
 			url: await getBase64(file),
 		};
-
 		setImageUrl(newFile.url);
 		setLoading(false);
-
 		return true;
 	};
 
@@ -116,22 +115,20 @@ const LibraryModal: FC<ImageModalPropsType> = ({
 					folderId: slug,
 				};
 
-				delete insertData.id;
+				if (ImageForm.getFieldValue('id') === 'new') {
+					delete insertData.id;
 
-				ImageForm.getFieldValue('id') === 'new'
-					? InsertImage({
-							variables: {
-								image: insertData,
-							},
-					  })
-					: UpdateImage({
-							variables: {
-								image: {
-									...ImageForm.getFieldsValue(),
-									url: await upload(orginalValue.url.file),
-								},
-							},
-					  });
+					InsertImage({
+						variables: {
+							image: insertData,
+						},
+					});
+				} else
+					UpdateImage({
+						variables: {
+							image: insertData,
+						},
+					});
 			}}
 			onCancel={() => {
 				ImageForm.resetFields();
@@ -154,7 +151,7 @@ const LibraryModal: FC<ImageModalPropsType> = ({
 						beforeUpload={beforeUpload}
 					>
 						{imageUrl ? (
-							<img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+							<Image src={imageUrl} width={100} height={100} alt="avatar" />
 						) : (
 							uploadButton
 						)}

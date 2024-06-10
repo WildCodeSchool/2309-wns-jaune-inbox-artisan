@@ -112,7 +112,10 @@ const Library = () => {
 
 Library.getLayout = function getLayout(page: ReactElement) {
 	return (
-		<GlobalLayout title="Library" description="This is a library.">
+		<GlobalLayout
+			title="Library"
+			description="Here you can find here your library folder."
+		>
 			{page}
 		</GlobalLayout>
 	);
