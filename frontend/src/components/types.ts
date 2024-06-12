@@ -13,4 +13,5 @@ export type GlobalLayoutProps = {
 	title: string;
 	description?: ReactNode;
 	action?: ReactElement;
+	hidden?:boolean
 };
