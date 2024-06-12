@@ -21,7 +21,7 @@ export default class Variable {
 	@Field((type) => User, {nullable: true})
 	@ManyToOne(() => User ,{
 		onDelete: 'CASCADE',
-})
+	})
 	user: User;
 }
 

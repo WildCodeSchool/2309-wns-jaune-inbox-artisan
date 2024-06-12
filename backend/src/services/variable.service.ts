@@ -29,24 +29,6 @@ export default class ImageService {
 		return await this.db.save(newVariable);
 	}
 
-	async insertVariables(variables: CreateVariableInput[]) {
-		variables.map((variable) => {
-			console.log("-------------------------------------------------------SERVICE---------------------------------------");
-			// console.log(variable.id);
-			// console.log(variable.label);
-			// console.log(variable.value);
-			if(variable.id) {
-				return this.updateVariable(variable as UpdateVariableInput);
-			}
-			return this.insertVariable(variable);
-		});
-		return true;
-	}
-
-	async deleteVariable(id: number) {
-		return this.db.delete(id);
-	}
-
 	async deleteVariables(ids: number[]) {
 		return this.db.delete(ids);
 	}
