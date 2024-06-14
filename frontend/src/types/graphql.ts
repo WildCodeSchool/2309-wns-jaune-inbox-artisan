@@ -47,6 +47,7 @@ export type CreateUserInput = {
 };
 
 export type CreateVariableInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
   label?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UserInput>;
   value?: InputMaybe<Scalars['String']['input']>;
@@ -103,16 +104,15 @@ export type Mutation = {
   deleteImage: Scalars['Boolean']['output'];
   deleteTemplate: Template;
   deleteUser: User;
-  deleteVariable: Variable;
+  deleteVariables: Array<Variable>;
   insertFolder: Scalars['Boolean']['output'];
   insertImage: Scalars['Boolean']['output'];
   insertTemplate: Template;
-  insertVariable: Variable;
+  insertVariables: Scalars['Boolean']['output'];
   updateFolder: Scalars['Boolean']['output'];
   updateImage: Scalars['Boolean']['output'];
   updateTemplate: Template;
   updateUser: User;
-  updateVariable: Variable;
 };
 
 
@@ -141,8 +141,8 @@ export type MutationDeleteUserArgs = {
 };
 
 
-export type MutationDeleteVariableArgs = {
-  id: Scalars['Float']['input'];
+export type MutationDeleteVariablesArgs = {
+  ids: Array<Scalars['Float']['input']>;
 };
 
 
@@ -161,8 +161,8 @@ export type MutationInsertTemplateArgs = {
 };
 
 
-export type MutationInsertVariableArgs = {
-  variable: CreateVariableInput;
+export type MutationInsertVariablesArgs = {
+  variables: Array<CreateVariableInput>;
 };
 
 
@@ -183,11 +183,6 @@ export type MutationUpdateTemplateArgs = {
 
 export type MutationUpdateUserArgs = {
   user: UpdateUserInput;
-};
-
-
-export type MutationUpdateVariableArgs = {
-  variable: UpdateVariableInput;
 };
 
 export type Query = {
@@ -309,13 +304,6 @@ export type UpdateUserInput = {
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateVariableInput = {
-  id: Scalars['ID']['input'];
-  label?: InputMaybe<Scalars['String']['input']>;
-  user?: InputMaybe<UserInput>;
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type User = {
   __typename?: 'User';
   billing_date?: Maybe<Scalars['String']['output']>;
@@ -345,17 +333,17 @@ export type UserInput = {
 
 export type Variable = {
   __typename?: 'Variable';
-  id: Scalars['Float']['output'];
-  label: Scalars['String']['output'];
-  user: User;
-  value: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  label?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 export type VariableInput = {
-  id: Scalars['Float']['input'];
-  label: Scalars['String']['input'];
-  user: UserInput;
-  value: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  label?: InputMaybe<Scalars['String']['input']>;
+  user?: InputMaybe<UserInput>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -407,6 +395,13 @@ export type UpdateImageMutationVariables = Exact<{
 
 export type UpdateImageMutation = { __typename?: 'Mutation', updateImage: boolean };
 
+export type InsertVariablesMutationVariables = Exact<{
+  variables: Array<CreateVariableInput> | CreateVariableInput;
+}>;
+
+
+export type InsertVariablesMutation = { __typename?: 'Mutation', insertVariables: boolean };
+
 export type LoginQueryVariables = Exact<{
   infos: InputLogin;
 }>;
@@ -439,6 +434,11 @@ export type ImageByFolderIdQueryVariables = Exact<{
 
 
 export type ImageByFolderIdQuery = { __typename?: 'Query', imageByFolderId: Array<{ __typename?: 'Image', id: number, name: string, url: string }> };
+
+export type VariablesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type VariablesQuery = { __typename?: 'Query', variables: Array<{ __typename?: 'Variable', id: string, label?: string | null, value?: string | null }> };
 
 export type TemplatesQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -669,6 +669,37 @@ export function useUpdateImageMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpdateImageMutationHookResult = ReturnType<typeof useUpdateImageMutation>;
 export type UpdateImageMutationResult = Apollo.MutationResult<UpdateImageMutation>;
 export type UpdateImageMutationOptions = Apollo.BaseMutationOptions<UpdateImageMutation, UpdateImageMutationVariables>;
+export const InsertVariablesDocument = gql`
+    mutation InsertVariables($variables: [CreateVariableInput!]!) {
+  insertVariables(variables: $variables)
+}
+    `;
+export type InsertVariablesMutationFn = Apollo.MutationFunction<InsertVariablesMutation, InsertVariablesMutationVariables>;
+
+/**
+ * __useInsertVariablesMutation__
+ *
+ * To run a mutation, you first call `useInsertVariablesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertVariablesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertVariablesMutation, { data, loading, error }] = useInsertVariablesMutation({
+ *   variables: {
+ *      variables: // value for 'variables'
+ *   },
+ * });
+ */
+export function useInsertVariablesMutation(baseOptions?: Apollo.MutationHookOptions<InsertVariablesMutation, InsertVariablesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertVariablesMutation, InsertVariablesMutationVariables>(InsertVariablesDocument, options);
+      }
+export type InsertVariablesMutationHookResult = ReturnType<typeof useInsertVariablesMutation>;
+export type InsertVariablesMutationResult = Apollo.MutationResult<InsertVariablesMutation>;
+export type InsertVariablesMutationOptions = Apollo.BaseMutationOptions<InsertVariablesMutation, InsertVariablesMutationVariables>;
 export const LoginDocument = gql`
     query Login($infos: InputLogin!) {
   login(infos: $infos) {
@@ -885,6 +916,47 @@ export type ImageByFolderIdQueryHookResult = ReturnType<typeof useImageByFolderI
 export type ImageByFolderIdLazyQueryHookResult = ReturnType<typeof useImageByFolderIdLazyQuery>;
 export type ImageByFolderIdSuspenseQueryHookResult = ReturnType<typeof useImageByFolderIdSuspenseQuery>;
 export type ImageByFolderIdQueryResult = Apollo.QueryResult<ImageByFolderIdQuery, ImageByFolderIdQueryVariables>;
+export const VariablesDocument = gql`
+    query Variables {
+  variables {
+    id
+    label
+    value
+  }
+}
+    `;
+
+/**
+ * __useVariablesQuery__
+ *
+ * To run a query within a React component, call `useVariablesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVariablesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVariablesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useVariablesQuery(baseOptions?: Apollo.QueryHookOptions<VariablesQuery, VariablesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<VariablesQuery, VariablesQueryVariables>(VariablesDocument, options);
+      }
+export function useVariablesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VariablesQuery, VariablesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<VariablesQuery, VariablesQueryVariables>(VariablesDocument, options);
+        }
+export function useVariablesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<VariablesQuery, VariablesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<VariablesQuery, VariablesQueryVariables>(VariablesDocument, options);
+        }
+export type VariablesQueryHookResult = ReturnType<typeof useVariablesQuery>;
+export type VariablesLazyQueryHookResult = ReturnType<typeof useVariablesLazyQuery>;
+export type VariablesSuspenseQueryHookResult = ReturnType<typeof useVariablesSuspenseQuery>;
+export type VariablesQueryResult = Apollo.QueryResult<VariablesQuery, VariablesQueryVariables>;
 export const TemplatesDocument = gql`
     query templates($id: Float!) {
   templates(id: $id) {

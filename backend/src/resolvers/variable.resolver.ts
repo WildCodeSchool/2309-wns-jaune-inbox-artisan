@@ -14,19 +14,44 @@ export default class VariableResolver {
         return await new VariableService().getVariableById(id)
     }
 
-    @Mutation(() => Variable)
-	async updateVariable(@Arg('variable') variable: UpdateVariableInput) {
-		return await new VariableService().updateVariable(variable);
+    @Mutation(() => Boolean)
+	async insertVariables(@Arg('variables', type => [CreateVariableInput]) variables: CreateVariableInput[]) {
+        // console.log("---------------------------------------------------------RESOLVER-------------------------------------");
+        const variablesInDB = await new VariableService().getAllVariables();
+        // console.log("------------------------------varInDB---------------------------------------");
+		// console.log(variablesInDB);
+        // console.log("------------------------------varFromFront---------------------------------------");
+		// console.log(variables);
+
+        const difference = variablesInDB.filter((x) => !variables.some(v => v.id?.toString() === x.id.toString()));
+
+		// console.log("------------------------------difference to delete---------------------------------------");
+        // console.log(difference);
+
+        const idsToDelete = [] as number[];
+        difference?.map((varToDelete) => {
+            idsToDelete.push(varToDelete.id);
+        })
+        
+        if(idsToDelete.length) {
+            this.deleteVariables(idsToDelete);
+        }
+        
+        variables.map((variable) => {
+			if(variable.id) {
+                new VariableService().updateVariable(variable as UpdateVariableInput);
+			} else {
+                new VariableService().insertVariable(variable);
+            }
+		});
+
+        return true;
 	}
 
-    @Mutation(() => Variable)
-	async insertVariable(@Arg('variable') variable: CreateVariableInput) {
-		return await new VariableService().insertVariable(variable);
-	}
-
-    @Mutation(() => Variable)
-	async deleteVariable(@Arg('id') id: number) {
-		const variableDeleted = await new VariableService().deleteVariable(id);
-		return variableDeleted;
+    @Mutation(() => [Variable])
+	async deleteVariables(@Arg('ids', type => [Number]) ids: number[]) {
+		// const variablesDeleted = await new VariableService().deleteVariables(ids);
+		new VariableService().deleteVariables(ids);
+		return true;
 	}
 }

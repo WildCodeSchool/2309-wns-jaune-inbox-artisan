@@ -1,33 +1,80 @@
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from '../_app';
-import {
-	Button,
-	Checkbox,
-	Form,
-	type FormProps,
-	Input,
-	Space,
-	Typography,
-	FormInstance,
-} from 'antd';
+import { Button, Form, type FormProps, Input, Space, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import React from 'react';
+import {
+	CreateVariableInput,
+	InsertVariablesMutation,
+	InsertVariablesMutationVariables,
+	VariablesQuery,
+	VariablesQueryVariables,
+} from '@/types/graphql';
+import { useMutation, useQuery } from '@apollo/client';
+import { INSERT_VARIABLES } from '@/request/mutations/settings.mutations';
+import { LIST_VARIABLES } from '@/request/queries/settings.queries';
+import router from 'next/router';
 
 const { Title } = Typography;
 
 const Settings: NextPageWithLayout = () => {
-	// const [form] = Form.useForm<FieldType>();
-
 	const [submittable, setSubmittable] = React.useState<boolean>(false);
 
-	const onFinish: FormProps<UserFieldType>['onFinish'] = (values) => {};
+	const [insertVariables] = useMutation<
+		InsertVariablesMutation,
+		InsertVariablesMutationVariables
+	>(INSERT_VARIABLES, {
+		fetchPolicy: 'no-cache',
+		onCompleted(data) {
+			// if (data.login.success) {
+			router.push('/settings');
+			// }
+		},
+	});
 
-	const onFinishFailed: FormProps<UserFieldType>['onFinishFailed'] = (
-		errorInfo
-	) => {
-		console.error('Failed:', errorInfo);
+	const onFinishVariables = (values: { variables: CreateVariableInput[] }) => {
+		// console.log("values avant insert :");
+		// console.log(values);
+		insertVariables({ variables: values });
 	};
+
+	// const onFinishFailedVariables: FormProps<VariablesFieldType>["onFinishFailed"] = (
+	//   errorInfo
+	// ) => {
+	//   console.log("Failed:", errorInfo);
+	// };
+
+	// QUERY DE LISTE DES VARIABLES
+	const [variablesForm] = Form.useForm();
+
+	const omitTypename = (key: string, value: string) =>
+		key === '__typename' ? undefined : value;
+
+	const { data } = useQuery<VariablesQuery, VariablesQueryVariables>(
+		LIST_VARIABLES,
+		{
+			fetchPolicy: 'no-cache',
+			onCompleted(data) {
+				const dataWithoutTypename = JSON.parse(
+					JSON.stringify(data),
+					omitTypename
+				);
+
+				// variablesForm.setFieldsValue(dataWithoutTypename);
+
+				// Affichange dans l'odre croissant des id
+				let sortedData = { variables: [] };
+
+				sortedData.variables = dataWithoutTypename.variables.sort(
+					(a: any, b: any) => parseInt(a.id) - parseInt(b.id)
+				);
+				// console.log(sortedData);
+
+				variablesForm.setFieldsValue(sortedData);
+			},
+		}
+	);
 
 	return (
 		<main className={`flex flex-col items-center justify-between`}>
@@ -36,8 +83,8 @@ const Settings: NextPageWithLayout = () => {
 				// form={form}
 				name="accountForm"
 				style={{ minWidth: '20%' }}
-				onFinish={onFinish}
-				onFinishFailed={onFinishFailed}
+				// onFinish={onFinish}
+				// onFinishFailed={onFinishFailed}
 				autoComplete="off"
 				initialValues={{
 					mail: 'mail@test.fr',
@@ -98,23 +145,15 @@ const Settings: NextPageWithLayout = () => {
 			<Title level={3} className="mt-12">
 				Variables
 			</Title>
+
 			<Form
+				form={variablesForm}
 				name="dynamic_form_nest_item"
-				onFinish={onFinish}
+				// onFinish={insertVariableMutation}
+				onFinish={onFinishVariables}
+				// onFinishFailed={onFinishFailedVariables}
 				style={{ maxWidth: 600 }}
 				autoComplete="off"
-				initialValues={{
-					variables: [
-						{
-							name: 'Var 1',
-							value: 'Value de Var 1',
-						},
-						{
-							name: 'Var 2',
-							value: 'Value de Var 2',
-						},
-					],
-				}}
 			>
 				<Form.List name="variables">
 					{(fields, { add, remove }) => (
@@ -127,7 +166,7 @@ const Settings: NextPageWithLayout = () => {
 								>
 									<Form.Item<VariablesFieldType[]>
 										{...restField}
-										name={[name, 'name']}
+										name={[name, 'label']}
 										rules={[
 											{ required: true, message: 'Missing variable name' },
 										]}

@@ -21,15 +21,12 @@ export default class ImageService {
 	}
 
 	async updateVariable(variable: UpdateVariableInput) {
-		if (variable.id) return this.db.update(variable.id, variable);
+		return this.db.update(variable.id, variable);
 	}
 
 	async insertVariable(variable: CreateVariableInput) {
-		return this.db.insert(variable);
-	}
-
-	async deleteVariable(id: number) {
-		return this.db.delete(id);
+		const newVariable = this.db.create(variable);
+		return await this.db.save(newVariable);
 	}
 
 	async deleteVariables(ids: number[]) {
