@@ -5,6 +5,10 @@ on:
     branches-ignore:
       - dev
       - main
+  push:
+    branches-ignore:
+      - dev
+      - main
 
 jobs:
   test-backend:
@@ -16,6 +20,10 @@ jobs:
         # Image docker Hub
         image: postgres
         # health checks pour être sûr que postgres a démarré
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: inboxartisan_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
