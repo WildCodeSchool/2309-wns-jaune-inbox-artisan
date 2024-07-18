@@ -6,25 +6,27 @@ import View from '@/components/editor/View';
 import Properties from '@/components/editor/Properties';
 import { ReactElement, useState } from 'react';
 import GlobalLayout from '@/components/layout-elements/GlobalLayout';
+import SetupModal from "../../components/editor/Modal/SetupModal"
 
 const {Sider, Content} = Layout
 
 const Editor: NextPageWithLayout = () => {
-	const [mail, setMail] = useState('');
+	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	return (
-		<div className="editor h-full w-full">
-			<ToolBar>
-            </ToolBar>
-			<button>add header</button>
-			<Layout>
-                <Sider theme="light" >
+		<div className="editor h-[calc(100vh-7vh)] w-full">
+      <SetupModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+			<div className="editor h-[7vh] w-full">
+			<ToolBar setIsModalOpen={setIsModalOpen}/>
+			</div>
+			<Layout className='h-[calc(100vh-14vh)] w-full'>
+                <Sider theme="light" className='border border-green-500 border-solid overflow-y-auto' width="20%">
 				    <Library></Library>
                 </Sider>
                 <Content className='border-2 border-black border-solid h-full flex flex-grow'>
-				    <View mail={mail}></View>
+				    <View/>
                 </Content>
-                <Sider theme="light">
+                <Sider theme="light" className='border border-red-500 border-solid overflow-auto' width="300px" collapsible collapsedWidth="20%" reverseArrow>
 				    <Properties></Properties>
                 </Sider>
 			</Layout>

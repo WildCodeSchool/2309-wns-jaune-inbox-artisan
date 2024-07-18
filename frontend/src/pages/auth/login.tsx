@@ -44,7 +44,7 @@ const Login: NextPageWithLayout = () => {
 							id: parseInt(data.login.user.id, 10),
 						});
 						sessionStorage.setItem('user', JSON.stringify(data.login.user));
-						router.push('/dashboard');
+						router.push('/');
 					}
 				},
 			});

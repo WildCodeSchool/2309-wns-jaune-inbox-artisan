@@ -42,9 +42,9 @@ const GlobalLayout = ({
 		<Layout style={{ minHeight: '100vh' }}>
 			<Header user={user} isLayout />
 			{!hidden ? (
-				<Layout hasSider style={{ width: '100%' }}>
+				<Layout hasSider style={{ width: '100%'}}>
 					<Sidebar />
-					<Content style={{ margin: '0px 16px' }}>
+					<Content style={{ margin: '0px 16px', height: '100%' }}>
 						<div style={{ padding: 24, minHeight: 360 }}>
 							<div className="pb-8 border-b">
 								<Title level={2}>{title}</Title>
@@ -58,7 +58,7 @@ const GlobalLayout = ({
 					</Content>
 				</Layout>
 			) : (
-				<Content className='flex flex-grow w-full'>{children}</Content>
+				<Content className='flex flex-grow w-full h-full'>{children}</Content>
 			)}
 		</Layout>
 	);

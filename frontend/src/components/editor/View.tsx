@@ -1,24 +1,38 @@
+import { useState, useReducer,useEffect } from "react"
 import {Row, Col} from "antd"
+import { useEditor } from "@/Contexts/EditorContext";
 
-const View = ({mail} : {mail: string}) => {
+import Components from "@/components/mailComponents"
+
+const View = () => {
+
+    const {state, dispatch, handlePosition} = useEditor()
+
+    const generateGrid = (param :any) => {
+        return (
+            <div className=" w-full min-h-[60vh] max-h-[80vh]">
+                {state?.map((row : any[], rowIndex : number) => 
+                    (<Row key={rowIndex}>{row?.map((col :any, colIndex: number) => 
+                        (<Col span={col?.containerWidth } 
+                            key={colIndex} 
+                            className={`${col.isEdited ? "border border-red-500 border-solid" : ""}`} 
+                            onClick={() => {
+                                dispatch({type : "edit", data :{rowIndex,colIndex}})
+                                handlePosition(rowIndex,colIndex)
+                            }}>
+                                {col.name ? (<Components name={col.name} keys={col.keys} />) :
+                                `Col ${rowIndex}-${colIndex}`}
+                            </Col>))}
+                    </Row>))
+                }
+            </div>
+        )
+    }
+
     return (
-        <div className="h-full w-full">
-            <Row className="h-1/3">
-                <Col span={8} className="h-full">col-8</Col>
-                <Col span={8}>col-8</Col>
-                <Col span={8}>col-8</Col>
-            </Row>
-            <Row>
-                <Col span={8}>col-8</Col>
-                <Col span={8}>col-8</Col>
-                <Col span={8}>col-8</Col>
-            </Row>
-            <Row>
-                <Col span={8}>col-8</Col>
-                <Col span={8}>col-8</Col>
-                <Col span={8}>col-8</Col>
-            </Row>
-        </div>
+        <>
+            {generateGrid(state)}
+        </>
     )
 }
 

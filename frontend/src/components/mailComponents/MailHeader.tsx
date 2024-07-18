@@ -1,6 +1,8 @@
-const MailHeader = () => {
+import { ReactElement } from "react"
+
+const MailHeader = ({style, children}: {style: Object, children: React.ReactNode}) => {
     return (
-        <div>mail header</div>
+        <div style={style}>{children}</div>
     )
 }
 

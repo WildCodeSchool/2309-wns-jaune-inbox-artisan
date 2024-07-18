@@ -10,6 +10,7 @@ import theme from '@/styles/antd-style';
 import { StyleProvider } from '@ant-design/cssinjs';
 import { BreackPointProvider } from '@/Contexts/BreackPointContext';
 import { UserProvider } from '@/Contexts/UserContext';
+import {EditorProvider} from '@/Contexts/EditorContext';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -29,6 +30,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 	return (
 		<ApolloProvider client={client}>
 			<UserProvider>
+				<EditorProvider> 
 				<BreackPointProvider>
 					<StyleProvider hashPriority="high">
 						<ConfigProvider theme={theme}>
@@ -36,6 +38,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 						</ConfigProvider>
 					</StyleProvider>
 				</BreackPointProvider>
+				</EditorProvider> 
 			</UserProvider>
 		</ApolloProvider>
 	);

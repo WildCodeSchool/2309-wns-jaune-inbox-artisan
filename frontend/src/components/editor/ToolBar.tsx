@@ -1,6 +1,17 @@
-const ToolBar = () => {
+import { useState } from "react"
+
+import { Space, Button } from "antd"
+
+
+const ToolBar = ({setIsModalOpen}) => {
+
+
+
+
     return (
-        <div>toolbar</div>
+        <Space direction="vertical">
+            <Button onClick={() => {setIsModalOpen(true)}}>Setup</Button>
+        </Space>
     )
 }
 
