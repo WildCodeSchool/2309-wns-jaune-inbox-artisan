@@ -107,7 +107,7 @@ export class Message {
 	@Field()
 	success: boolean;
 
-	@Field()
+	@Field({ nullable: true })
 	user: LoginResponse;
 
 	@Field()

@@ -43,54 +43,58 @@ const carouselStyle = {
 }
 
 const data = [
-  {title : "Title", definition : "title components", name: "MailTitle", component : <MailTitle level={5} text="this is a demo" />, keys: {level : 5, text : "this is a demo"}},
-  // {title: "Header", definition: "Mail header",name: "MailHeader", component: <MailHeader style={{color: 'red', backgroundColor: "green"}}>children</MailHeader>, keys: {style : 5, text : "this is a demo"}} ,
-  // {title : "Text", definition : "text components", name: "MailText", component : <MailText text="this is a demo" style={{bold: false, italic: false, underline: false}} />, keys: { style:{bold: false, italic: false, underline: false}, text : "this is a demo"}},
-  {title : "Text", definition : "text components", name: "MailText", component : <MailText text="this is a demo" strong={false} italic={false} underline={false} />, keys: {text : "this is a demo"}, strong:false, italic:false, underline:false},
-  {title: "Picture", definition: "picture holder",name: "MailPicture", component: <MailPicture style={{}} src={"https://picsum.photos/200/300"} alt='empty picture' height={50} width={50}/>, keys: { style: {}, src: "https://picsum.photos/200/300", alt: "this is a picture", height: 50, width: 50}},
-  {title: 'Carousel', definition: 'carousel',name: "MailCarousel", component: <MailCarousel style={{}} contentStyle={carouselStyle} pictures={carouselPictures} title='carousel' ></MailCarousel>},
-  {title:'Card', definition:'card with title and content',name: "MailCard", component: <MailCard title='simple card' style={{}}><p>Card content</p>
-    <p>Card content</p>
-    <p>Card content</p>
-    </MailCard>},
-  {title: 'Text list', definition: 'list with items', name: 'MailList', component: <MailList title='List example' style={{}} items={["example 1 ", "example 2"]}></MailList>},
-  {title: 'social', definition: 'social link', name:'MailSocial', component: <MailSocial style={{}} facebookLink='#'></MailSocial>, keys: {facebookLink: '#'}},
+  { title: "Title", definition: "title components", name: "MailTitle", component: <MailTitle level={2} text="this is a demo" />, keys: { level: 2, text: "this is a demo" } },
+  { title: "Text", definition: "text components", name: "MailText", component: <MailText style={{}} text="this is a demo" strong={false} italic={false} underline={false} />, keys: { text: "this is a demo" }, strong: false, italic: false, underline: false },
+  { title: "Picture", definition: "picture holder", name: "MailPicture", component: <MailPicture style={{}} src={"https://picsum.photos/200/300"} alt='empty picture' height={50} width={50} />, keys: { style: {}, src: "https://picsum.photos/200/300", alt: "this is a picture", height: 50, width: 50 } },
+  { title: 'Carousel', definition: 'carousel', name: "MailCarousel", component: <MailCarousel style={{}} contentStyle={carouselStyle} pictures={carouselPictures} title='carousel' />, keys: {style: {}, title :"this is a test title", pictures: [], contentStyle: {}} },
+  {
+    title: 'Card', definition: 'card with title and content', name: "MailCard", component: <MailCard title='simple card' style={{}}><p>Card content</p>
+      <p>Card content</p>
+      <p>Card content</p>
+    </MailCard>
+  },
+  { title: 'Text list', definition: 'list with items', name: 'MailList', component: <MailList title='List example' style={{}} items={["example 1 ", "example 2"]}></MailList> },
+  { title: 'Social', definition: 'Social link', name: 'MailSocial', component: <MailSocial style={{}} facebookLink='#' twitterLink='#' instagramLink='#'></MailSocial>, keys: { facebookLink: 'https://www.facebook.com', twitterLink: 'https://twitter.com', instagramLink: 'https://www.instagram.com', style: {} } },
 ]
 
 
 
-const {Meta} = Card
+const { Meta } = Card
 
 const Library = () => {
-const { dispatch, editedPostion } = useEditor()
+  const { dispatch, editedPostion } = useEditor()
 
-const addComponent = (item) => {
-  dispatch({type : "addComponent", data : {keys : item.keys, name : item.name, position: editedPostion }})
-}
+  const addComponent = (item) => {
+    dispatch({ type: "addComponent", data: { keys: item.keys, name: item.name, position: editedPostion } })
+  }
 
-    return (
-        <div className='bg-[#e6e6e6]'>
-        <div>Library</div>
-        <List
-    itemLayout="horizontal"
-    dataSource={data}
-    renderItem={(item, index) => (
-      <List.Item>
-          <Card
-          onClick={() => addComponent(item)}
-    hoverable
-    className='w-full !m-1'
-    cover={<div className="scale-[90%] w-full h-full border border-solid">
-        {item.component}
-      </div>}
-  >
-    <Meta title={item.title} description={item.definition} />
-  </Card>
-      </List.Item>
-    )}
-  />
-        </div>
-    )
+  return (
+    <div 
+      className='bg-[#e6e6e6]'
+    >
+      <div>Library</div>
+      <List
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item, index) => (
+          <List.Item>
+            <Card
+              onClick={() => addComponent(item)}
+              hoverable
+              className='w-full !m-1 !p-2 !py-4'
+              cover={
+                <div className="scale-[90%] w-full h-full border border-solid p-2">
+                  {item.component}
+                </div>
+              }
+            >
+              <Meta title={item.title} description={item.definition} />
+            </Card>
+          </List.Item>
+        )}
+      />
+    </div>
+  )
 }
 
 export default Library

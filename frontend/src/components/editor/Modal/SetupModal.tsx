@@ -23,7 +23,10 @@ const {dispatch} = useEditor()
   },[])
 
   const onFinish = () => {
-    dispatch({type : "setup", data : grid})
+    const newData = [...grid]
+    const finalData = newData.map((row) => row.map((col) => ({...col, containerWidth : 24 / row.length, style: {height : "100%"} })))
+    console.log(finalData)
+    dispatch({type : "setup", data : finalData})
     closeModal()
   }
 

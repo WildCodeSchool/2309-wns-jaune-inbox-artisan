@@ -7,6 +7,7 @@ import { QueryLoginArgs } from '@/types/graphql';
 import { LOGIN } from '@/request/queries/auth.queries';
 import { useRouter } from 'next/router';
 import { useUser } from '@/Contexts/UserContext';
+import { useLoginLazyQuery } from '@/types/graphql';
 
 const Login: NextPageWithLayout = () => {
 	type InputLogin = {
@@ -27,27 +28,31 @@ const Login: NextPageWithLayout = () => {
 
 	const router = useRouter();
 
-	const [login, { data, error }] = useLazyQuery<LoginData, QueryLoginArgs>(
-		LOGIN
-	);
+	// const [login, { data, error }] = useLazyQuery<LoginData, QueryLoginArgs>(
+	// 	LOGIN
+	// );
 
-	const { setUser } = useUser();
-
-	const onFinish = (values: any) => {
-		if (values.mail && values.password) {
-			login({
-				variables: { infos: { mail: values.mail, password: values.password } },
+	const [login, { data, error }] = useLoginLazyQuery({
 				onCompleted(data) {
 					if (data.login.success) {
+						console.log("je suis bugger")
 						setUser({
 							...data.login.user,
 							id: parseInt(data.login.user.id, 10),
 						});
 						sessionStorage.setItem('user', JSON.stringify(data.login.user));
-						router.push('/');
+						router.push('/dashboard', undefined, { shallow: true })
 					}
 				},
-			});
+			}
+	);
+
+	const { setUser } = useUser();
+
+	const onFinish = (values: any) => {
+		console.log("onfinish launch")
+		if (values.mail && values.password) {
+			login({variables: { infos: { mail: values.mail, password: values.password } }});
 		}
 	};
 
@@ -60,8 +65,8 @@ const Login: NextPageWithLayout = () => {
 			<Form
 				name="login"
 				initialValues={{ remember: true }}
-				onFinish={onFinish}
-				onFinishFailed={onFinishFailed}
+				onFinish={(values) => onFinish(values)}
+				onFinishFailed={() => onFinishFailed}
 				autoComplete="off"
 				className="max-w-[600px]"
 			>

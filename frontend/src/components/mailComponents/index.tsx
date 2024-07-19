@@ -9,12 +9,12 @@ const dynamicImport = (componentName) => {
   return componentCache[componentName];
 };
 
-const Components = ({ name, keys }) => {
+const Components = ({ name, keys, style }) => {
   const ComponentToRender = dynamicImport(name);
-
+  console.log(style)
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ComponentToRender {...keys} />
+      <ComponentToRender {...keys} style={style} />
     </Suspense>
   );
 };

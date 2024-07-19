@@ -11,6 +11,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 export default async function middleware(request: NextRequest) {
 	const { cookies } = request;
 	const token = cookies.get('token');
+	console.log("TEST", token);
 	return await checkToken(token?.value, request);
 }
 
@@ -24,11 +25,11 @@ export async function verify(token: string): Promise<Payload> {
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
+	console.log("TOKEN", token);
 	let response: NextResponse<unknown>;
 	if (!token) {
 		console.error('no cookie token');
 		if (
-			request.nextUrl.pathname.startsWith('/books/list') ||
 			request.nextUrl.pathname.startsWith('/admin')
 		) {
 			response = NextResponse.redirect(new URL('/auth/login', request.url));
@@ -62,8 +63,10 @@ async function checkToken(token: string | undefined, request: NextRequest) {
 
 			return response;
 		}
+		console.error("redirect response")
 		return NextResponse.redirect(new URL('/auth/login', request.url));
 	} catch (err) {
+		console.error(err)
 		if (request.nextUrl.pathname.startsWith('/auth/login')) {
 			response = NextResponse.next();
 		} else {

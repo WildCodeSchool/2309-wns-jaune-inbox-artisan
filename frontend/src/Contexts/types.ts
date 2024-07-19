@@ -9,6 +9,7 @@ export type UserContextType = {
 	user: any;
 	setUser: (value: any) => void;
 	verifyUser: (callback: () => void) => void;
+	logout: () => void;
 };
 
 export type EditorContextType = {

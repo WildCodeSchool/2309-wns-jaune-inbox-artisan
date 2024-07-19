@@ -21,6 +21,8 @@ const Header = ({
 }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+	const {logout} = useUser()
+
 	const screens = useBreakpoint();
 	const breackPoint = Object.entries(screens).filter((screen) => !!screen[1]);
 	const { isMobile, setIsMobile } = useBreackPoint();
@@ -45,7 +47,7 @@ const Header = ({
 			>
 				<div className="flex items-center justify-between h-full">
 					<Space>
-						<Link href="/">
+						<Link href={user ? "/dashboard" : "/"}>
 							<Image
 								src="/logo.svg"
 								alt="inboxArtisan Logo"
@@ -90,8 +92,8 @@ const Header = ({
 								Sign up
 							</Link>
 							<Link
-								href="/auth/logout"
-								replace={true}
+								onClick={() => {logout()}}
+								href="/"
 								className="px-6 py-2 text-white transition duration-500 ease-out bg-red-700 rounded-lg hover:bg-red-800 hover:ease-in hover:underline"
 							>
 								Se déconnecter

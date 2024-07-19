@@ -11,7 +11,7 @@ const MailCard = ({
     children: ReactNode,
 }) => {
     return (
-        <Card title={title}style={style}>
+        <Card title={title} style={style}>
             {children}
         </Card>
     )

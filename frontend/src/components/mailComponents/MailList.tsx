@@ -1,5 +1,4 @@
-import { List } from "antd"
-import Typography from "antd/es/typography/Typography"
+import { List, Typography } from "antd"
 import { ReactNode } from "react"
 
 const MailList = ({
@@ -12,13 +11,16 @@ const MailList = ({
     items: ReactNode[], 
 }) => {
     return (
-        <List
-        dataSource={items}
-        renderItem={(item) => (
-            <List.Item>
-                {item}
-            </List.Item>
-        )}></List>
+        <List 
+            style={style}
+            dataSource={items}
+            renderItem={(item) => (
+                <List.Item>
+                    {item}
+                </List.Item>
+            )}
+        >
+        </List>
     )
 }
 

@@ -8,3 +8,13 @@ export const REGISTER = gql`
 		}
 	}
 `;
+
+export const GET_TEMPLATE_BY_ID = gql`
+	query template($id: Float!) {
+		templateById(id: $id) {
+			id
+			name
+			config
+		}
+	}
+`

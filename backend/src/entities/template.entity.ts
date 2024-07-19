@@ -73,3 +73,11 @@ export class CreateTemplateInput {
 	@Field(type => [Image], {nullable: true})
 	Images: Image[]
 }
+
+@InputType()
+export class CreateTemplateInputRequest {
+	@Field({ nullable: true})
+	name: string
+	@Field({nullable: true})
+	userId: number
+}

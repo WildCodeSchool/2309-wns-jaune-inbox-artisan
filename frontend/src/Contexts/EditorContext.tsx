@@ -5,9 +5,9 @@ import {EditedPositionType, EditorContextType} from "@/Contexts/types"
 
 const defaultContext = {
     state : [
-			[{isEdited : true, containerWidth:24}],
-			[{containerWidth:8},{containerWidth:8},{containerWidth:8}],
-			[{containerWidth:12},{containerWidth:12}]
+			[{isEdited : true, containerWidth:24, style: {height : "100%"}}],
+			[{containerWidth:8 ,style: {height : "100%"}},{containerWidth:8,style: {height : "100%"}},{containerWidth:8,style: {height : "100%"}}],
+			[{containerWidth:12,style: {height : "100%"}},{containerWidth:12,style: {height : "100%"}}]
 		],
 		dispatch : () => {},
 		editedPostion : {colId : 0, rowId : 0},

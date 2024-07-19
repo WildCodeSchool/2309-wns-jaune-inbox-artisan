@@ -4,23 +4,21 @@ const { Text } = Typography;
 
 const MailText = ({
   text,
-  // style,
+  style,
   strong,
   italic,
   underline,
   }:
   {
     text: string,
-    // style: Object,
+    style: Object,
     strong: boolean,
     italic: boolean,
     underline: boolean,
 }) => {
   return (
     // <Text underline strong italic >{text}</Text>
-    <>
-      <Text>{text}</Text>
-    </>
+      <Text style={style} className="block !w-[100%]">{text}</Text>
   )
 }
 

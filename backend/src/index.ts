@@ -66,6 +66,7 @@ async function main() {
 
 				const cookies = new Cookies(req, res);
 				const token = cookies.get('token');
+				console.log('secret: ', process.env.SECRET_KEY)
 				if (token) {
 					try {
 						const verify = await jose.jwtVerify<Payload>(

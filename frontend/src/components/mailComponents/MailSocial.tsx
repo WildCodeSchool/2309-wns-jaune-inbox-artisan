@@ -1,4 +1,5 @@
-import { Image } from "antd"
+import { Flex } from "antd"
+import { FacebookFilled, TwitterSquareFilled, InstagramFilled } from '@ant-design/icons';
 import Link from "next/link"
 
 const MailSocial = ({
@@ -13,14 +14,25 @@ const MailSocial = ({
     instagramLink?: string,
 }) => {
     return (
-        <div>
+        // <div>
+        <Flex justify={"space-around"}>
             {facebookLink && (
-                <Link href={facebookLink}>
-                    <Image preview={false} height={100} width={100} alt="facebook logo" src="/images/Facebook_logo.png" />
+                <Link href={facebookLink} style={style}>
+                    <FacebookFilled style={{ fontSize: '24px', color: '#126dff' }}/>
                 </Link>
-            )
-            }
-        </div>
+            )}
+            {twitterLink && (
+                <Link href={twitterLink} style={style}>
+                    <TwitterSquareFilled style={{ fontSize: '24px', color: '#2a9ef1' }}/>
+                </Link>
+            )}
+            {instagramLink && (
+                <Link href={instagramLink} style={style}>
+                    <InstagramFilled style={{ fontSize: '24px', color: '#f1168e' }}/>
+                </Link>
+            )}
+        </Flex>
+        // </div>
     )
 }
 

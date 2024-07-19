@@ -6,6 +6,7 @@ export const GetImagesByUserId = gql`
 			id
 			name
 			url
+			folder
 		}
 	}
 `;

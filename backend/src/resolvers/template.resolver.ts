@@ -2,9 +2,12 @@ import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import TemplateService from '../services/template.service';
 import Template, {
 	CreateTemplateInput,
+	CreateTemplateInputRequest,
 	UpdateTemplateInput,
 } from '../entities/template.entity';
 import UserService from '../services/user.service';
+import Variable from '../entities/variable.entity';
+import Image from 'next/image';
 
 @Resolver()
 export default class TemplateResolver {
@@ -19,14 +22,31 @@ export default class TemplateResolver {
 		return await new TemplateService().getTemplateById(id);
 	}
 
-	@Mutation(() => Template)
-	async updateTemplate(@Arg('user') user: UpdateTemplateInput) {
-		return await new TemplateService().updateTemplate(user);
+	@Query(() => Template)
+	async templateByUserId(@Arg('userId') userId: number) {
+		const user = await new UserService().getUserById(userId);
+		return await new TemplateService().getTemplatesByUser(user);
 	}
 
 	@Mutation(() => Template)
-	async insertTemplate(@Arg('template') template: CreateTemplateInput) {
-		return await new TemplateService().insertTemplate(template);
+	async updateTemplate(@Arg('template') template: UpdateTemplateInput) {
+		await new TemplateService().updateTemplate(template);
+		return{id: template.id}
+	}
+
+	@Mutation(() => Template)
+	async insertTemplate(@Arg('template') template: CreateTemplateInputRequest) {
+		const user = await new UserService().getUserById(template.userId);
+		const newTemplate = {
+			name: template.name,
+			user: user,
+			config: '',
+			variables:[],
+			Images: [],
+				}
+		const insertTemplate = await new TemplateService().insertTemplate(newTemplate);
+			console.log(insertTemplate)
+		return {id: insertTemplate.raw[0].id}
 	}
 
 	@Mutation(() => Template)

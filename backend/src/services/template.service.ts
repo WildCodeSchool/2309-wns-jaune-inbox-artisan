@@ -22,7 +22,14 @@ export default class TemplateService {
 		});
 	}
 
+	async getTemplatesByUser(user: User) {
+		return this.db.find({where: {
+			user: user,
+		}});
+	}
+
 	async updateTemplate(template: UpdateTemplateInput) {
+		console.log(template.id)
 		if (template.id) return this.db.update(template.id, template);
 	}
 
