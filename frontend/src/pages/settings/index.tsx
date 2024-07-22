@@ -83,8 +83,6 @@ const Settings: NextPageWithLayout = () => {
 				// form={form}
 				name="accountForm"
 				style={{ minWidth: '20%' }}
-				// onFinish={onFinish}
-				// onFinishFailed={onFinishFailed}
 				autoComplete="off"
 				initialValues={{
 					mail: 'mail@test.fr',
