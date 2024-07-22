@@ -3,17 +3,18 @@ import { useEditor } from "@/Contexts/EditorContext"
 
 import ImageModal from "@/components/editor/Modal/ImageModal"
 
-const inputString = ["src", "alt", "text", "title", "item", "facebookLink", "twitterLink", "instagramLink"]
+const inputString = ["src", "alt", "title", "item", "facebookLink", "twitterLink", "instagramLink"]
 const inputNumber = ["level", "width", "height"]
 const libraryPicker = ["pictures", "picture"]
+const inputTextArea = ["text"]
 // const button = ["strong","italic","underline"]
 
 type ParameterType = {
   [key : string] : number
 }
 
-const inputNumberMax : ParameterType = { level: 5, width: 2600, heigt: 2600 }
-const inputNumberMin : ParameterType = { level: 1, width: 50, heigt: 50 }
+const inputNumberMax : ParameterType = { level: 5, width: 100, height: 100 }
+const inputNumberMin : ParameterType = { level: 1, width: 10, height: 10 }
 
 const { Text } = Typography
 
@@ -24,8 +25,6 @@ type PropertyRenderPropsType = {
 
 const ProperyRender  = ({ name, value }:PropertyRenderPropsType) => {
   const { dispatch, editedPostion } = useEditor()
-
-  // console.log(name)
 
   return (
     <Col className="w-full gap-1 flex">
@@ -42,27 +41,41 @@ const ProperyRender  = ({ name, value }:PropertyRenderPropsType) => {
               })
             }} />
         </>)}
+        {inputTextArea.includes(name) && (
+        <>
+          <Text className="!w-2/6">{name} :</Text>
+          <Input.TextArea className="!w-4/6"
+            value={value}
+            onChange={(e) => {
+              dispatch({
+                type: "handleKeys",
+                position: editedPostion,
+                data: { [name]: e.target.value }
+              })
+            }} />
+        </>)}
       {inputNumber.includes(name) && (
         <>
           <Text className="!w-2/6">{name} :</Text>
           <InputNumber
             className="!w-4/6"
-            value={value}
+            value={Math.min(parseInt(value ,10), 100)}
             max={inputNumberMax[name]}
             min={inputNumberMin[name]}
             onChange={(value) => {
               dispatch({
                 type: "handleKeys",
                 position: editedPostion,
-                data: { [name]: value || 1 }
+                data: { [name]: Math.max( Math.min(value , inputNumberMax[name]), inputNumberMin[name] ) || 1 }
               })
             }} />
         </>)}
         {libraryPicker.includes(name) && (
         <>
           <Text className="!w-2/6">{name} :</Text>
-            <ImageModal />
-        </>)}
+            <ImageModal  type={name}/>
+        </>
+      )}
     </Col>
   )
 }

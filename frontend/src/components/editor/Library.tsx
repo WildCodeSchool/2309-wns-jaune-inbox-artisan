@@ -13,7 +13,10 @@ import MailCard from '../mailComponents/MailCard';
 import MailList from '../mailComponents/MailList';
 import MailSocial from '../mailComponents/MailSocial';
 
-
+const imagePicture = {  
+    src: "https://picsum.photos/200/300",
+    alt: 'pic1'
+  }
 
 const carouselPictures = [
   {
@@ -43,9 +46,9 @@ const carouselStyle = {
 }
 
 const data = [
-  { title: "Title", definition: "title components", name: "MailTitle", component: <MailTitle level={2} text="this is a demo" />, keys: { level: 2, text: "this is a demo" } },
-  { title: "Text", definition: "text components", name: "MailText", component: <MailText style={{}} text="this is a demo" strong={false} italic={false} underline={false} />, keys: { text: "this is a demo" }, strong: false, italic: false, underline: false },
-  { title: "Picture", definition: "picture holder", name: "MailPicture", component: <MailPicture style={{}} src={"https://picsum.photos/200/300"} alt='empty picture' height={50} width={50} />, keys: { style: {}, src: "https://picsum.photos/200/300", alt: "this is a picture", height: 50, width: 50 } },
+  { title: "Title", definition: "title components", name: "MailTitle", component: <MailTitle level={2} text="this is a demo" />, keys: {style: {}, level: 2, text: "this is a demo" } },
+  { title: "Text", definition: "text components", name: "MailText", component: <MailText style={{}} text="this is a demo" strong={false} italic={false} underline={false} />, keys: { style: {}, text: "this is a demo" }, strong: false, italic: false, underline: false },
+  { title: "Picture", definition: "picture holder", name: "MailPicture", component: <MailPicture style={{}} picture={imagePicture} height={100} width={100} />, keys: { style: {}, picture:imagePicture, height: 100, width: 100 } },
   { title: 'Carousel', definition: 'carousel', name: "MailCarousel", component: <MailCarousel style={{}} contentStyle={carouselStyle} pictures={carouselPictures} title='carousel' />, keys: {style: {}, title :"this is a test title", pictures: [], contentStyle: {}} },
   {
     title: 'Card', definition: 'card with title and content', name: "MailCard", component: <MailCard title='simple card' style={{}}><p>Card content</p>

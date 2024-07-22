@@ -13,5 +13,10 @@ export type GlobalLayoutProps = {
 	title: string;
 	description?: ReactNode;
 	action?: ReactElement;
-	hidden?:boolean
+	hidden?: boolean;
+};
+
+export type PictureType = {
+	src: string;
+	alt: string;
 };

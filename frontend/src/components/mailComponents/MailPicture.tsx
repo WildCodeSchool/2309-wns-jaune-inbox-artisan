@@ -1,22 +1,23 @@
 import { ReactElement } from "react"
-import {Image} from "antd"
+import {Divider, Image, Space} from "antd"
+import { PictureType } from "../types"
 
 const MailPicture = ({
     style,
-    src,
-    alt,
+    picture,
     width,
     height
 }:
  {
     style: Object,
-    src: string,
-    alt: string,
+    picture : PictureType
     width: number,
     height: number
 }) => {
     return (
-        <Image style={style} src={src} alt={alt} width={width} height={height}/>
+        <div className="flex justify-center items-center w-full h-full">
+            <Image style={style}  src={picture?.src} alt={picture?.alt} width={`${width}%`} height={`${height}%`} preview={false} />
+        </div>
     )
 }
 

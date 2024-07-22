@@ -238,7 +238,7 @@ const Properties = () => {
   return (
     <>
       <div>Properties</div>
-      {editedComponnentKeys && Object.keys(editedComponnentKeys)?.map((key, index) => (<div>{key} : {typeof editedComponnentKeys[key] === "object" ? JSON.stringify(editedComponnentKeys[key]) : editedComponnentKeys[key]}</div>))}
+      {editedComponnentKeys && Object.keys(editedComponnentKeys)?.map((key, index) => (<div key={index}>{key} : {typeof editedComponnentKeys[key] === "object" ? JSON.stringify(editedComponnentKeys[key]) : editedComponnentKeys[key]}</div>))}
       {/* {editedComponnentStyle && Object.keys(editedComponnentStyle)?.map((key, index) => (<div>{key} : {typeof editedComponnentStyle[key] === "object" ? JSON.stringify(editedComponnentKeys[key]) : editedComponnentStyle[key]}</div>))} */}
       {/* {`actual row: ${editedPostion.rowId}, actual col: ${editedPostion.colId}`} */}
       {elementProperties(state)}
