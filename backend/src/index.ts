@@ -15,7 +15,7 @@ import { buildSchema } from 'type-graphql';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import 'reflect-metadata';
 import User from './entities/user.entity';
-import jose from 'jose';
+import * as jose from 'jose';
 import UserService from './services/user.service';
 import Cookies from 'cookies';
 import Stripe from 'stripe';
@@ -56,7 +56,7 @@ async function main() {
 	app.use(
 		'/',
 		cors<cors.CorsRequest>({
-			origin: 'http://localhost:3000',
+			origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
 			credentials: true,
 		}),
 		express.json(),
@@ -66,13 +66,13 @@ async function main() {
 
 				const cookies = new Cookies(req, res);
 				const token = cookies.get('token');
-				console.log('secret: ', process.env.SECRET_KEY)
 				if (token) {
 					try {
 						const verify = await jose.jwtVerify<Payload>(
 							token,
 							new TextEncoder().encode(process.env.SECRET_KEY)
 						);
+
 						user = await new UserService().getUserBymail(verify.payload.email);
 					} catch (err) {
 						console.error(err);

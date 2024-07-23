@@ -1,16 +1,15 @@
 import { Carousel, Image, Row, Space, Typography } from 'antd';
 import { PictureType } from '../types';
+import { CSSProperties } from 'react';
 
 const { Title } = Typography;
 
 const MailCarousel = ({
 	style,
-	contentStyle,
 	pictures,
 	title,
 }: {
-	style: Object;
-	contentStyle: Object;
+	style: CSSProperties;
 	pictures: PictureType[];
 	title: string;
 }) => {
@@ -21,7 +20,7 @@ const MailCarousel = ({
 				<Title
 					level={4}
 					style={{ textAlign: 'center', marginBlockEnd: 0 }}
-					className=" m-0 p-0 !text-center w-full max-h-[10%]"
+					className=" m-0 p-0 !text-center w-full h-[10%]"
 				>
 					{title}
 				</Title>

@@ -1,24 +1,38 @@
 import { Typography } from 'antd';
+import { VariableType } from '../types';
+import { CSSProperties, useEffect, useState } from 'react';
 
 const { Text } = Typography;
 
 const MailText = ({
   text,
   style,
-  strong,
-  italic,
-  underline,
+  variables
   }:
   {
     text: string,
-    style: Object,
-    strong: boolean,
-    italic: boolean,
-    underline: boolean,
+    style: CSSProperties,
+    variables: VariableType[],
 }) => {
+  const [textWithVariable, setTextWithVariable] = useState("")
+
+  const handleVariable = () => {
+    let newText =`${text}`
+    variables?.forEach((variable) => {
+      newText = newText.replaceAll(`[[${variable.label}]]`, variable?.value || '')
+    })
+    setTextWithVariable(newText)
+  }
+
+
+useEffect(() => {
+  console.log(variables)
+  handleVariable()
+},[variables])
+
   return (
     // <Text underline strong italic >{text}</Text>
-      <Text style={style} className="block !w-[100%]">{text}</Text>
+      <Text style={style} className="block !w-[100%]">{textWithVariable}</Text>
   )
 }
 

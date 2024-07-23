@@ -4,6 +4,7 @@ import Variable, {
 	CreateVariableInput,
 	UpdateVariableInput,
 } from '../entities/variable.entity';
+import UserService from '../services/user.service';
 
 @Resolver()
 export default class VariableResolver {
@@ -12,12 +13,12 @@ export default class VariableResolver {
 		return await new VariableService().getAllVariables();
 	}
 
-	// @Query(() => [Variable])
-	// async variablesByUserId() {
-	// 	const user = await new UserService().getUserById(userId);
+	@Query(() => [Variable])
+	async variablesByUserId(@Arg('userId') userId: number) {
+		const user = await new UserService().getUserById(userId);
 
-	// 	return await new VariableService().getVariableByUserId();
-	// }
+		return await new VariableService().getVariableByUserId(user);
+	}
 
 	@Query(() => Variable)
 	async variableById(@Arg('id') id: number) {

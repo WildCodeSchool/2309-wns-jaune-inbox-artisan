@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { NextPageWithLayout } from '../_app';
 import { Button, Form, type FormProps, Input, Space, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -8,6 +8,7 @@ import {
 	CreateVariableInput,
 	InsertVariablesMutation,
 	InsertVariablesMutationVariables,
+	useVariablesByUserIdLazyQuery,
 	VariablesQuery,
 	VariablesQueryVariables,
 } from '@/types/graphql';
@@ -15,6 +16,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { INSERT_VARIABLES } from '@/request/mutations/settings.mutations';
 import { LIST_VARIABLES } from '@/request/queries/settings.queries';
 import router from 'next/router';
+import { useUser } from '@/Contexts/UserContext';
 
 const { Title } = Typography;
 
@@ -47,34 +49,31 @@ const Settings: NextPageWithLayout = () => {
 
 	// QUERY DE LISTE DES VARIABLES
 	const [variablesForm] = Form.useForm();
+	const { user } = useUser();
 
+	// console.log(user)
 	const omitTypename = (key: string, value: string) =>
 		key === '__typename' ? undefined : value;
 
-	const { data } = useQuery<VariablesQuery, VariablesQueryVariables>(
-		LIST_VARIABLES,
-		{
-			fetchPolicy: 'no-cache',
-			onCompleted(data) {
-				const dataWithoutTypename = JSON.parse(
-					JSON.stringify(data),
-					omitTypename
-				);
+	const [getVariableByUserId, { data: dataAds }] = useVariablesByUserIdLazyQuery({
+		fetchPolicy: 'no-cache',
+		onCompleted(data) {
+			const dataWithoutTypename = JSON.parse(
+				JSON.stringify(data),
+				omitTypename
+			);
+			// Affichange dans l'odre croissant des id
+			let sortedData = { variables: [] };
 
-				// variablesForm.setFieldsValue(dataWithoutTypename);
+			sortedData.variables = dataWithoutTypename.variablesByUserId.sort(
+				(a: any, b: any) => parseInt(a.id) - parseInt(b.id)
+			);
+			variablesForm.setFieldsValue(sortedData);
+		},
+	});
 
-				// Affichange dans l'odre croissant des id
-				let sortedData = { variables: [] };
+	useEffect(() => {getVariableByUserId({variables : { id : user.id}})}, [])
 
-				sortedData.variables = dataWithoutTypename.variables.sort(
-					(a: any, b: any) => parseInt(a.id) - parseInt(b.id)
-				);
-				// console.log(sortedData);
-
-				variablesForm.setFieldsValue(sortedData);
-			},
-		}
-	);
 
 	return (
 		<main className={`flex flex-col items-center justify-between`}>
@@ -85,7 +84,7 @@ const Settings: NextPageWithLayout = () => {
 				style={{ minWidth: '20%' }}
 				autoComplete="off"
 				initialValues={{
-					mail: 'mail@test.fr',
+					mail: user.mail,
 				}}
 			>
 				<Form.Item<UserFieldType>

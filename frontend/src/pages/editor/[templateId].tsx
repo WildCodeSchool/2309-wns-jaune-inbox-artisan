@@ -1,4 +1,4 @@
-import { Layout,  } from 'antd';
+import { Layout, Space,  } from 'antd';
 import Library from '@/components/editor/Library';
 import { NextPageWithLayout } from '../_app';
 import ToolBar from '@/components/editor/ToolBar';
@@ -24,23 +24,24 @@ const Editor: NextPageWithLayout = () => {
 	const templateId = router.query.templateId as string;
 
 	
-	const [getTemplateById, { getTemplateData, getTemplateError }] = useTemplateLazyQuery({
+	const [getTemplateById] = useTemplateLazyQuery({
 		fetchPolicy: 'no-cache',
 		onCompleted(getTemplateData) {
 			console.log(getTemplateData.templateById.config)
 			dispatch({type: 'load', data: getTemplateData.templateById.config})
 		},
 		onError(getTemplateError) {
+			if(getTemplateError) router.push('/dashboard')
 			console.log(getTemplateError)
 		}
 	});
 
-	const [updateTemplate, { updateTemplateData, updateError }] = useUpdateTemplateMutation({
+	const [updateTemplate] = useUpdateTemplateMutation({
 		fetchPolicy: 'no-cache',
 		onCompleted(updateTemplateData) {
 			console.log(updateTemplateData)},
 		onError(updateError) {
-			console.log(updateError)
+			console.log("updateError:", updateError)
 		}
 	});
 
@@ -60,9 +61,9 @@ const Editor: NextPageWithLayout = () => {
 
 	return (
 		<div className="editor h-[calc(100vh-7vh)] w-full">
-      <SetupModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+      	<SetupModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
 			<div className="editor h-[7vh] w-full">
-			<ToolBar setIsModalOpen={setIsModalOpen} onSave={onSave}/>
+				<ToolBar setIsModalOpen={setIsModalOpen} onSave={onSave}/>
 			</div>
 			<Layout className='h-[calc(100vh-14vh)] w-full'>
                 {/* <Sider theme="light" className='border border-green-500 border-solid overflow-y-auto select-none' width="20%"> */}

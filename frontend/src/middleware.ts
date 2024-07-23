@@ -10,8 +10,10 @@ interface Payload {
 const SECRET_KEY = process.env.SECRET_KEY;
 export default async function middleware(request: NextRequest) {
 	const { cookies } = request;
+	console.log('cookies', cookies);
+
 	const token = cookies.get('token');
-	console.log("TEST", token);
+	console.log('TEST', token);
 	return await checkToken(token?.value, request);
 }
 
@@ -25,24 +27,23 @@ export async function verify(token: string): Promise<Payload> {
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
-	console.log("TOKEN", token);
+	const { cookies } = request;
 	let response: NextResponse<unknown>;
 	if (!token) {
 		console.error('no cookie token');
-		if (
-			request.nextUrl.pathname.startsWith('/admin')
-		) {
+		if (request.nextUrl.pathname.startsWith('/admin')) {
 			response = NextResponse.redirect(new URL('/auth/login', request.url));
 		} else {
 			response = NextResponse.next();
 		}
-		response.cookies.delete('email');
-		response.cookies.delete('role');
+		// response.cookies.delete('email');
+		// response.cookies.delete('role');
 		return response;
 	}
 
 	try {
 		const payload = await verify(token);
+		console.log(payload);
 		if (payload.email) {
 			response = NextResponse.next();
 			//vérifier si la route commence par admin, et que le payload.role n'est pas admin, je redirige
@@ -54,19 +55,19 @@ async function checkToken(token: string | undefined, request: NextRequest) {
 				console.info('not ADMIN');
 			}
 
-			response.cookies.set('email', payload.email);
-			if (!payload.role) {
-				response.cookies.set('role', 'USER');
-			} else {
-				response.cookies.set('role', payload.role);
-			}
+			// response.cookies.set('email', payload.email);
+			// if (!payload.role) {
+			// 	response.cookies.set('role', 'USER');
+			// } else {
+			// 	response.cookies.set('role', payload.role);
+			// }
 
 			return response;
 		}
-		console.error("redirect response")
+		console.error('redirect response');
 		return NextResponse.redirect(new URL('/auth/login', request.url));
 	} catch (err) {
-		console.error(err)
+		console.error(err);
 		if (request.nextUrl.pathname.startsWith('/auth/login')) {
 			response = NextResponse.next();
 		} else {

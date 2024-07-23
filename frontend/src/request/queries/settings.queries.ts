@@ -9,3 +9,13 @@ export const LIST_VARIABLES = gql`
 		}
 	}
 `;
+
+export const LIST_VARIABLES_BY_USER = gql`
+	query variablesByUserId($id: Float!) {
+		variablesByUserId(userId: $id) {
+			id
+			label
+			value
+		}
+	}
+`;

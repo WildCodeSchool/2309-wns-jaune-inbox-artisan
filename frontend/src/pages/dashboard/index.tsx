@@ -31,9 +31,8 @@ const data = [
 ];
 
 const Dashboard = () => {
-	const [insertTemplate, {data: id}] = useInsertTemplateMutation()
+	const [insertTemplate, {data: id}] = useInsertTemplateMutation();
 
-	
 	const [getTemplateByUserId, { data: dataAds }] = useTemplatesLazyQuery({
 		fetchPolicy: 'no-cache',
 		onCompleted(data) {
@@ -45,7 +44,7 @@ const Dashboard = () => {
 			);
 		},
 	});
-	
+
 	const [templates, setTemplates] = useState<TemplateType[]>([]);
 
 	const { user } = useUser();
@@ -54,10 +53,10 @@ const Dashboard = () => {
 		getTemplateByUserId({ variables: { id: user.id } });
 	}, []);
 
-	console.log(user)
+	// console.log(user)
 	const onAddTemplate = () => {
 		const newTemplate = {
-			name: "template sans noms",
+			name: "New Template",
 			userId: user.id,
 		}
 		insertTemplate({

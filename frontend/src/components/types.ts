@@ -20,3 +20,10 @@ export type PictureType = {
 	src: string;
 	alt: string;
 };
+
+export type VariableType = {
+	__typename?: 'Variable';
+	id: string;
+	label?: string | null;
+	value?: string | null;
+};

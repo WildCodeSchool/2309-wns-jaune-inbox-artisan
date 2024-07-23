@@ -9,7 +9,7 @@ const ProfileButton: React.FC<{ user: any }> = ({ user }) => {
 	const items: MenuProps['items'] = [
 		{
 			key: '1',
-			label: <Link href="/">Se déconnecter</Link>,
+			label: <Link href="/">Sign out</Link>,
 		},
 	];
 

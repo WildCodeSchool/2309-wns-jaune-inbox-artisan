@@ -32,6 +32,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 					setUser({
 						id: parseInt(ParsedUser.id, 10),
 						username: ParsedUser.username,
+						mail: ParsedUser.mail,
+						role: ParsedUser.role,
 					});
 				} else {
 					sessionStorage.removeItem('user');
@@ -56,6 +58,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 					setUser({
 						id: parseInt(ParsedUser.id, 10),
 						username: ParsedUser.username,
+						mail: ParsedUser.mail,
+						role: ParsedUser.role,
 					});
 					callBack();
 				} else {

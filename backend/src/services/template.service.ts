@@ -16,20 +16,26 @@ export default class TemplateService {
 		return this.db.find({ where: { user: user } });
 	}
 
-	async getTemplateById(id: number) {
-		return this.db.findOneBy({
-			id: id,
+	async getTemplateById(id: number, user: User) {
+		if (!user) return new Error('no user provided');
+		return this.db.findOne({
+			where: {
+				id: id,
+				user: user,
+			},
 		});
 	}
 
 	async getTemplatesByUser(user: User) {
-		return this.db.find({where: {
-			user: user,
-		}});
+		return this.db.find({
+			where: {
+				user: user,
+			},
+		});
 	}
 
 	async updateTemplate(template: UpdateTemplateInput) {
-		console.log(template.id)
+		console.log(template.id);
 		if (template.id) return this.db.update(template.id, template);
 	}
 

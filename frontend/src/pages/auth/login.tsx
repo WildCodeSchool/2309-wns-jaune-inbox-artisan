@@ -28,12 +28,9 @@ const Login: NextPageWithLayout = () => {
 
 	const router = useRouter();
 
-	// const [login, { data, error }] = useLazyQuery<LoginData, QueryLoginArgs>(
-	// 	LOGIN
-	// );
-
 	const [login, { data, error }] = useLoginLazyQuery({
 				onCompleted(data) {
+					console.log(data);
 					if (data.login.success) {
 						console.log("je suis bugger")
 						setUser({
@@ -42,6 +39,8 @@ const Login: NextPageWithLayout = () => {
 						});
 						sessionStorage.setItem('user', JSON.stringify(data.login.user));
 						router.push('/dashboard', undefined, { shallow: true })
+					} else {
+						throw new Error("log bug");
 					}
 				},
 			}
@@ -50,7 +49,8 @@ const Login: NextPageWithLayout = () => {
 	const { setUser } = useUser();
 
 	const onFinish = (values: any) => {
-		console.log("onfinish launch")
+		console.log("onfinish launch");
+		console.log(values);
 		if (values.mail && values.password) {
 			login({variables: { infos: { mail: values.mail, password: values.password } }});
 		}

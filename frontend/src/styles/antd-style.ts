@@ -2,8 +2,8 @@ const theme = {
 	token: {
 		colorPrimary: '#218380',
 		colorInfo: '#218380',
-		borderRadius: 2,
-		fontFamily: '"Roboto","Arial"',
+		borderRadius: 6,
+		fontFamily: '"Roboto", "Arial"',
 	},
 	components: {
 		Typography: {

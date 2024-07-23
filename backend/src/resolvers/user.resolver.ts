@@ -32,20 +32,28 @@ export default class UserResolver {
 		const isPasswordValid = await bcrypt.compare(infos.password, user.password);
 		const m = new Message();
 		if (isPasswordValid) {
-			console.log("BACK", process.env);
-			const token = await new SignJWT({ email: user.mail, role: user.role })
+			const token = await new SignJWT({
+				email: user.mail,
+				role: user.role,
+				id: user.id,
+			})
 				.setProtectedHeader({ alg: 'HS256', typ: 'jwt' })
 				.setExpirationTime('2h')
 				.sign(new TextEncoder().encode(`${'testbg'}`));
 			let cookies = new Cookies(ctx.req, ctx.res);
-			cookies.set('token', token, { httpOnly: true });
 			const date = new Date();
 			date.setHours(date.getHours() + 2);
+			cookies.set('token', token, {
+				httpOnly: true,
+				expires: date,
+			});
 			m.message = token;
 			m.user = {
 				username: user.username,
 				id: user.id,
 				expirationDate: date.toISOString(),
+				mail: user.mail,
+				role: user.role,
 			};
 			m.success = true;
 		} else {
@@ -75,13 +83,13 @@ export default class UserResolver {
 		}
 
 		return await new UserService().updateUser(user);
-		if( user.mail) {
+		if (user.mail) {
 			const foundUser = await new UserService().getUserBymail(user.mail);
 
 			if (foundUser) throw new Error('mail is already in use');
 		}
-			
-			return await new UserService().updateUser(user);
+
+		return await new UserService().updateUser(user);
 	}
 
 	@Mutation(() => User)

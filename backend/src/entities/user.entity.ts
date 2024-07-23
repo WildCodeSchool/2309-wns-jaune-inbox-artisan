@@ -34,7 +34,7 @@ export default class User {
 
 	@Field({ nullable: true })
 	@Column({ nullable: true })
-	role?: role;
+	role: role;
 
 	@Field({ nullable: true })
 	@Column({ nullable: true, type: 'date' })
@@ -100,6 +100,10 @@ export class LoginResponse {
 	username: string;
 	@Field()
 	expirationDate: string;
+	@Field()
+	mail: string;
+	@Field({ nullable: true })
+	role: string;
 }
 
 @ObjectType()

@@ -22,7 +22,7 @@ type AppPropsWithLayout = AppProps & {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
 	const client = new ApolloClient({
-		uri: 'http://127.0.0.1:4000',
+		uri: 'http://localhost:4000',
 		cache: new InMemoryCache(),
 		credentials: 'include',
 	});

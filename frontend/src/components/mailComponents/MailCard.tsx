@@ -4,16 +4,14 @@ import { Children, ReactNode } from "react";
 const MailCard = ({
     style,
     title,
-    children,
+    content,
 }: {
     style: Object,
     title: string,
-    children: ReactNode,
+    content: string,
 }) => {
     return (
-        <Card title={title} style={style}>
-            {children}
-        </Card>
+        <Card title={title} style={style} >{content}</Card>
     )
 }
 

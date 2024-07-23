@@ -4,6 +4,7 @@ import Variable, {
 	CreateVariableInput,
 	UpdateVariableInput,
 } from '../entities/variable.entity';
+import User from '../entities/user.entity';
 
 export default class ImageService {
 	db: Repository<Variable>;
@@ -15,10 +16,9 @@ export default class ImageService {
 		return this.db.find();
 	}
 
-	// async getVariableByUserId() {
-	// 	// const user =
-	// 	return this.db.find({ where: { user } });
-	// }
+	async getVariableByUserId(user: User) {
+		return this.db.find({ where: { user } });
+	}
 
 	async getVariableById(id: number) {
 		return this.db.findOneBy({

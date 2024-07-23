@@ -40,7 +40,7 @@ const GlobalLayout = ({
 
 	return (
 		<Layout style={{ minHeight: '100vh' }}>
-			<Header user={user} isLayout />
+			<Header isLayout />
 			{!hidden ? (
 				<Layout hasSider style={{ width: '100%'}}>
 					<Sidebar />
