@@ -81,3 +81,10 @@ export class CreateTemplateInputRequest {
 	@Field({nullable: true})
 	userId: number
 }
+
+
+@ObjectType()
+export class PrintTemplate {
+	@Field({ nullable: true})
+	html: string
+}

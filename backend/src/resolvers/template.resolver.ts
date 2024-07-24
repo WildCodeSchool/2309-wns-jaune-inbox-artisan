@@ -4,11 +4,16 @@ import Template, {
 	CreateTemplateInput,
 	CreateTemplateInputRequest,
 	UpdateTemplateInput,
+	PrintTemplate
 } from '../entities/template.entity';
 import UserService from '../services/user.service';
+import VariableService from '../services/variable.service';
 import Variable from '../entities/variable.entity';
 import Image from 'next/image';
 import { MyContext } from '..';
+import getMailHtml from "../utils/render"
+import { preloadAll } from '../utils/preload';
+
 
 @Resolver()
 export default class TemplateResolver {
@@ -23,6 +28,20 @@ export default class TemplateResolver {
 		console.log('ctx :', ctx.user);
 		if (ctx.user)
 			return await new TemplateService().getTemplateById(id, ctx?.user);
+	}
+
+	@Query(() => PrintTemplate)
+	async sendMail(@Arg('id') id: number, @Ctx() ctx: MyContext) {
+		if (ctx.user) {
+			const template = await new TemplateService().getTemplateById(id, ctx?.user);
+			const variable = await new VariableService().getVariableByUserId( ctx?.user);
+			console.log(template, variable)
+			if (template && template instanceof Template) {
+				await preloadAll();
+			const response = getMailHtml( template.config,  variable)
+			return {html : response}
+			}
+		}
 	}
 
 	@Query(() => Template)

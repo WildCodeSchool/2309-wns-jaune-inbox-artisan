@@ -8,7 +8,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import SetupModal from "../../components/editor/Modal/SetupModal"
 import { useRouter } from 'next/router';
-import { useTemplateLazyQuery, useUpdateTemplateMutation } from '@/types/graphql';
+import { useTemplateLazyQuery, useUpdateTemplateMutation, useSendMailLazyQuery } from '@/types/graphql';
 import { useEditor } from '@/Contexts/EditorContext';
 import { json } from 'stream/consumers';
 
@@ -45,6 +45,15 @@ const Editor: NextPageWithLayout = () => {
 		}
 	});
 
+	const [printTemplate] = useSendMailLazyQuery({
+		fetchPolicy: 'no-cache',
+		onCompleted(sendMail) {
+			console.log(sendMail)},
+		onError(updateError) {
+			console.log("updateError:", updateError)
+		}
+	});
+
 	useEffect(() => {
 		console.log(templateId)
 		if(templateId) getTemplateById({ variables: { id: Number(router.query.templateId) } });
@@ -59,11 +68,15 @@ const Editor: NextPageWithLayout = () => {
 		updateTemplate({variables : {template: newTemplate}})
 	}
 
+	const print = () => {
+		printTemplate({variables : {id: parseInt(templateId,10)}})
+	}
+
 	return (
 		<div className="editor h-[calc(100vh-7vh)] w-full">
       	<SetupModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
 			<div className="editor h-[7vh] w-full">
-				<ToolBar setIsModalOpen={setIsModalOpen} onSave={onSave}/>
+				<ToolBar setIsModalOpen={setIsModalOpen} onSave={onSave} printTemplate={print}/>
 			</div>
 			<Layout className='h-[calc(100vh-14vh)] w-full'>
                 {/* <Sider theme="light" className='border border-green-500 border-solid overflow-y-auto select-none' width="20%"> */}

@@ -103,7 +103,7 @@ export class LoginResponse {
 	@Field()
 	mail: string;
 	@Field({ nullable: true })
-	role: string;
+	role: role;
 }
 
 @ObjectType()
@@ -126,7 +126,7 @@ export class CreateUserInput {
 	password: string;
 	@Field()
 	username: string;
-	@Field({ nullable: true })
+	@Field({defaultValue: "Freemium"})
 	role: role;
 	@Field({ nullable: true })
 	billing_date: string;

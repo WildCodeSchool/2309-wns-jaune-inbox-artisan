@@ -1,4 +1,4 @@
-import { Button, Drawer, Grid, Image, Layout, Space, Typography } from 'antd';
+import { Button, Drawer, Flex, Grid, Image, Layout, Space, Tooltip, Typography } from 'antd';
 import ProfileButton from '../ProfilButton';
 import { useEffect, useState } from 'react';
 import { MenuOutlined, CrownFilled } from '@ant-design/icons';
@@ -10,7 +10,7 @@ import { useUser } from '@/Contexts/UserContext';
 const { Header: AntHeader } = Layout;
 
 const { useBreakpoint } = Grid;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Header = ({
 	isLayout = true,
@@ -33,7 +33,8 @@ const Header = ({
 	useEffect(() => setBreackPoint(breackPoint), [breackPoint]);
 
 	console.log(user);
-	const premium = user.role;
+	// const premium = user.role;
+	const premium = user.role === 'Premium' ? true : false ;
 	console.log("premium ? -> ", premium);
 
 	return (
@@ -55,15 +56,27 @@ const Header = ({
 								src="/logo-typo.png"
 								alt="inboxArtisan Logo"
 								preview={false}
-								width={65}
-								// height={64}
+								// width={65}
+								height={64}
 							/>
 						</Link>
 						{/* {!isMobile ? <Title level={3}>InboxArtisan</Title> : null} */}
 					</Space>
 					{isLayout ? (
 						<Space>
-							<Button type="primary" icon={<CrownFilled />}>Premium</Button>
+							{!premium && (
+								<Tooltip title="Get a premium account !">
+									<Button href='/subscribe' type="primary" icon={<CrownFilled />}>Premium</Button>
+								</Tooltip>
+							)}
+							{premium && (
+								<Tooltip title="You have a premium account">
+									<Flex gap="small" className="bg-gradient-to-br from-green-300 to-teal-600 text-white rounded-md py-1.5 px-4">
+										<CrownFilled />
+										<Text className="!text-white !text-sm">Premium</Text>
+									</Flex>
+								</Tooltip>
+							)}
 							<ProfileButton user={user} />
 							{isMobile && (
 								<Button ghost onClick={() => setIsDrawerOpen(!isDrawerOpen)}>

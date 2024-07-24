@@ -21,6 +21,10 @@ const theme = {
 		Layout: {
 			triggerBg: '#218380',
 		},
+		Tooltip: {
+			colorTextLightSolid: 'black',
+			colorBgSpotlight: 'white',
+		}
 	},
 };
 

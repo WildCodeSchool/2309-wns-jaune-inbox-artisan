@@ -18,3 +18,11 @@ export const GET_TEMPLATE_BY_ID = gql`
 		}
 	}
 `
+
+export const PRINT_TEMPLATE = gql`
+	query sendMail($id: Float!) {
+		sendMail(id: $id) {
+			html
+		}
+	}
+`
