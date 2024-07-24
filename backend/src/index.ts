@@ -36,8 +36,6 @@ const stripe = new Stripe(
 const app = express();
 const httpServer = http.createServer(app);
 
-
-
 async function main() {
 	const schema = await buildSchema({
 		resolvers: [
@@ -58,14 +56,14 @@ async function main() {
 	app.use(
 		'/',
 		cors<cors.CorsRequest>({
-			origin: ['http://localhost:3000', 'http://127.0.0.1:3000','*'],
+			origin: ['http://localhost:3000', 'http://127.0.0.1:3000', '*'],
 			credentials: true,
 		}),
 		express.json(),
 		expressMiddleware(server, {
 			context: async ({ req, res }) => {
 				let user: User | null = null;
-
+				const a = 'totato';
 				const cookies = new Cookies(req, res);
 				const token = cookies.get('token');
 				if (token) {

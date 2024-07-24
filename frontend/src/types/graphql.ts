@@ -280,19 +280,15 @@ export type Template = {
   __typename?: 'Template';
   config: Scalars['String']['output'];
   id: Scalars['Float']['output'];
-  images: Array<Image>;
   name: Scalars['String']['output'];
   user: User;
-  variables: Array<Variable>;
 };
 
 export type TemplateInput = {
   config: Scalars['String']['input'];
   id: Scalars['Float']['input'];
-  images: Array<ImageInput>;
   name: Scalars['String']['input'];
   user: UserInput;
-  variables: Array<VariableInput>;
 };
 
 export type UpdateFolderInput = {

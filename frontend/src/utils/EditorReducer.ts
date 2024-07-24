@@ -50,7 +50,11 @@ function reducer(state: any, action: any) {
 			const row = newLayout[position.rowId];
 			row[position.colId] = { ...edited, ...data };
 			const colAmount = row.length; // longueur
-			const totalWidth = row.reduce((acc, cur) => acc + cur.containerWidth, 0);
+			const totalWidth = row.reduce(
+				(acc: number, cur: { containerWidth: number }) =>
+					acc + cur.containerWidth,
+				0
+			);
 			// si postion actuel (ColId) != 0 on modifie index(0) avec l'opposer sinon on modifie index(0)
 			const colToEdit = () => {
 				if (colAmount === 3) {
@@ -82,7 +86,7 @@ function reducer(state: any, action: any) {
 		}
 		if (data.height) {
 			console.log(data.height);
-			edited.style.height = data?.height;
+			edited.style.height = data?.height + '%';
 		}
 		if (data.borderRadius) {
 			edited.style.borderRadius = `${data.borderRadius}%`;

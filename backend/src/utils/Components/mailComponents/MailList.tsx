@@ -1,27 +1,20 @@
-import { List, Typography } from "antd"
-import { ReactNode } from "react"
+import { List, Typography } from 'antd';
+import React, { CSSProperties, FC } from 'react';
 
-const MailList = ({
-    style,
-    title,
-    items,
-}: {
-    style: Object,
-    title: string,
-    items: ReactNode[], 
-}) => {
-    return (
-        <List 
-            style={style}
-            dataSource={items}
-            renderItem={(item) => (
-                <List.Item>
-                    {item}
-                </List.Item>
-            )}
-        >
-        </List>
-    )
-}
+type MailListPropsType = {
+	style: CSSProperties;
+	title: string;
+	items: string[];
+};
 
-export default MailList
+const MailList: FC<MailListPropsType> = ({ style, title, items }) => {
+	return (
+		<List
+			style={style}
+			dataSource={items}
+			renderItem={(item) => <List.Item>{item}</List.Item>}
+		></List>
+	);
+};
+
+export default MailList;

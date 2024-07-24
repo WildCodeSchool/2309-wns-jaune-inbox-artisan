@@ -1,18 +1,18 @@
-import { Card } from "antd";
-import { Children, ReactNode } from "react";
+import { Card } from 'antd';
+import { CSSProperties, FC } from 'react';
 
-const MailCard = ({
-    style,
-    title,
-    content,
-}: {
-    style: Object,
-    title: string,
-    content: string,
-}) => {
-    return (
-        <Card title={title} style={style} >{content}</Card>
-    )
-}
+type MailCardPropsType = {
+	style: CSSProperties;
+	title: string;
+	content: string;
+};
 
-export default MailCard
+const MailCard: FC<MailCardPropsType> = ({ style, title, content }) => {
+	return (
+		<Card title={title} style={style}>
+			{content}
+		</Card>
+	);
+};
+
+export default MailCard;

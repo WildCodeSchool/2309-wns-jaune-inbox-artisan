@@ -28,63 +28,50 @@ export default class Template {
 	config: string;
 
 	@Field((type) => User)
-	@ManyToOne(() => User , (user) => user.templates)
+	@ManyToOne(() => User, (user) => user.templates)
 	user: User;
-
-	@Field((type) => [Variable])
-	@ManyToMany(() => Variable)
-	@JoinTable()
-	variables: Variable[];
-
-	@Field(() => [Image])
-	@ManyToMany(() => Image)
-	@JoinTable()
-	images: Image[];
 }
 
 @InputType()
 export class UpdateTemplateInput {
 	@Field(() => ID)
 	id: number;
-	@Field({ nullable: true})
-	name: string
-	@Field({nullable: true})
-	config: string
-	@Field( (type) => User, {nullable: true})
-	user: User
-	@Field(type => [Variable], {nullable: true})
-	variables: Variable[]
-	@Field(type => [Image], {nullable: true})
-	Images: Image[]
-
-
+	@Field({ nullable: true })
+	name: string;
+	@Field({ nullable: true })
+	config: string;
+	@Field((type) => User, { nullable: true })
+	user: User;
+	@Field((type) => [Variable], { nullable: true })
+	variables: Variable[];
+	@Field((type) => [Image], { nullable: true })
+	Images: Image[];
 }
 
 @InputType()
 export class CreateTemplateInput {
-	@Field({ nullable: true})
-	name: string
-	@Field({nullable: true})
-	config: string
-	@Field( (type) => User, {nullable: true})
-	user: User
-	@Field(type => [Variable], {nullable: true})
-	variables: Variable[]
-	@Field(type => [Image], {nullable: true})
-	Images: Image[]
+	@Field({ nullable: true })
+	name: string;
+	@Field({ nullable: true })
+	config: string;
+	@Field((type) => User, { nullable: true })
+	user: User;
+	@Field((type) => [Variable], { nullable: true })
+	variables: Variable[];
+	@Field((type) => [Image], { nullable: true })
+	Images: Image[];
 }
 
 @InputType()
 export class CreateTemplateInputRequest {
-	@Field({ nullable: true})
-	name: string
-	@Field({nullable: true})
-	userId: number
+	@Field({ nullable: true })
+	name: string;
+	@Field({ nullable: true })
+	userId: number;
 }
-
 
 @ObjectType()
 export class PrintTemplate {
-	@Field({ nullable: true})
-	html: string
+	@Field({ nullable: true })
+	html: string;
 }
