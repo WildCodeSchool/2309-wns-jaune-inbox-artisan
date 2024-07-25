@@ -16,7 +16,15 @@ const MailPicture: FC<MailPicturePropsType> = ({
 	height,
 }) => {
 	return (
-		<div className="flex justify-center items-center w-full h-full">
+		<div
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				width: '100%',
+				height: '100%',
+			}}
+		>
 			<Image
 				style={style}
 				src={picture?.src}

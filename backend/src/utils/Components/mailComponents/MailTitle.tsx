@@ -36,8 +36,9 @@ const MailTitle: FC<MailTitlePropsType> = ({
 				marginBlockEnd: 0,
 				...style,
 				height: style?.height ? `${style?.height}vh` : '100%',
+				margin: 0,
+				padding: 0,
 			}}
-			className="m-0 p-0"
 		>
 			{handleVariable()}
 		</Title>

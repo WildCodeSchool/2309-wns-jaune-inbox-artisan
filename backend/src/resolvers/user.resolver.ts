@@ -93,6 +93,33 @@ export default class UserResolver {
 	}
 
 	@Mutation(() => User)
+	async userSwitchPremium(@Arg('user') user: UpdateUserInput) {
+		// if (user.mail) {
+		// 	const foundUser = await new UserService().getUserBymail(user.mail);
+
+		// 	if (foundUser) throw new Error('mail is already in use');
+		// }
+
+		console.log('before if', user);
+
+		// const userPremiumSwitch = user;
+
+		if (user.id) {
+			if (user.role === 'Freemium') {
+				user.role = 'Premium';
+				new UserService().updateUser(user);
+			} else {
+				user.role = 'Freemium';
+				new UserService().updateUser(user);
+			}
+
+			console.log('AFTER IF', user);
+		}
+
+		return true;
+	}
+
+	@Mutation(() => User)
 	async createUser(@Arg('user') user: CreateUserInput) {
 		return await new UserService().createUser(user);
 	}

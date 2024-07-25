@@ -13,7 +13,7 @@ const View = ({ config, variables }: { config: any[][]; variables: any[] }) => {
 							<Col
 								span={col?.containerWidth}
 								key={colIndex}
-								className="select-none max-h-full"
+								style={{ userSelect: 'none', maxHeight: '100%' }}
 							>
 								{col.name ? (
 									<Components

@@ -12,6 +12,7 @@ import Variable from '../entities/variable.entity';
 import Image from 'next/image';
 import { MyContext } from '..';
 import getMailHtml from '../utils/render';
+import sendMail from '../utils/mailer';
 
 @Resolver()
 export default class TemplateResolver {
@@ -41,6 +42,7 @@ export default class TemplateResolver {
 			console.log(template, variable);
 			if (template && template instanceof Template) {
 				const response = getMailHtml(template.config, variable);
+				await sendMail(ctx.user.mail, response);
 				return { html: response };
 			}
 		}

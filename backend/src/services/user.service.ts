@@ -26,11 +26,23 @@ export default class UserService {
 		return this.db.findOneBy({ mail: mail });
 	}
 
+	// async updateUser(user: UpdateUserInput) {
+	// 	assert(user.id, 'you need to provide an id');
+	// 	const actualUser = await this.getUserById(user.id);
+
+	// 	return await this.db.save(this.db.merge(actualUser, user));
+	// }
+
 	async updateUser(user: UpdateUserInput) {
 		assert(user.id, 'you need to provide an id');
-		const actualUser = await this.getUserById(user.id);
 
-		return await this.db.save(this.db.merge(actualUser, user));
+		const actualUser = await this.getUserById(user.id);
+		// const actualUser = await this.getUserBymail(user.id);
+
+		console.log('actual user -> ', actualUser);
+
+		return this.db.update(actualUser.id, actualUser);
+		// return this.db.update(user.id, user);
 	}
 
 	async createUser(user: CreateUserInput) {

@@ -21,7 +21,7 @@ const MailSocial: FC<MailSocialPropsType> = ({
 	instagramLink,
 }) => {
 	return (
-		<Flex justify={'space-around'}>
+		<Flex style={{ justifyContent: 'space-around' }}>
 			{facebookLink && (
 				<Link href={facebookLink} style={style}>
 					<FacebookFilled style={{ fontSize: '24px', color: '#126dff' }} />

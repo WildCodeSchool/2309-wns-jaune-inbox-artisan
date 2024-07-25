@@ -6,6 +6,8 @@ import buildMail from './utils';
 const getMailHtml = (config: string, variables: any[]) => {
 	const data: any[] = JSON.parse(config);
 
+	console.log(View);
+
 	const html = renderToStaticMarkup(
 		React.createElement(View, { config: data, variables: variables })
 	);
