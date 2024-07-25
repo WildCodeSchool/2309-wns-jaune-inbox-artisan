@@ -13,10 +13,12 @@ const theme = {
 			fontSize: 20,
 		},
 		Menu: {
-			darkColorBgContainer: '#CACACA',
-			darkItemBg: '#CACACA',
-			darkItemSelectedBg: '#94E8B4',
+			// darkColorBgContainer: '#EDEDED',
+			darkItemBg: '#EDEDED',
+			darkItemSelectedBg: '#FFFFFF',
 			darkItemSelectedColor: '#000000',
+			darkItemHoverBg: '#a1ffc5',
+			darkItemHoverColor: '#000000',
 		},
 		Layout: {
 			triggerBg: '#218380',
@@ -24,7 +26,7 @@ const theme = {
 		Tooltip: {
 			colorTextLightSolid: 'black',
 			colorBgSpotlight: 'white',
-		}
+		},
 	},
 };
 

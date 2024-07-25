@@ -112,6 +112,7 @@ export type Mutation = {
   updateImage: Scalars['Boolean']['output'];
   updateTemplate: Template;
   updateUser: User;
+  userSwitchPremium: User;
 };
 
 
@@ -181,6 +182,11 @@ export type MutationUpdateTemplateArgs = {
 
 
 export type MutationUpdateUserArgs = {
+  user: UpdateUserInput;
+};
+
+
+export type MutationUserSwitchPremiumArgs = {
   user: UpdateUserInput;
 };
 
@@ -371,6 +377,13 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', mail: string, username: string, password: string } };
 
+export type UserSwitchPremiumMutationVariables = Exact<{
+  user: UpdateUserInput;
+}>;
+
+
+export type UserSwitchPremiumMutation = { __typename?: 'Mutation', userSwitchPremium: { __typename?: 'User', id: number, role?: string | null } };
+
 export type DeleteFolderMutationVariables = Exact<{
   deleteFolderId: Scalars['Float']['input'];
 }>;
@@ -536,6 +549,40 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const UserSwitchPremiumDocument = gql`
+    mutation UserSwitchPremium($user: UpdateUserInput!) {
+  userSwitchPremium(user: $user) {
+    id
+    role
+  }
+}
+    `;
+export type UserSwitchPremiumMutationFn = Apollo.MutationFunction<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>;
+
+/**
+ * __useUserSwitchPremiumMutation__
+ *
+ * To run a mutation, you first call `useUserSwitchPremiumMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSwitchPremiumMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSwitchPremiumMutation, { data, loading, error }] = useUserSwitchPremiumMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useUserSwitchPremiumMutation(baseOptions?: Apollo.MutationHookOptions<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>(UserSwitchPremiumDocument, options);
+      }
+export type UserSwitchPremiumMutationHookResult = ReturnType<typeof useUserSwitchPremiumMutation>;
+export type UserSwitchPremiumMutationResult = Apollo.MutationResult<UserSwitchPremiumMutation>;
+export type UserSwitchPremiumMutationOptions = Apollo.BaseMutationOptions<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>;
 export const DeleteFolderDocument = gql`
     mutation DeleteFolder($deleteFolderId: Float!) {
   deleteFolder(id: $deleteFolderId)
@@ -851,7 +898,7 @@ export const LoginDocument = gql`
  *   },
  * });
  */
-export function useLoginQuery(baseOptions: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables> & ({ variables: LoginQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useLoginQuery(baseOptions: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
       }
@@ -937,7 +984,7 @@ export const FolderByUserIdDocument = gql`
  *   },
  * });
  */
-export function useFolderByUserIdQuery(baseOptions: Apollo.QueryHookOptions<FolderByUserIdQuery, FolderByUserIdQueryVariables> & ({ variables: FolderByUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useFolderByUserIdQuery(baseOptions: Apollo.QueryHookOptions<FolderByUserIdQuery, FolderByUserIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<FolderByUserIdQuery, FolderByUserIdQueryVariables>(FolderByUserIdDocument, options);
       }
@@ -980,7 +1027,7 @@ export const ImageByUserIdDocument = gql`
  *   },
  * });
  */
-export function useImageByUserIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByUserIdQuery, ImageByUserIdQueryVariables> & ({ variables: ImageByUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useImageByUserIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByUserIdQuery, ImageByUserIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ImageByUserIdQuery, ImageByUserIdQueryVariables>(ImageByUserIdDocument, options);
       }
@@ -1022,7 +1069,7 @@ export const ImageByFolderIdDocument = gql`
  *   },
  * });
  */
-export function useImageByFolderIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByFolderIdQuery, ImageByFolderIdQueryVariables> & ({ variables: ImageByFolderIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useImageByFolderIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByFolderIdQuery, ImageByFolderIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ImageByFolderIdQuery, ImageByFolderIdQueryVariables>(ImageByFolderIdDocument, options);
       }
@@ -1105,7 +1152,7 @@ export const VariablesByUserIdDocument = gql`
  *   },
  * });
  */
-export function useVariablesByUserIdQuery(baseOptions: Apollo.QueryHookOptions<VariablesByUserIdQuery, VariablesByUserIdQueryVariables> & ({ variables: VariablesByUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useVariablesByUserIdQuery(baseOptions: Apollo.QueryHookOptions<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>(VariablesByUserIdDocument, options);
       }
@@ -1146,7 +1193,7 @@ export const TemplatesDocument = gql`
  *   },
  * });
  */
-export function useTemplatesQuery(baseOptions: Apollo.QueryHookOptions<TemplatesQuery, TemplatesQueryVariables> & ({ variables: TemplatesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useTemplatesQuery(baseOptions: Apollo.QueryHookOptions<TemplatesQuery, TemplatesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<TemplatesQuery, TemplatesQueryVariables>(TemplatesDocument, options);
       }
@@ -1188,7 +1235,7 @@ export const TemplateDocument = gql`
  *   },
  * });
  */
-export function useTemplateQuery(baseOptions: Apollo.QueryHookOptions<TemplateQuery, TemplateQueryVariables> & ({ variables: TemplateQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useTemplateQuery(baseOptions: Apollo.QueryHookOptions<TemplateQuery, TemplateQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<TemplateQuery, TemplateQueryVariables>(TemplateDocument, options);
       }
@@ -1228,7 +1275,7 @@ export const SendMailDocument = gql`
  *   },
  * });
  */
-export function useSendMailQuery(baseOptions: Apollo.QueryHookOptions<SendMailQuery, SendMailQueryVariables> & ({ variables: SendMailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useSendMailQuery(baseOptions: Apollo.QueryHookOptions<SendMailQuery, SendMailQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<SendMailQuery, SendMailQueryVariables>(SendMailDocument, options);
       }

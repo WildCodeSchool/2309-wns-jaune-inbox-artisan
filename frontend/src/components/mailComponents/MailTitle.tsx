@@ -9,7 +9,7 @@ type MailTitlePropsType = {
 	level: TitleProps['level'];
 	text: String;
 	style: CSSProperties;
-	variables: VariableType[];
+	variables?: VariableType[];
 };
 
 const MailTitle: FC<MailTitlePropsType> = ({
@@ -18,8 +18,6 @@ const MailTitle: FC<MailTitlePropsType> = ({
 	style,
 	variables,
 }) => {
-	const [textWithVariable, setTextWithVariable] = useState('');
-
 	const handleVariable = () => {
 		let newText = `${text}`;
 		variables?.forEach((variable) => {
@@ -28,14 +26,9 @@ const MailTitle: FC<MailTitlePropsType> = ({
 				variable?.value || ''
 			);
 		});
-		setTextWithVariable(newText);
+		return newText;
 	};
 
-	useEffect(() => {
-		handleVariable();
-	}, [variables]);
-
-	// console.log(style)
 	return (
 		<Title
 			level={level}
@@ -46,7 +39,7 @@ const MailTitle: FC<MailTitlePropsType> = ({
 			}}
 			className="m-0 p-0"
 		>
-			{textWithVariable}
+			{handleVariable()}
 		</Title>
 	);
 };

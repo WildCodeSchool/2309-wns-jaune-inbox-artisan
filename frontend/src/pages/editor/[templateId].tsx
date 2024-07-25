@@ -7,6 +7,7 @@ import Properties from '@/components/editor/Properties';
 import { ReactElement, useEffect, useState } from 'react';
 import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import SetupModal from '../../components/editor/Modal/SetupModal';
+import RenameModal from '../../components/editor/Modal/RenameModal';
 import { useRouter } from 'next/router';
 import {
 	useTemplateLazyQuery,
@@ -20,16 +21,19 @@ const { Sider, Content } = Layout;
 
 const Editor: NextPageWithLayout = () => {
 	const { state, dispatch } = useEditor();
+	const [templateTitle, setTemplateTitle] = useState<string>('');
 	const router = useRouter();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
 
 	const templateId = router.query.templateId as string;
 
 	const [getTemplateById] = useTemplateLazyQuery({
 		fetchPolicy: 'no-cache',
 		onCompleted(getTemplateData) {
-			console.log(getTemplateData.templateById.config);
+			console.log(getTemplateData.templateById.name);
+			setTemplateTitle(getTemplateData.templateById.name);
 			dispatch({ type: 'load', data: getTemplateData.templateById.config });
 		},
 		onError(getTemplateError) {
@@ -69,7 +73,6 @@ const Editor: NextPageWithLayout = () => {
 	});
 
 	useEffect(() => {
-		console.log(templateId);
 		if (templateId)
 			getTemplateById({ variables: { id: Number(router.query.templateId) } });
 	}, [templateId]);
@@ -87,17 +90,33 @@ const Editor: NextPageWithLayout = () => {
 		printTemplate({ variables: { id: parseInt(templateId, 10) } });
 	};
 
+	const onTitleChange = (newTitle: string) => {
+		console.log('nes ', newTitle);
+		setTemplateTitle(newTitle);
+		const newTemplate = {
+			id: templateId,
+			name: newTitle,
+		};
+		updateTemplate({ variables: { template: newTemplate } });
+	};
+
 	return (
 		<div className="editor h-[calc(100vh-7vh)] w-full">
 			<SetupModal
 				isOpen={isModalOpen}
 				closeModal={() => setIsModalOpen(false)}
 			/>
+			{/* <RenameModal
+				isOpen={isRenameModalOpen}
+				closeModal={() => setIsRenameModalOpen(false)}
+			/> */}
 			<div className="editor h-[7vh] w-full">
 				<ToolBar
 					setIsModalOpen={setIsModalOpen}
 					onSave={onSave}
 					printTemplate={print}
+					templateTitle={templateTitle}
+					onTitleChange={onTitleChange}
 				/>
 			</div>
 			<Layout className="h-[calc(100vh-14vh)] w-full">

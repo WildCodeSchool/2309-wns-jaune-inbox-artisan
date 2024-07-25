@@ -1,18 +1,50 @@
-import { useState } from "react"
+import { useState } from 'react';
 
-import { Space, Button } from "antd"
+import { Space, Button, Typography } from 'antd';
 
+const ToolBar = ({
+	setIsModalOpen,
+	onSave,
+	printTemplate,
+	templateTitle,
+	onTitleChange,
+}) => {
+	const [editableStr, setEditableStr] = useState('This is an editable text.');
 
-const ToolBar = ({setIsModalOpen, onSave, printTemplate}) => {
+	return (
+		<div>
+			<Typography.Title
+				editable={{ onChange: onTitleChange }}
+				level={3}
+				style={{ margin: 0 }}
+			>
+				{templateTitle}
+			</Typography.Title>
+			<Space>
+				<Button
+					onClick={() => {
+						setIsModalOpen(true);
+					}}
+				>
+					Setup
+				</Button>
+				<Button
+					onClick={() => {
+						onSave();
+					}}
+				>
+					save
+				</Button>
+				<Button
+					onClick={() => {
+						printTemplate();
+					}}
+				>
+					print
+				</Button>
+			</Space>
+		</div>
+	);
+};
 
-
-    return (
-        <Space >
-            <Button onClick={() => {setIsModalOpen(true)}}>Setup</Button>
-            <Button onClick={() => {onSave()}}>save</Button>
-            <Button onClick={() => {printTemplate()}}>print</Button>
-        </Space>
-    )
-}
-
-export default ToolBar
+export default ToolBar;

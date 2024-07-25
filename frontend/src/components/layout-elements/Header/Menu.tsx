@@ -29,29 +29,25 @@ const setNavigationItem = (
 		className: 'bg-[#218380]',
 	} as MenuItem);
 
-
-
-
-	
 const MenuComponents = () => {
 	const { user } = useUser();
-	
+
 	const router = useRouter();
 
-	const [insertTemplate, {data: id}] = useInsertTemplateMutation()
+	const [insertTemplate, { data: id }] = useInsertTemplateMutation();
 
 	const onAddTemplate = () => {
 		const newTemplate = {
-			name: "New Template",
+			name: 'New Template',
 			userId: user.id,
-		}
+		};
 		insertTemplate({
 			variables: {
 				template: newTemplate,
 			},
-		}).then((r) => router.push(`/editor/${r.data?.insertTemplate.id}`))
-	}
-	
+		}).then((r) => router.push(`/editor/${r.data?.insertTemplate.id}`));
+	};
+
 	const NAVIGATIONITEMS: MenuItem[] = [
 		setNavigationItem(
 			<Link href="/dashboard" title="Dashboard">
@@ -82,14 +78,16 @@ const MenuComponents = () => {
 			<HighlightOutlined />
 		),
 	];
-	
-	return(
+
+	return (
 		<Menu
 			defaultSelectedKeys={['1']}
 			items={NAVIGATIONITEMS}
 			mode="inline"
 			theme="dark"
+			className="!pt-4"
 		/>
-)};
+	);
+};
 
 export default MenuComponents;

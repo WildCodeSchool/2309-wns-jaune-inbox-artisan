@@ -9,3 +9,12 @@ export const REGISTER = gql`
 		}
 	}
 `;
+
+export const USER_SWITCH_PREMIUM = gql`
+	mutation UserSwitchPremium($user: UpdateUserInput!) {
+		userSwitchPremium(user: $user) {
+			id
+			role
+		}
+	}
+`;

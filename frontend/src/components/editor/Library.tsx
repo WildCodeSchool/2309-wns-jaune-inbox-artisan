@@ -53,7 +53,7 @@ const data = [
 		title: 'Text',
 		definition: 'text components',
 		name: 'MailText',
-		component: <MailText style={{}} text="this is a demo" style={{}} />,
+		component: <MailText text="this is a demo" style={{}} />,
 		keys: { style: {}, text: 'this is a demo' },
 		strong: false,
 		italic: false,
@@ -75,10 +75,19 @@ const data = [
 		component: (
 			<MailCard
 				title="simple card"
-				style={{}}
-				content={'<p>Card content</p><p>Card content</p><p>Card content</p>'}
+				style={{ whiteSpace: 'pre-wrap' }}
+				content={`Card content
+					Card content
+					Card content`}
 			></MailCard>
 		),
+		keys: {
+			style: {},
+			title: 'simple card',
+			content: `Card content
+			Card content
+			Card content`,
+		},
 	},
 	{
 		title: 'Text list',

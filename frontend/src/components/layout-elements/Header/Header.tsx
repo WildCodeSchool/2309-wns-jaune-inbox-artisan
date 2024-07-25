@@ -1,4 +1,14 @@
-import { Button, Drawer, Flex, Grid, Image, Layout, Space, Tooltip, Typography } from 'antd';
+import {
+	Button,
+	Drawer,
+	Flex,
+	Grid,
+	Image,
+	Layout,
+	Space,
+	Tooltip,
+	Typography,
+} from 'antd';
 import ProfileButton from '../ProfilButton';
 import { useEffect, useState } from 'react';
 import { MenuOutlined, CrownFilled } from '@ant-design/icons';
@@ -12,11 +22,7 @@ const { Header: AntHeader } = Layout;
 const { useBreakpoint } = Grid;
 const { Title, Text } = Typography;
 
-const Header = ({
-	isLayout = true,
-} : {
-	isLayout: boolean;
-}) => {
+const Header = ({ isLayout = true }: { isLayout: boolean }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const { logout, user } = useUser();
@@ -34,19 +40,19 @@ const Header = ({
 
 	console.log(user);
 	// const premium = user.role;
-	const premium = user.role === 'Premium' ? true : false ;
-	console.log("premium ? -> ", premium);
+	const premium = user.role === 'Premium' ? true : false;
+	console.log('premium ? -> ', premium);
 
 	return (
 		<>
 			<AntHeader
 				style={{
-					backgroundColor: '#D9D9D9',
+					backgroundColor: '#ffffff',
 					position: 'sticky',
 					top: 0,
 					zIndex: 1,
 				}}
-				className="!px-2 !h-[7vh]"
+				className="!px-2 !h-[8vh] shadow-md"
 			>
 				<div className="flex items-center justify-between h-full">
 					<Space>
@@ -66,12 +72,21 @@ const Header = ({
 						<Space>
 							{!premium && (
 								<Tooltip title="Get a premium account !">
-									<Button href='/subscribe' type="primary" icon={<CrownFilled />}>Premium</Button>
+									<Button
+										href="/subscribe"
+										type="primary"
+										icon={<CrownFilled />}
+									>
+										Premium
+									</Button>
 								</Tooltip>
 							)}
 							{premium && (
 								<Tooltip title="You have a premium account">
-									<Flex gap="small" className="bg-gradient-to-br from-green-300 to-teal-600 text-white rounded-md py-1.5 px-4">
+									<Flex
+										gap="small"
+										className="bg-gradient-to-br from-green-300 to-teal-600 text-white rounded-md py-1.5 px-4"
+									>
 										<CrownFilled />
 										<Text className="!text-white !text-sm">Premium</Text>
 									</Flex>
@@ -99,14 +114,23 @@ const Header = ({
 						<Space>
 							{!user && (
 								<>
-									<Button href="/auth/login" size="large">Log in</Button>
-									<Button href="/auth/register" type="primary" size="large">Sign up</Button>
+									<Button href="/auth/login" size="large">
+										Log in
+									</Button>
+									<Button href="/auth/register" type="primary" size="large">
+										Sign up
+									</Button>
 								</>
 							)}
 							{user && (
 								<>
-									<Button href="/dashboard" type="primary" size="large">Dashboard</Button>
-									<Button type="primary" size="large" danger
+									<Button href="/dashboard" type="primary" size="large">
+										Dashboard
+									</Button>
+									<Button
+										type="primary"
+										size="large"
+										danger
 										href="/"
 										onClick={() => {
 											logout();
