@@ -33,16 +33,16 @@ export default class UserService {
 	// 	return await this.db.save(this.db.merge(actualUser, user));
 	// }
 
-	async updateUser(user: UpdateUserInput) {
+	async updateUserService(user: UpdateUserInput, userDb: User) {
 		assert(user.id, 'you need to provide an id');
 
-		const actualUser = await this.getUserById(user.id);
-		// const actualUser = await this.getUserBymail(user.id);
+		// const actualUser = await this.getUserById(user.id);
 
-		console.log('actual user -> ', actualUser);
-
-		return this.db.update(actualUser.id, actualUser);
 		// return this.db.update(user.id, user);
+		// return await this.db.save(this.db.merge(userDb, user));
+		// return await this.getUserBymail(user.mail);
+		await this.db.update(user.id, user);
+		return await this.getUserBymail(user.mail);
 	}
 
 	async createUser(user: CreateUserInput) {

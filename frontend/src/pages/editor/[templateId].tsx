@@ -7,7 +7,6 @@ import Properties from '@/components/editor/Properties';
 import { ReactElement, useEffect, useState } from 'react';
 import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import SetupModal from '../../components/editor/Modal/SetupModal';
-import RenameModal from '../../components/editor/Modal/RenameModal';
 import { useRouter } from 'next/router';
 import {
 	useTemplateLazyQuery,

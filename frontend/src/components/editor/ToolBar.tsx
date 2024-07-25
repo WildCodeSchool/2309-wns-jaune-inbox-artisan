@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Space, Button, Typography } from 'antd';
 
-const ToolBar = ({
+type ToolBarPropsType = {
+	setIsModalOpen: (val: boolean) => void;
+	onSave: () => void;
+	printTemplate: () => void;
+	templateTitle: string;
+	onTitleChange: (val: string) => void;
+};
+
+const ToolBar: FC<ToolBarPropsType> = ({
 	setIsModalOpen,
 	onSave,
 	printTemplate,

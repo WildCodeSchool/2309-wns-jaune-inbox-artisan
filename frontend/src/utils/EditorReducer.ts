@@ -19,7 +19,6 @@ function reducer(state: any, action: any) {
 	}
 
 	if (action.type === 'addComponent') {
-		console.log(action.data);
 		const { name, keys, position } = action.data;
 		const newLayout = [...state];
 		newLayout[position.rowId][position.colId] = {

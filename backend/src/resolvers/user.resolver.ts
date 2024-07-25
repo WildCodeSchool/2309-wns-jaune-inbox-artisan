@@ -76,20 +76,12 @@ export default class UserResolver {
 
 	@Mutation(() => User)
 	async updateUser(@Arg('user') user: UpdateUserInput) {
-		if (user.mail) {
-			const foundUser = await new UserService().getUserBymail(user.mail);
+		if (user.id) {
+			const foundUser = await new UserService().getUserById(user.id);
 
-			if (foundUser) throw new Error('mail is already in use');
+			if (foundUser)
+				return await new UserService().updateUserService(user, foundUser);
 		}
-
-		return await new UserService().updateUser(user);
-		if (user.mail) {
-			const foundUser = await new UserService().getUserBymail(user.mail);
-
-			if (foundUser) throw new Error('mail is already in use');
-		}
-
-		return await new UserService().updateUser(user);
 	}
 
 	@Mutation(() => User)
@@ -102,15 +94,15 @@ export default class UserResolver {
 
 		console.log('before if', user);
 
-		// const userPremiumSwitch = user;
+		const foundUser = await new UserService().getUserBymail(user.mail);
 
-		if (user.id) {
+		if (user.id && foundUser) {
 			if (user.role === 'Freemium') {
 				user.role = 'Premium';
-				new UserService().updateUser(user);
+				new UserService().updateUserService(user, foundUser);
 			} else {
 				user.role = 'Freemium';
-				new UserService().updateUser(user);
+				new UserService().updateUserService(user, foundUser);
 			}
 
 			console.log('AFTER IF', user);

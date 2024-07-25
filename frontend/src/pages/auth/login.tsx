@@ -29,30 +29,31 @@ const Login: NextPageWithLayout = () => {
 	const router = useRouter();
 
 	const [login, { data, error }] = useLoginLazyQuery({
-				onCompleted(data) {
-					console.log(data);
-					if (data.login.success) {
-						console.log("je suis bugger")
-						setUser({
-							...data.login.user,
-							id: parseInt(data.login.user.id, 10),
-						});
-						sessionStorage.setItem('user', JSON.stringify(data.login.user));
-						router.push('/dashboard', undefined, { shallow: true })
-					} else {
-						throw new Error("log bug");
-					}
-				},
+		onCompleted(data) {
+			console.log(data);
+			if (data.login.success) {
+				console.log('je suis bugger');
+				setUser({
+					...data.login.user,
+					id: parseInt(data?.login?.user?.id || '0', 10),
+				});
+				sessionStorage.setItem('user', JSON.stringify(data.login.user));
+				router.push('/dashboard', undefined, { shallow: true });
+			} else {
+				throw new Error('log bug');
 			}
-	);
+		},
+	});
 
 	const { setUser } = useUser();
 
 	const onFinish = (values: any) => {
-		console.log("onfinish launch");
+		console.log('onfinish launch');
 		console.log(values);
 		if (values.mail && values.password) {
-			login({variables: { infos: { mail: values.mail, password: values.password } }});
+			login({
+				variables: { infos: { mail: values.mail, password: values.password } },
+			});
 		}
 	};
 

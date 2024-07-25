@@ -94,11 +94,7 @@ const data = [
 		definition: 'list with items',
 		name: 'MailList',
 		component: (
-			<MailList
-				title="List example"
-				style={{}}
-				items={['example 1 ', 'example 2']}
-			></MailList>
+			<MailList style={{}} items={['example 1 ', 'example 2']}></MailList>
 		),
 		keys: {},
 	},
@@ -128,7 +124,7 @@ const { Meta } = Card;
 const Library = () => {
 	const { dispatch, editedPostion } = useEditor();
 
-	const addComponent = (item) => {
+	const addComponent = (item: any) => {
 		dispatch({
 			type: 'addComponent',
 			data: { keys: item.keys, name: item.name, position: editedPostion },

@@ -1,4 +1,4 @@
-import {Dispatch} from "react"
+import { Dispatch } from 'react';
 
 export type BreackPointContextType = {
 	isMobile: boolean;
@@ -13,15 +13,13 @@ export type UserContextType = {
 };
 
 export type EditorContextType = {
-	editedPostion : EditedPositionType
-	handlePosition : (rowId :number, colId:number) => void
-	state: any[][]
-	dispatch: Dispatch<any>
-	currentEdited: any
-}
-
+	editedPostion: EditedPositionType;
+	handlePosition: (rowId: number, colId: number) => void;
+	state: any[][];
+	dispatch: Dispatch<any>;
+};
 
 export type EditedPositionType = {
-	colId : number
-	rowId : number
-}
+	colId: number;
+	rowId: number;
+};

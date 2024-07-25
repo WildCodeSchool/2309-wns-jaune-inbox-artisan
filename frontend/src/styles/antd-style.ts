@@ -13,12 +13,12 @@ const theme = {
 			fontSize: 20,
 		},
 		Menu: {
-			// darkColorBgContainer: '#EDEDED',
 			darkItemBg: '#EDEDED',
-			darkItemSelectedBg: '#FFFFFF',
-			darkItemSelectedColor: '#000000',
-			darkItemHoverBg: '#a1ffc5',
-			darkItemHoverColor: '#000000',
+			darkItemColor: '#FFFFFF',
+			darkItemSelectedBg: '#c9f3d9',
+			darkItemSelectedColor: '#218380',
+			darkItemHoverBg: '#4a9896',
+			darkItemHoverColor: '#FFFFFF',
 		},
 		Layout: {
 			triggerBg: '#218380',
