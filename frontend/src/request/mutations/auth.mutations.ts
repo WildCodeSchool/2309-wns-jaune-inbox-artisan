@@ -10,10 +10,17 @@ export const REGISTER = gql`
 	}
 `;
 
+export const PAYMENT_UUID = gql`
+	mutation createUuidPayment($id: Float!) {
+		createUuidPayment(id: $id) {
+			uuid
+		}
+	}
+`;
+
 export const USER_SWITCH_PREMIUM = gql`
 	mutation UserSwitchPremium($user: UpdateUserInput!) {
 		userSwitchPremium(user: $user) {
-			id
 			role
 		}
 	}

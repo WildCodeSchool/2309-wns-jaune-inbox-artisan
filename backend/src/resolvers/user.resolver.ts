@@ -1,15 +1,17 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver, Float } from 'type-graphql';
 import UserService from '../services/user.service';
 import User, {
 	CreateUserInput,
 	InputLogin,
 	Message,
+	role,
 	UpdateUserInput,
 } from '../entities/user.entity';
 import { MyContext } from '..';
 import Cookies from 'cookies';
 import { SignJWT } from 'jose';
 import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
 
 @Resolver()
 export default class UserResolver {
@@ -86,34 +88,34 @@ export default class UserResolver {
 
 	@Mutation(() => User)
 	async userSwitchPremium(@Arg('user') user: UpdateUserInput) {
-		// if (user.mail) {
-		// 	const foundUser = await new UserService().getUserBymail(user.mail);
-
-		// 	if (foundUser) throw new Error('mail is already in use');
-		// }
-
-		console.log('before if', user);
-
 		const foundUser = await new UserService().getUserBymail(user.mail);
 
-		if (user.id && foundUser) {
-			if (user.role === 'Freemium') {
-				user.role = 'Premium';
-				new UserService().updateUserService(user, foundUser);
-			} else {
-				user.role = 'Freemium';
-				new UserService().updateUserService(user, foundUser);
-			}
-
-			console.log('AFTER IF', user);
+		function toggleUserRole(currentRole: role): role {
+			return currentRole === 'Freemium' ? 'Premium' : 'Freemium';
 		}
 
-		return true;
+		if (user.id && foundUser) {
+			user.role = toggleUserRole(user.role);
+			new UserService().updateUserService(user, foundUser);
+		}
+
+		return user;
 	}
 
 	@Mutation(() => User)
 	async createUser(@Arg('user') user: CreateUserInput) {
 		return await new UserService().createUser(user);
+	}
+
+	@Mutation(() => User)
+	async createUuidPayment(@Arg('id') id: number) {
+		const user = await new UserService().getUserById(id);
+
+		const uuid: string = randomUUID();
+
+		new UserService().updateUserService({ ...user, uuid }, user);
+
+		return { uuid };
 	}
 
 	@Mutation(() => User)

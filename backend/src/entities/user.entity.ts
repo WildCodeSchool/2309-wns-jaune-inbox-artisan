@@ -44,6 +44,10 @@ export default class User {
 	@Column()
 	username: string;
 
+	@Field({ nullable: true })
+	@Column({ nullable: true })
+	uuid: string;
+
 	@Field((type) => [Template])
 	@OneToMany(() => Folder, (folder) => folder.user, {
 		cascade: true,
@@ -89,7 +93,9 @@ export class UpdateUserInput {
 	@Field({ nullable: true })
 	role: role;
 	@Field({ nullable: true })
-	billing_date: string;
+	billing_date?: string;
+	@Field({ nullable: true })
+	uuid: string;
 }
 
 @ObjectType()
@@ -126,7 +132,7 @@ export class CreateUserInput {
 	password: string;
 	@Field()
 	username: string;
-	@Field({defaultValue: "Freemium"})
+	@Field({ defaultValue: 'Freemium' })
 	role: role;
 	@Field({ nullable: true })
 	billing_date: string;

@@ -4,7 +4,7 @@ import {
 	useImageByFolderIdLazyQuery,
 	useImageByUserIdLazyQuery,
 } from '@/types/graphql';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Image, Row } from 'antd';
 import { ReactElement, useEffect, useState } from 'react';
 import { ImageType } from '@/types/library.type';
@@ -19,7 +19,6 @@ const Library = () => {
 	const values = Form.useWatch([], ImageForm);
 	const router = useRouter();
 	const slug = parseInt(router.query.slug as string, 10);
-	
 
 	const [getImageByUserId] = useImageByFolderIdLazyQuery({
 		fetchPolicy: 'no-cache',
@@ -55,7 +54,11 @@ const Library = () => {
 	return (
 		<Col>
 			<Row className="mb-4 justify-end">
-				<Button type="primary" onClick={() => newImage()}>
+				<Button
+					type="primary"
+					icon={<PlusOutlined />}
+					onClick={() => newImage()}
+				>
 					Add image
 				</Button>
 			</Row>

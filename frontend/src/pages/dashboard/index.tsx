@@ -1,15 +1,18 @@
 import GlobalLayout from '@/components/layout-elements/GlobalLayout';
 import {
 	Template,
+	useDeleteTemplateMutation,
 	useInsertTemplateMutation,
 	useTemplatesLazyQuery,
 } from '@/types/graphql';
 import {
+	DeleteOutlined,
 	EditOutlined,
 	EllipsisOutlined,
+	PlusOutlined,
 	SettingOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Image, Row } from 'antd';
+import { Button, Card, Col, Image, Row } from 'antd';
 import { ReactElement, useEffect, useState } from 'react';
 import { TemplateType } from '@/types/dashboard.type';
 import { useUser } from '@/Contexts/UserContext';
@@ -38,7 +41,6 @@ const Dashboard = () => {
 		getTemplateByUserId({ variables: { id: user.id } });
 	}, []);
 
-	// console.log(user)
 	const onAddTemplate = () => {
 		const newTemplate = {
 			name: 'New Template',
@@ -51,6 +53,13 @@ const Dashboard = () => {
 		}).then((r) => router.push(`/editor/${r.data?.insertTemplate.id}`));
 	};
 
+	const [deleteTemplate] = useDeleteTemplateMutation({
+		fetchPolicy: 'no-cache',
+		onCompleted() {
+			getTemplateByUserId({ variables: { id: user.id } });
+		},
+	});
+
 	const onEditClick = (template: TemplateType) => {
 		console.log('edit', template);
 		router.push(`/editor/${template.id}`);
@@ -59,7 +68,16 @@ const Dashboard = () => {
 	return (
 		<>
 			<div>
-				<button onClick={onAddTemplate}>add template</button>
+				{/* <button onClick={onAddTemplate}>add template</button> */}
+				<Row className="mb-8 justify-end">
+					<Button
+						type="primary"
+						icon={<PlusOutlined />}
+						onClick={onAddTemplate}
+					>
+						Add template
+					</Button>
+				</Row>
 			</div>
 			<Row gutter={[16, 16]}>
 				{templates.map((el, index) => (
@@ -68,9 +86,15 @@ const Dashboard = () => {
 							title={el.name}
 							cover={<Image alt="example" src={el.photo} />}
 							actions={[
-								<SettingOutlined key="setting" />,
+								// <SettingOutlined key="setting" />,
 								<EditOutlined key="edit" onClick={(e) => onEditClick(el)} />,
-								<EllipsisOutlined key="ellipsis" />,
+								<DeleteOutlined
+									key="ellipsis"
+									onClick={() =>
+										el?.id &&
+										deleteTemplate({ variables: { deleteTemplateId: el?.id } })
+									}
+								/>,
 							]}
 							bodyStyle={{ display: 'none' }}
 							className="!border-gray-300"

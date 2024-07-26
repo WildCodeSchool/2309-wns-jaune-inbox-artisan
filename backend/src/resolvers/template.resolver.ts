@@ -77,9 +77,9 @@ export default class TemplateResolver {
 		return { id: insertTemplate.raw[0].id };
 	}
 
-	@Mutation(() => Template)
+	@Mutation(() => Boolean)
 	async deleteTemplate(@Arg('id') id: number) {
 		const templateDeleted = await new TemplateService().deleteTemplate(id);
-		return templateDeleted;
+		return true;
 	}
 }

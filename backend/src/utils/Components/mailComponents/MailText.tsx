@@ -24,7 +24,7 @@ const MailText: FC<MailTextpropsType> = ({ text, style, variables }) => {
 
 	return (
 		// <Text underline strong italic >{text}</Text>
-		<Text
+		<span
 			style={{
 				...style,
 				whiteSpace: 'pre-wrap',
@@ -33,7 +33,7 @@ const MailText: FC<MailTextpropsType> = ({ text, style, variables }) => {
 			}}
 		>
 			{handleVariable()}
-		</Text>
+		</span>
 	);
 };
 

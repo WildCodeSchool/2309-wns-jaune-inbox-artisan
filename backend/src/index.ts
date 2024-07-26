@@ -83,42 +83,6 @@ async function main() {
 			},
 		})
 	);
-	app.use(
-		'/api',
-		cors<cors.CorsRequest>({
-			origin: 'http://localhost:3000',
-			credentials: true,
-		}),
-		express.json(),
-		expressMiddleware(server, {
-			context: async ({ req, res }) => {
-				if (req.method === 'POST') {
-					try {
-						// Create Checkout Sessions from body params.
-						const session = await stripe.checkout.sessions.create({
-							line_items: [
-								{
-									// Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-									price: 'price_1PH5xLE3g1sPCd3VhLy8qWaq',
-									quantity: 1,
-								},
-							],
-							mode: 'payment',
-							success_url: `${req.headers.origin}/?success=true`,
-							cancel_url: `${req.headers.origin}/?canceled=true`,
-						});
-						res.redirect(303, session.url as string);
-					} catch (err: any) {
-						res.status(err.statusCode || 500).json(err.message);
-					}
-				} else {
-					res.setHeader('Allow', 'POST');
-					res.status(405).end('Method Not Allowed');
-				}
-				return { req, res, user: null };
-			},
-		})
-	);
 	await datasource.initialize();
 	await new Promise<void>((resolve) =>
 		httpServer.listen({ port: 4000 }, resolve)

@@ -99,9 +99,10 @@ export type Message = {
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: User;
+  createUuidPayment: User;
   deleteFolder: Scalars['Boolean']['output'];
   deleteImage: Scalars['Boolean']['output'];
-  deleteTemplate: Template;
+  deleteTemplate: Scalars['Boolean']['output'];
   deleteUser: User;
   deleteVariables: Array<Variable>;
   insertFolder: Scalars['Boolean']['output'];
@@ -118,6 +119,11 @@ export type Mutation = {
 
 export type MutationCreateUserArgs = {
   user: CreateUserInput;
+};
+
+
+export type MutationCreateUuidPaymentArgs = {
+  id: Scalars['Float']['input'];
 };
 
 
@@ -326,6 +332,7 @@ export type UpdateUserInput = {
   password?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
+  uuid?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = {
@@ -339,6 +346,7 @@ export type User = {
   role?: Maybe<Scalars['String']['output']>;
   templates: Array<Template>;
   username: Scalars['String']['output'];
+  uuid?: Maybe<Scalars['String']['output']>;
   variables: Array<Variable>;
 };
 
@@ -352,6 +360,7 @@ export type UserInput = {
   role?: InputMaybe<Scalars['String']['input']>;
   templates: Array<TemplateInput>;
   username: Scalars['String']['input'];
+  uuid?: InputMaybe<Scalars['String']['input']>;
   variables: Array<VariableInput>;
 };
 
@@ -377,12 +386,19 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', mail: string, username: string, password: string } };
 
+export type CreateUuidPaymentMutationVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type CreateUuidPaymentMutation = { __typename?: 'Mutation', createUuidPayment: { __typename?: 'User', uuid?: string | null } };
+
 export type UserSwitchPremiumMutationVariables = Exact<{
   user: UpdateUserInput;
 }>;
 
 
-export type UserSwitchPremiumMutation = { __typename?: 'Mutation', userSwitchPremium: { __typename?: 'User', id: number, role?: string | null } };
+export type UserSwitchPremiumMutation = { __typename?: 'Mutation', userSwitchPremium: { __typename?: 'User', role?: string | null } };
 
 export type DeleteFolderMutationVariables = Exact<{
   deleteFolderId: Scalars['Float']['input'];
@@ -446,6 +462,13 @@ export type UpdateTemplateMutationVariables = Exact<{
 
 
 export type UpdateTemplateMutation = { __typename?: 'Mutation', updateTemplate: { __typename?: 'Template', id: number } };
+
+export type DeleteTemplateMutationVariables = Exact<{
+  deleteTemplateId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteTemplateMutation = { __typename?: 'Mutation', deleteTemplate: boolean };
 
 export type LoginQueryVariables = Exact<{
   infos: InputLogin;
@@ -549,10 +572,42 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const CreateUuidPaymentDocument = gql`
+    mutation createUuidPayment($id: Float!) {
+  createUuidPayment(id: $id) {
+    uuid
+  }
+}
+    `;
+export type CreateUuidPaymentMutationFn = Apollo.MutationFunction<CreateUuidPaymentMutation, CreateUuidPaymentMutationVariables>;
+
+/**
+ * __useCreateUuidPaymentMutation__
+ *
+ * To run a mutation, you first call `useCreateUuidPaymentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUuidPaymentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUuidPaymentMutation, { data, loading, error }] = useCreateUuidPaymentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCreateUuidPaymentMutation(baseOptions?: Apollo.MutationHookOptions<CreateUuidPaymentMutation, CreateUuidPaymentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUuidPaymentMutation, CreateUuidPaymentMutationVariables>(CreateUuidPaymentDocument, options);
+      }
+export type CreateUuidPaymentMutationHookResult = ReturnType<typeof useCreateUuidPaymentMutation>;
+export type CreateUuidPaymentMutationResult = Apollo.MutationResult<CreateUuidPaymentMutation>;
+export type CreateUuidPaymentMutationOptions = Apollo.BaseMutationOptions<CreateUuidPaymentMutation, CreateUuidPaymentMutationVariables>;
 export const UserSwitchPremiumDocument = gql`
     mutation UserSwitchPremium($user: UpdateUserInput!) {
   userSwitchPremium(user: $user) {
-    id
     role
   }
 }
@@ -866,6 +921,37 @@ export function useUpdateTemplateMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateTemplateMutationHookResult = ReturnType<typeof useUpdateTemplateMutation>;
 export type UpdateTemplateMutationResult = Apollo.MutationResult<UpdateTemplateMutation>;
 export type UpdateTemplateMutationOptions = Apollo.BaseMutationOptions<UpdateTemplateMutation, UpdateTemplateMutationVariables>;
+export const DeleteTemplateDocument = gql`
+    mutation DeleteTemplate($deleteTemplateId: Float!) {
+  deleteTemplate(id: $deleteTemplateId)
+}
+    `;
+export type DeleteTemplateMutationFn = Apollo.MutationFunction<DeleteTemplateMutation, DeleteTemplateMutationVariables>;
+
+/**
+ * __useDeleteTemplateMutation__
+ *
+ * To run a mutation, you first call `useDeleteTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTemplateMutation, { data, loading, error }] = useDeleteTemplateMutation({
+ *   variables: {
+ *      deleteTemplateId: // value for 'deleteTemplateId'
+ *   },
+ * });
+ */
+export function useDeleteTemplateMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTemplateMutation, DeleteTemplateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTemplateMutation, DeleteTemplateMutationVariables>(DeleteTemplateDocument, options);
+      }
+export type DeleteTemplateMutationHookResult = ReturnType<typeof useDeleteTemplateMutation>;
+export type DeleteTemplateMutationResult = Apollo.MutationResult<DeleteTemplateMutation>;
+export type DeleteTemplateMutationOptions = Apollo.BaseMutationOptions<DeleteTemplateMutation, DeleteTemplateMutationVariables>;
 export const LoginDocument = gql`
     query Login($infos: InputLogin!) {
   login(infos: $infos) {

@@ -29,10 +29,9 @@ const Sidebar = () => {
 			style={{
 				backgroundColor: '#EDEDED',
 				width: '100%',
-				height: '92vh',
 				display: isMobile ? 'none' : 'block',
 				position: 'sticky',
-				top: '8vh',
+				top: '0px',
 			}}
 		>
 			<MenuComponents />

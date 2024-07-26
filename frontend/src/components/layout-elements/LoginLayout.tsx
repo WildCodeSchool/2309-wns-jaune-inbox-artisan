@@ -37,7 +37,7 @@ const LoginLayout = ({
 					<Image
 						preview={false}
 						width={fullWidthImage ? '100%' : 480}
-						height="93vh"
+						height="92vh"
 						className=""
 						src={imageSrc || 'https://picsum.photos/768/1080'}
 						alt="background"

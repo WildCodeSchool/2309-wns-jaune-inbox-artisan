@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Avatar, Button, Dropdown, MenuProps, Typography } from 'antd';
 import Link from 'next/link';
+import { UserOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 
@@ -16,10 +17,12 @@ const ProfileButton: React.FC<{ user: any }> = ({ user }) => {
 	return (
 		<Dropdown menu={{ items }} trigger={['click']}>
 			<Button
-				type="primary"
-				className=" !flex !h-auto !leading-normal !items-center !gap-2 !px-3 !py-2 !border !border-[#d9d9d9] !cursor-pointer !rounded-md !bg-[#94E8B4]"
+				type="default"
+				size="large"
+				icon={<UserOutlined />}
+				className="group"
 			>
-				<Text strong className="text-center w-full">
+				<Text className="group-hover:!text-[#218380] transition-colors ease-in text-black">
 					{user?.username ?? 'pseudo'}
 				</Text>
 			</Button>

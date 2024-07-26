@@ -4,14 +4,15 @@ import { Row, Col } from 'antd';
 import Components from './mailComponents';
 
 const View = ({ config, variables }: { config: any[][]; variables: any[] }) => {
+	console.log(config);
 	const generateGrid = () => {
 		return (
 			<div className=" w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
 				{config?.map((row: any[], rowIndex: number) => (
-					<Row key={rowIndex}>
+					<div key={rowIndex}>
 						{row?.map((col: any, colIndex: number) => (
-							<Col
-								span={col?.containerWidth}
+							<div
+								// span={col?.containerWidth}
 								key={colIndex}
 								style={{ userSelect: 'none', maxHeight: '100%' }}
 							>
@@ -25,9 +26,9 @@ const View = ({ config, variables }: { config: any[][]; variables: any[] }) => {
 								) : (
 									''
 								)}
-							</Col>
+							</div>
 						))}
-					</Row>
+					</div>
 				))}
 			</div>
 		);

@@ -25,13 +25,12 @@ const MailPicture: FC<MailPicturePropsType> = ({
 				height: '100%',
 			}}
 		>
-			<Image
+			<img
 				style={style}
 				src={picture?.src}
 				alt={picture?.alt}
 				width={`${width}%`}
 				height={`${height}%`}
-				preview={false}
 			/>
 		</div>
 	);

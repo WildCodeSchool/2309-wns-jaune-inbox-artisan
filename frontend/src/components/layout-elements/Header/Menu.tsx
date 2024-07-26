@@ -64,7 +64,7 @@ const MenuComponents = () => {
 			<TableOutlined />
 		),
 		setNavigationItem(
-			<Link href="/editor" title="Editor" onClick={onAddTemplate}>
+			<Link href="" title="Editor" onClick={onAddTemplate}>
 				Editor
 			</Link>,
 			'3',

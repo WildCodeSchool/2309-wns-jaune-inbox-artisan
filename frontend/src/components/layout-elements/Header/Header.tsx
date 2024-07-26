@@ -1,5 +1,6 @@
 import {
 	Button,
+	Divider,
 	Drawer,
 	Flex,
 	Grid,
@@ -16,8 +17,15 @@ import MenuComponents from './Menu';
 import Link from 'next/link';
 import { useBreackPoint } from '@/Contexts/BreackPointContext';
 import { useUser } from '@/Contexts/UserContext';
+import { useCreateUuidPaymentMutation } from '@/types/graphql';
+import { useRouter } from 'next/router';
+import { loadStripe } from '@stripe/stripe-js';
 
 const { Header: AntHeader } = Layout;
+
+const stripePromise = loadStripe(
+	String(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+);
 
 const { useBreakpoint } = Grid;
 const { Title, Text } = Typography;
@@ -27,6 +35,7 @@ const Header = ({ isLayout = true }: { isLayout: boolean }) => {
 
 	const { logout, user } = useUser();
 
+	const router = useRouter();
 	const screens = useBreakpoint();
 	const breackPoint = Object.entries(screens).filter((screen) => !!screen[1]);
 	const { isMobile, setIsMobile } = useBreackPoint();
@@ -41,7 +50,23 @@ const Header = ({ isLayout = true }: { isLayout: boolean }) => {
 	console.log(user);
 	// const premium = user.role;
 	const premium = user.role === 'Premium' ? true : false;
-	console.log('premium ? -> ', premium);
+	// console.log('premium ? -> ', premium);
+
+	const [getTemplateById] = useCreateUuidPaymentMutation({
+		fetchPolicy: 'no-cache',
+		onCompleted(getTemplateData) {
+			fetch('/api/checkout_sessions', {
+				method: 'POST',
+				body: JSON.stringify({ uuid: getTemplateData.createUuidPayment.uuid }),
+			})
+				.then((res) => res.json())
+				.then((body) => router.push(body.url));
+		},
+	});
+
+	const getPaymentLink = () => {
+		const uuid = getTemplateById({ variables: { id: user.id } });
+	};
 
 	return (
 		<>
@@ -52,7 +77,7 @@ const Header = ({ isLayout = true }: { isLayout: boolean }) => {
 					top: 0,
 					zIndex: 1,
 				}}
-				className="!px-4 !h-[8vh] !min-h-16 !max-h-20 shadow-md"
+				className="!px-4 !min-h-16 !max-h-20 shadow-md"
 			>
 				<div className="flex items-center justify-between h-full">
 					<Space className="!px-2">
@@ -61,22 +86,32 @@ const Header = ({ isLayout = true }: { isLayout: boolean }) => {
 								src="/logo-typo.png"
 								alt="inboxArtisan Logo"
 								preview={false}
-								height={'7vh'}
-								className="!min-h-14 !max-h-16"
+								className="!h-12"
 							/>
 						</Link>
 						{/* {!isMobile ? <Title level={3}>InboxArtisan</Title> : null} */}
+						<Divider
+							type="vertical"
+							style={{
+								height: '1.5rem',
+								borderInlineStart: '1px solid rgba(5, 5, 5, 0.08)',
+							}}
+						/>
 					</Space>
 					{isLayout ? (
 						<Space>
 							{!premium && (
 								<Tooltip title="Get a premium account !">
 									<Button
-										href="/subscribe"
+										// href="/subscribe"
+										onClick={() => {
+											getPaymentLink();
+										}}
 										type="primary"
 										icon={<CrownFilled />}
+										className="mr-4"
 									>
-										Premium
+										Upgrade to premium
 									</Button>
 								</Tooltip>
 							)}

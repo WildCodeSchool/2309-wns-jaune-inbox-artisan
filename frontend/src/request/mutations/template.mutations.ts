@@ -1,18 +1,23 @@
 import { gql } from '@apollo/client';
 
-
 export const INSERT_TEMPLATE = gql`
 	mutation InsertTemplate($template: CreateTemplateInputRequest!) {
-		insertTemplate(template: $template){
-    	id
-  	}
+		insertTemplate(template: $template) {
+			id
+		}
 	}
 `;
 
 export const UPDATE_TEMPLATE = gql`
 	mutation UpdateTemplate($template: UpdateTemplateInput!) {
 		updateTemplate(template: $template) {
-		id
+			id
 		}
+	}
+`;
+
+export const DELETE_TEMPLATE = gql`
+	mutation DeleteTemplate($deleteTemplateId: Float!) {
+		deleteTemplate(id: $deleteTemplateId)
 	}
 `;

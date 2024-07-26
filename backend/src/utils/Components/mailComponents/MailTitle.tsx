@@ -29,9 +29,10 @@ const MailTitle: FC<MailTitlePropsType> = ({
 		return newText;
 	};
 
+	const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
+
 	return (
-		<Title
-			level={level}
+		<HeadingTag
 			style={{
 				marginBlockEnd: 0,
 				...style,
@@ -41,7 +42,7 @@ const MailTitle: FC<MailTitlePropsType> = ({
 			}}
 		>
 			{handleVariable()}
-		</Title>
+		</HeadingTag>
 	);
 };
 

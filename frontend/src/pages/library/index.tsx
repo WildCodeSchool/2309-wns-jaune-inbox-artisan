@@ -5,7 +5,7 @@ import {
 	useDeleteImageMutation,
 	useFolderByUserIdLazyQuery,
 } from '@/types/graphql';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Image, Row } from 'antd';
 import { ReactElement, useEffect, useState } from 'react';
 import { FolderType } from '@/types/library.type';
@@ -56,8 +56,12 @@ const Library = () => {
 
 	return (
 		<Col>
-			<Row className="mb-4 justify-end">
-				<Button type="primary" onClick={() => newFolder()}>
+			<Row className="mb-8 justify-end">
+				<Button
+					type="primary"
+					icon={<PlusOutlined />}
+					onClick={() => newFolder()}
+				>
 					Create Folder
 				</Button>
 			</Row>
