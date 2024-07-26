@@ -6,22 +6,22 @@ import User from './user.entity';
 @InputType('VariableInput')
 @Entity()
 export default class Variable {
-	@Field()
+	@Field(() => ID)
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Field()
+	@Field({nullable: true})
 	@Column()
 	label: string;
 
-	@Field()
+	@Field({nullable: true})
 	@Column()
 	value: string;
 
-	@Field((type) => User)
+	@Field((type) => User, {nullable: true})
 	@ManyToOne(() => User ,{
 		onDelete: 'CASCADE',
-})
+	})
 	user: User;
 }
 
@@ -30,19 +30,21 @@ export class UpdateVariableInput {
 	@Field(() => ID)
 	id: number
 	@Field({nullable: true})
-	label: string
+	label?: string
 	@Field({nullable: true})
-	value: string
+	value?: string
 	@Field(() => User, {nullable: true})
-	user: User
+	user?: User
 }
 
 @InputType()
 export class CreateVariableInput {
+	@Field(() => ID, {nullable: true})
+	id?: number
 	@Field({nullable: true})
-	label: string
+	label?: string
 	@Field({nullable: true})
-	value: string
+	value?: string
 	@Field(() => User, {nullable: true})
-	user: User
+	user?: User
 }

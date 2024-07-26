@@ -1,8 +1,10 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
+const { backend } = process.env;
+
 const config: CodegenConfig = {
 	overwrite: true,
-	schema: 'http://localhost:4000',
+	schema: `http://${backend ?? 'localhost'}:4000`,
 	documents: [
 		'src/request/queries/*.queries.ts',
 		'src/request/mutations/*.mutations.ts',

@@ -1,5 +1,9 @@
 import GlobalLayout from '@/components/layout-elements/GlobalLayout';
-import { useTemplatesLazyQuery } from '@/types/graphql';
+import {
+	Template,
+	useInsertTemplateMutation,
+	useTemplatesLazyQuery,
+} from '@/types/graphql';
 import {
 	EditOutlined,
 	EllipsisOutlined,
@@ -8,27 +12,12 @@ import {
 import { Card, Col, Image, Row } from 'antd';
 import { ReactElement, useEffect, useState } from 'react';
 import { TemplateType } from '@/types/dashboard.type';
-
-const data = [
-	{ name: 'title 0', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 1', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 2', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 3', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 4', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 5', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 6', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 7', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 8', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 9', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 10', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 11', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 12', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 13', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 14', photo: 'https://picsum.photos/200/300' },
-	{ name: 'title 15', photo: 'https://picsum.photos/200/300' },
-];
+import { useUser } from '@/Contexts/UserContext';
+import { useRouter } from 'next/router';
 
 const Dashboard = () => {
+	const [insertTemplate, { data: id }] = useInsertTemplateMutation();
+
 	const [getTemplateByUserId, { data: dataAds }] = useTemplatesLazyQuery({
 		fetchPolicy: 'no-cache',
 		onCompleted(data) {
@@ -40,30 +29,56 @@ const Dashboard = () => {
 			);
 		},
 	});
+
 	const [templates, setTemplates] = useState<TemplateType[]>([]);
 
+	const { user } = useUser();
+	const router = useRouter();
 	useEffect(() => {
-		getTemplateByUserId({ variables: { id: 1 } });
+		getTemplateByUserId({ variables: { id: user.id } });
 	}, []);
 
+	// console.log(user)
+	const onAddTemplate = () => {
+		const newTemplate = {
+			name: 'New Template',
+			userId: user.id,
+		};
+		insertTemplate({
+			variables: {
+				template: newTemplate,
+			},
+		}).then((r) => router.push(`/editor/${r.data?.insertTemplate.id}`));
+	};
+
+	const onEditClick = (template: TemplateType) => {
+		console.log('edit', template);
+		router.push(`/editor/${template.id}`);
+	};
+
 	return (
-		<Row gutter={[16, 16]}>
-			{[...templates, ...data].map((el, index) => (
-				<Col key={index} xs={24} md={12} lg={8} xl={6}>
-					<Card
-						title={el.name}
-						cover={<Image alt="example" src={el.photo} />}
-						actions={[
-							<SettingOutlined key="setting" />,
-							<EditOutlined key="edit" />,
-							<EllipsisOutlined key="ellipsis" />,
-						]}
-						bodyStyle={{ display: 'none' }}
-						className="!border-gray-300"
-					/>
-				</Col>
-			))}
-		</Row>
+		<>
+			<div>
+				<button onClick={onAddTemplate}>add template</button>
+			</div>
+			<Row gutter={[16, 16]}>
+				{templates.map((el, index) => (
+					<Col key={index} xs={24} md={12} lg={8} xl={6}>
+						<Card
+							title={el.name}
+							cover={<Image alt="example" src={el.photo} />}
+							actions={[
+								<SettingOutlined key="setting" />,
+								<EditOutlined key="edit" onClick={(e) => onEditClick(el)} />,
+								<EllipsisOutlined key="ellipsis" />,
+							]}
+							bodyStyle={{ display: 'none' }}
+							className="!border-gray-300"
+						/>
+					</Col>
+				))}
+			</Row>
+		</>
 	);
 };
 

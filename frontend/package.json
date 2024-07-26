@@ -13,15 +13,18 @@
 		"@ant-design/cssinjs": "^1.18.4",
 		"@ant-design/icons": "^5.3.1",
 		"@apollo/client": "^3.8.8",
+		"@stripe/stripe-js": "^3.4.0",
+		"@types/stripe-checkout": "^1.0.7",
 		"antd": "^5.13.3",
 		"bcrypt": "^5.1.1",
 		"graphql": "^16.8.1",
 		"i": "^0.3.7",
-		"next": "13.4.7",
+		"next": "^13.4.7",
 		"npm": "^10.5.0",
 		"postcss-antd-fixes": "^0.2.0",
 		"react": "^18",
-		"react-dom": "18"
+		"react-dom": "^18",
+		"stripe": "^15.6.0"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^5.0.0",

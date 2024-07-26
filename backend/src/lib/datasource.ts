@@ -9,5 +9,5 @@ export default new DataSource({
 	database: 'inboxartisan',
 	synchronize: true,
 	entities: [__dirname + '/../entities/*.{js,ts}'],
-	logging: ['query', 'error'],
+	logging: ['error'],
 });

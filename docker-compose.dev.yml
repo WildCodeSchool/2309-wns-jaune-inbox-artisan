@@ -6,6 +6,7 @@ services:
       - 4000:4000
     env_file:
       - ./global.env
+      - ./backend/.env
     environment:
       - PGHOST=db
       - PGHOSTEST=dbtest
@@ -43,6 +44,7 @@ services:
       - 3000:3000
     env_file:
       - ./global.env
+      - ./frontend/.env
     depends_on:
       backend:
         condition: service_healthy

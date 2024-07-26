@@ -34,7 +34,7 @@ export default class User {
 
 	@Field({ nullable: true })
 	@Column({ nullable: true })
-	role?: role;
+	role: role;
 
 	@Field({ nullable: true })
 	@Column({ nullable: true, type: 'date' })
@@ -80,7 +80,7 @@ export default class User {
 export class UpdateUserInput {
 	@Field(() => ID)
 	id: number;
-	@Field()
+	@Field({ nullable: true })
 	mail: string;
 	@Field({ nullable: true })
 	password: string;
@@ -93,12 +93,29 @@ export class UpdateUserInput {
 }
 
 @ObjectType()
-export class Message {
-  @Field()
-  success: boolean;
+export class LoginResponse {
+	@Field(() => ID)
+	id: number;
+	@Field({ nullable: true })
+	username: string;
+	@Field()
+	expirationDate: string;
+	@Field()
+	mail: string;
+	@Field({ nullable: true })
+	role: role;
+}
 
-  @Field()
-  message: string;
+@ObjectType()
+export class Message {
+	@Field()
+	success: boolean;
+
+	@Field({ nullable: true })
+	user: LoginResponse;
+
+	@Field()
+	message: string;
 }
 
 @InputType()
@@ -109,7 +126,7 @@ export class CreateUserInput {
 	password: string;
 	@Field()
 	username: string;
-	@Field({ nullable: true })
+	@Field({defaultValue: "Freemium"})
 	role: role;
 	@Field({ nullable: true })
 	billing_date: string;
@@ -117,9 +134,9 @@ export class CreateUserInput {
 
 @InputType()
 export class InputLogin {
-  @Field()
-  mail: string;
+	@Field()
+	mail: string;
 
-  @Field()
-  password: string;
+	@Field()
+	password: string;
 }

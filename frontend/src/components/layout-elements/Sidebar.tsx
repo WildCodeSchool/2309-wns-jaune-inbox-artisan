@@ -27,12 +27,12 @@ const Sidebar = () => {
 			collapsible
 			onCollapse={(value) => setIsSliderCollapsed(value)}
 			style={{
-				backgroundColor: '#CACACA',
+				backgroundColor: '#EDEDED',
 				width: '100%',
-				height: '93vh',
+				height: '92vh',
 				display: isMobile ? 'none' : 'block',
 				position: 'sticky',
-				top: '7vh',
+				top: '8vh',
 			}}
 		>
 			<MenuComponents />

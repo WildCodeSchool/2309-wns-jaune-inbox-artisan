@@ -7,13 +7,14 @@ services:
       - ./backend/src:/app/src
     env_file:
       - ./global.env
+      - ./backend/.env
     environment:
       - PGHOST=db
       - PGHOSTEST=dbtest
     healthcheck:
       test:
         [
-          "CMD-SHELL",
+          'CMD-SHELL',
           "curl -f http://backend:4000/graphql?query=%7B__typename%7D -H 'Apollo-Require-Preflight: true' || exit 1",
         ]
       interval: 10s
@@ -24,7 +25,7 @@ services:
     image: postgres
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d inboxartisan -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -d inboxartisan -U postgres']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -41,7 +42,7 @@ services:
     image: postgres
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d inboxartisan_test -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -d inboxartisan_test -U postgres']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -53,7 +54,6 @@ services:
       - 5434:5432
     volumes:
       - inboxArtisanDataTest:/var/lib/postgresql/data
-    
 
   frontend:
     build: ./frontend
@@ -63,6 +63,10 @@ services:
       - ./frontend/src:/app/src
     env_file:
       - ./global.env
+      - ./frontend/.env
+    environment:
+      - backend=backend
+      - NEXT_PUBLIC_images=images
     depends_on:
       backend:
         condition: service_healthy

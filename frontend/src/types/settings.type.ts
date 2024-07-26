@@ -5,6 +5,6 @@ type UserFieldType = {
 };
   
 type VariablesFieldType = {
-    name: string | number
+    label: string
     value: string
 };

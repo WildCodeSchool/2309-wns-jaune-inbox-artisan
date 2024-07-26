@@ -2,8 +2,8 @@ const theme = {
 	token: {
 		colorPrimary: '#218380',
 		colorInfo: '#218380',
-		borderRadius: 2,
-		fontFamily: '"Roboto","Arial"',
+		borderRadius: 6,
+		fontFamily: '"Roboto", "Arial"',
 	},
 	components: {
 		Typography: {
@@ -13,13 +13,19 @@ const theme = {
 			fontSize: 20,
 		},
 		Menu: {
-			darkColorBgContainer: '#CACACA',
-			darkItemBg: '#CACACA',
-			darkItemSelectedBg: '#94E8B4',
-			darkItemSelectedColor: '#000000',
+			darkItemBg: '#EDEDED',
+			darkItemColor: '#FFFFFF',
+			darkItemSelectedBg: '#c9f3d9',
+			darkItemSelectedColor: '#218380',
+			darkItemHoverBg: '#4a9896',
+			darkItemHoverColor: '#FFFFFF',
 		},
 		Layout: {
 			triggerBg: '#218380',
+		},
+		Tooltip: {
+			colorTextLightSolid: 'black',
+			colorBgSpotlight: 'white',
 		},
 	},
 };
