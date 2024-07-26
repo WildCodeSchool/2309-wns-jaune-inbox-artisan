@@ -32,19 +32,28 @@ export default class UserResolver {
 		const isPasswordValid = await bcrypt.compare(infos.password, user.password);
 		const m = new Message();
 		if (isPasswordValid) {
-			const token = await new SignJWT({ email: user.mail, role: user.role })
+			const token = await new SignJWT({
+				email: user.mail,
+				role: user.role,
+				id: user.id,
+			})
 				.setProtectedHeader({ alg: 'HS256', typ: 'jwt' })
 				.setExpirationTime('2h')
-				.sign(new TextEncoder().encode(`${process.env.SECRET_KEY}`));
+				.sign(new TextEncoder().encode(`${'testbg'}`));
 			let cookies = new Cookies(ctx.req, ctx.res);
-			cookies.set('token', token, { httpOnly: true });
 			const date = new Date();
 			date.setHours(date.getHours() + 2);
+			cookies.set('token', token, {
+				httpOnly: true,
+				expires: date,
+			});
 			m.message = token;
 			m.user = {
 				username: user.username,
 				id: user.id,
 				expirationDate: date.toISOString(),
+				mail: user.mail,
+				role: user.role,
 			};
 			m.success = true;
 		} else {
@@ -67,13 +76,39 @@ export default class UserResolver {
 
 	@Mutation(() => User)
 	async updateUser(@Arg('user') user: UpdateUserInput) {
-		if (user.mail) {
-			const foundUser = await new UserService().getUserBymail(user.mail);
+		if (user.id) {
+			const foundUser = await new UserService().getUserById(user.id);
 
-			if (foundUser) throw new Error('mail is already in use');
+			if (foundUser)
+				return await new UserService().updateUserService(user, foundUser);
+		}
+	}
+
+	@Mutation(() => User)
+	async userSwitchPremium(@Arg('user') user: UpdateUserInput) {
+		// if (user.mail) {
+		// 	const foundUser = await new UserService().getUserBymail(user.mail);
+
+		// 	if (foundUser) throw new Error('mail is already in use');
+		// }
+
+		console.log('before if', user);
+
+		const foundUser = await new UserService().getUserBymail(user.mail);
+
+		if (user.id && foundUser) {
+			if (user.role === 'Freemium') {
+				user.role = 'Premium';
+				new UserService().updateUserService(user, foundUser);
+			} else {
+				user.role = 'Freemium';
+				new UserService().updateUserService(user, foundUser);
+			}
+
+			console.log('AFTER IF', user);
 		}
 
-		return await new UserService().updateUser(user);
+		return true;
 	}
 
 	@Mutation(() => User)

@@ -1,8 +1,10 @@
 import { Repository } from 'typeorm';
 import datasource from '../lib/datasource';
-import Variable, { CreateVariableInput, UpdateVariableInput } from '../entities/variable.entity';
-
-
+import Variable, {
+	CreateVariableInput,
+	UpdateVariableInput,
+} from '../entities/variable.entity';
+import User from '../entities/user.entity';
 
 export default class ImageService {
 	db: Repository<Variable>;
@@ -12,6 +14,10 @@ export default class ImageService {
 
 	async getAllVariables() {
 		return this.db.find();
+	}
+
+	async getVariableByUserId(user: User) {
+		return this.db.find({ where: { user } });
 	}
 
 	async getVariableById(id: number) {

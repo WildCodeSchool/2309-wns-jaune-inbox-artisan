@@ -30,19 +30,16 @@ export type CreateImageInput = {
   userId: Scalars['Float']['input'];
 };
 
-export type CreateTemplateInput = {
-  Images?: InputMaybe<Array<ImageInput>>;
-  config?: InputMaybe<Scalars['String']['input']>;
+export type CreateTemplateInputRequest = {
   name?: InputMaybe<Scalars['String']['input']>;
-  user?: InputMaybe<UserInput>;
-  variables?: InputMaybe<Array<VariableInput>>;
+  userId?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type CreateUserInput = {
   billing_date?: InputMaybe<Scalars['String']['input']>;
   mail: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  role?: InputMaybe<Scalars['String']['input']>;
+  role?: Scalars['String']['input'];
   username: Scalars['String']['input'];
 };
 
@@ -87,6 +84,8 @@ export type LoginResponse = {
   __typename?: 'LoginResponse';
   expirationDate: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  mail: Scalars['String']['output'];
+  role?: Maybe<Scalars['String']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
@@ -94,7 +93,7 @@ export type Message = {
   __typename?: 'Message';
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
-  user: LoginResponse;
+  user?: Maybe<LoginResponse>;
 };
 
 export type Mutation = {
@@ -113,6 +112,7 @@ export type Mutation = {
   updateImage: Scalars['Boolean']['output'];
   updateTemplate: Template;
   updateUser: User;
+  userSwitchPremium: User;
 };
 
 
@@ -157,7 +157,7 @@ export type MutationInsertImageArgs = {
 
 
 export type MutationInsertTemplateArgs = {
-  template: CreateTemplateInput;
+  template: CreateTemplateInputRequest;
 };
 
 
@@ -177,12 +177,22 @@ export type MutationUpdateImageArgs = {
 
 
 export type MutationUpdateTemplateArgs = {
-  user: UpdateTemplateInput;
+  template: UpdateTemplateInput;
 };
 
 
 export type MutationUpdateUserArgs = {
   user: UpdateUserInput;
+};
+
+
+export type MutationUserSwitchPremiumArgs = {
+  user: UpdateUserInput;
+};
+
+export type PrintTemplate = {
+  __typename?: 'PrintTemplate';
+  html?: Maybe<Scalars['String']['output']>;
 };
 
 export type Query = {
@@ -196,12 +206,15 @@ export type Query = {
   images: Array<Image>;
   login: Message;
   logout: Message;
+  sendMail: PrintTemplate;
   templateById: Template;
+  templateByUserId: Template;
   templates: Array<Template>;
   userById: Array<User>;
   users: Array<User>;
   variableById: Variable;
   variables: Array<Variable>;
+  variablesByUserId: Array<Variable>;
 };
 
 
@@ -235,8 +248,18 @@ export type QueryLoginArgs = {
 };
 
 
+export type QuerySendMailArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
 export type QueryTemplateByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryTemplateByUserIdArgs = {
+  userId: Scalars['Float']['input'];
 };
 
 
@@ -254,23 +277,24 @@ export type QueryVariableByIdArgs = {
   id: Scalars['Float']['input'];
 };
 
+
+export type QueryVariablesByUserIdArgs = {
+  userId: Scalars['Float']['input'];
+};
+
 export type Template = {
   __typename?: 'Template';
   config: Scalars['String']['output'];
   id: Scalars['Float']['output'];
-  images: Array<Image>;
   name: Scalars['String']['output'];
   user: User;
-  variables: Array<Variable>;
 };
 
 export type TemplateInput = {
   config: Scalars['String']['input'];
   id: Scalars['Float']['input'];
-  images: Array<ImageInput>;
   name: Scalars['String']['input'];
   user: UserInput;
-  variables: Array<VariableInput>;
 };
 
 export type UpdateFolderInput = {
@@ -353,6 +377,13 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', mail: string, username: string, password: string } };
 
+export type UserSwitchPremiumMutationVariables = Exact<{
+  user: UpdateUserInput;
+}>;
+
+
+export type UserSwitchPremiumMutation = { __typename?: 'Mutation', userSwitchPremium: { __typename?: 'User', id: number, role?: string | null } };
+
 export type DeleteFolderMutationVariables = Exact<{
   deleteFolderId: Scalars['Float']['input'];
 }>;
@@ -402,12 +433,26 @@ export type InsertVariablesMutationVariables = Exact<{
 
 export type InsertVariablesMutation = { __typename?: 'Mutation', insertVariables: boolean };
 
+export type InsertTemplateMutationVariables = Exact<{
+  template: CreateTemplateInputRequest;
+}>;
+
+
+export type InsertTemplateMutation = { __typename?: 'Mutation', insertTemplate: { __typename?: 'Template', id: number } };
+
+export type UpdateTemplateMutationVariables = Exact<{
+  template: UpdateTemplateInput;
+}>;
+
+
+export type UpdateTemplateMutation = { __typename?: 'Mutation', updateTemplate: { __typename?: 'Template', id: number } };
+
 export type LoginQueryVariables = Exact<{
   infos: InputLogin;
 }>;
 
 
-export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'Message', success: boolean, message: string, user: { __typename?: 'LoginResponse', id: string, username?: string | null, expirationDate: string } } };
+export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'Message', success: boolean, message: string, user?: { __typename?: 'LoginResponse', id: string, username?: string | null, mail: string, expirationDate: string, role?: string | null } | null } };
 
 export type LogoutQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -426,7 +471,7 @@ export type ImageByUserIdQueryVariables = Exact<{
 }>;
 
 
-export type ImageByUserIdQuery = { __typename?: 'Query', imageByUserId: Array<{ __typename?: 'Image', id: number, name: string, url: string }> };
+export type ImageByUserIdQuery = { __typename?: 'Query', imageByUserId: Array<{ __typename?: 'Image', id: number, name: string, url: string, folder: string }> };
 
 export type ImageByFolderIdQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -440,12 +485,33 @@ export type VariablesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type VariablesQuery = { __typename?: 'Query', variables: Array<{ __typename?: 'Variable', id: string, label?: string | null, value?: string | null }> };
 
+export type VariablesByUserIdQueryVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type VariablesByUserIdQuery = { __typename?: 'Query', variablesByUserId: Array<{ __typename?: 'Variable', id: string, label?: string | null, value?: string | null }> };
+
 export type TemplatesQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
 
 
 export type TemplatesQuery = { __typename?: 'Query', templates: Array<{ __typename?: 'Template', id: number, name: string }> };
+
+export type TemplateQueryVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type TemplateQuery = { __typename?: 'Query', templateById: { __typename?: 'Template', id: number, name: string, config: string } };
+
+export type SendMailQueryVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type SendMailQuery = { __typename?: 'Query', sendMail: { __typename?: 'PrintTemplate', html?: string | null } };
 
 
 export const CreateUserDocument = gql`
@@ -483,6 +549,40 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const UserSwitchPremiumDocument = gql`
+    mutation UserSwitchPremium($user: UpdateUserInput!) {
+  userSwitchPremium(user: $user) {
+    id
+    role
+  }
+}
+    `;
+export type UserSwitchPremiumMutationFn = Apollo.MutationFunction<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>;
+
+/**
+ * __useUserSwitchPremiumMutation__
+ *
+ * To run a mutation, you first call `useUserSwitchPremiumMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSwitchPremiumMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSwitchPremiumMutation, { data, loading, error }] = useUserSwitchPremiumMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useUserSwitchPremiumMutation(baseOptions?: Apollo.MutationHookOptions<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>(UserSwitchPremiumDocument, options);
+      }
+export type UserSwitchPremiumMutationHookResult = ReturnType<typeof useUserSwitchPremiumMutation>;
+export type UserSwitchPremiumMutationResult = Apollo.MutationResult<UserSwitchPremiumMutation>;
+export type UserSwitchPremiumMutationOptions = Apollo.BaseMutationOptions<UserSwitchPremiumMutation, UserSwitchPremiumMutationVariables>;
 export const DeleteFolderDocument = gql`
     mutation DeleteFolder($deleteFolderId: Float!) {
   deleteFolder(id: $deleteFolderId)
@@ -700,6 +800,72 @@ export function useInsertVariablesMutation(baseOptions?: Apollo.MutationHookOpti
 export type InsertVariablesMutationHookResult = ReturnType<typeof useInsertVariablesMutation>;
 export type InsertVariablesMutationResult = Apollo.MutationResult<InsertVariablesMutation>;
 export type InsertVariablesMutationOptions = Apollo.BaseMutationOptions<InsertVariablesMutation, InsertVariablesMutationVariables>;
+export const InsertTemplateDocument = gql`
+    mutation InsertTemplate($template: CreateTemplateInputRequest!) {
+  insertTemplate(template: $template) {
+    id
+  }
+}
+    `;
+export type InsertTemplateMutationFn = Apollo.MutationFunction<InsertTemplateMutation, InsertTemplateMutationVariables>;
+
+/**
+ * __useInsertTemplateMutation__
+ *
+ * To run a mutation, you first call `useInsertTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertTemplateMutation, { data, loading, error }] = useInsertTemplateMutation({
+ *   variables: {
+ *      template: // value for 'template'
+ *   },
+ * });
+ */
+export function useInsertTemplateMutation(baseOptions?: Apollo.MutationHookOptions<InsertTemplateMutation, InsertTemplateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertTemplateMutation, InsertTemplateMutationVariables>(InsertTemplateDocument, options);
+      }
+export type InsertTemplateMutationHookResult = ReturnType<typeof useInsertTemplateMutation>;
+export type InsertTemplateMutationResult = Apollo.MutationResult<InsertTemplateMutation>;
+export type InsertTemplateMutationOptions = Apollo.BaseMutationOptions<InsertTemplateMutation, InsertTemplateMutationVariables>;
+export const UpdateTemplateDocument = gql`
+    mutation UpdateTemplate($template: UpdateTemplateInput!) {
+  updateTemplate(template: $template) {
+    id
+  }
+}
+    `;
+export type UpdateTemplateMutationFn = Apollo.MutationFunction<UpdateTemplateMutation, UpdateTemplateMutationVariables>;
+
+/**
+ * __useUpdateTemplateMutation__
+ *
+ * To run a mutation, you first call `useUpdateTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTemplateMutation, { data, loading, error }] = useUpdateTemplateMutation({
+ *   variables: {
+ *      template: // value for 'template'
+ *   },
+ * });
+ */
+export function useUpdateTemplateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTemplateMutation, UpdateTemplateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTemplateMutation, UpdateTemplateMutationVariables>(UpdateTemplateDocument, options);
+      }
+export type UpdateTemplateMutationHookResult = ReturnType<typeof useUpdateTemplateMutation>;
+export type UpdateTemplateMutationResult = Apollo.MutationResult<UpdateTemplateMutation>;
+export type UpdateTemplateMutationOptions = Apollo.BaseMutationOptions<UpdateTemplateMutation, UpdateTemplateMutationVariables>;
 export const LoginDocument = gql`
     query Login($infos: InputLogin!) {
   login(infos: $infos) {
@@ -707,7 +873,9 @@ export const LoginDocument = gql`
     user {
       id
       username
+      mail
       expirationDate
+      role
     }
     message
   }
@@ -730,7 +898,7 @@ export const LoginDocument = gql`
  *   },
  * });
  */
-export function useLoginQuery(baseOptions: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables> & ({ variables: LoginQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useLoginQuery(baseOptions: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
       }
@@ -816,7 +984,7 @@ export const FolderByUserIdDocument = gql`
  *   },
  * });
  */
-export function useFolderByUserIdQuery(baseOptions: Apollo.QueryHookOptions<FolderByUserIdQuery, FolderByUserIdQueryVariables> & ({ variables: FolderByUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useFolderByUserIdQuery(baseOptions: Apollo.QueryHookOptions<FolderByUserIdQuery, FolderByUserIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<FolderByUserIdQuery, FolderByUserIdQueryVariables>(FolderByUserIdDocument, options);
       }
@@ -838,6 +1006,7 @@ export const ImageByUserIdDocument = gql`
     id
     name
     url
+    folder
   }
 }
     `;
@@ -858,7 +1027,7 @@ export const ImageByUserIdDocument = gql`
  *   },
  * });
  */
-export function useImageByUserIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByUserIdQuery, ImageByUserIdQueryVariables> & ({ variables: ImageByUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useImageByUserIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByUserIdQuery, ImageByUserIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ImageByUserIdQuery, ImageByUserIdQueryVariables>(ImageByUserIdDocument, options);
       }
@@ -900,7 +1069,7 @@ export const ImageByFolderIdDocument = gql`
  *   },
  * });
  */
-export function useImageByFolderIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByFolderIdQuery, ImageByFolderIdQueryVariables> & ({ variables: ImageByFolderIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useImageByFolderIdQuery(baseOptions: Apollo.QueryHookOptions<ImageByFolderIdQuery, ImageByFolderIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ImageByFolderIdQuery, ImageByFolderIdQueryVariables>(ImageByFolderIdDocument, options);
       }
@@ -957,6 +1126,48 @@ export type VariablesQueryHookResult = ReturnType<typeof useVariablesQuery>;
 export type VariablesLazyQueryHookResult = ReturnType<typeof useVariablesLazyQuery>;
 export type VariablesSuspenseQueryHookResult = ReturnType<typeof useVariablesSuspenseQuery>;
 export type VariablesQueryResult = Apollo.QueryResult<VariablesQuery, VariablesQueryVariables>;
+export const VariablesByUserIdDocument = gql`
+    query variablesByUserId($id: Float!) {
+  variablesByUserId(userId: $id) {
+    id
+    label
+    value
+  }
+}
+    `;
+
+/**
+ * __useVariablesByUserIdQuery__
+ *
+ * To run a query within a React component, call `useVariablesByUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVariablesByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVariablesByUserIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useVariablesByUserIdQuery(baseOptions: Apollo.QueryHookOptions<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>(VariablesByUserIdDocument, options);
+      }
+export function useVariablesByUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>(VariablesByUserIdDocument, options);
+        }
+export function useVariablesByUserIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>(VariablesByUserIdDocument, options);
+        }
+export type VariablesByUserIdQueryHookResult = ReturnType<typeof useVariablesByUserIdQuery>;
+export type VariablesByUserIdLazyQueryHookResult = ReturnType<typeof useVariablesByUserIdLazyQuery>;
+export type VariablesByUserIdSuspenseQueryHookResult = ReturnType<typeof useVariablesByUserIdSuspenseQuery>;
+export type VariablesByUserIdQueryResult = Apollo.QueryResult<VariablesByUserIdQuery, VariablesByUserIdQueryVariables>;
 export const TemplatesDocument = gql`
     query templates($id: Float!) {
   templates(id: $id) {
@@ -982,7 +1193,7 @@ export const TemplatesDocument = gql`
  *   },
  * });
  */
-export function useTemplatesQuery(baseOptions: Apollo.QueryHookOptions<TemplatesQuery, TemplatesQueryVariables> & ({ variables: TemplatesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useTemplatesQuery(baseOptions: Apollo.QueryHookOptions<TemplatesQuery, TemplatesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<TemplatesQuery, TemplatesQueryVariables>(TemplatesDocument, options);
       }
@@ -998,3 +1209,85 @@ export type TemplatesQueryHookResult = ReturnType<typeof useTemplatesQuery>;
 export type TemplatesLazyQueryHookResult = ReturnType<typeof useTemplatesLazyQuery>;
 export type TemplatesSuspenseQueryHookResult = ReturnType<typeof useTemplatesSuspenseQuery>;
 export type TemplatesQueryResult = Apollo.QueryResult<TemplatesQuery, TemplatesQueryVariables>;
+export const TemplateDocument = gql`
+    query template($id: Float!) {
+  templateById(id: $id) {
+    id
+    name
+    config
+  }
+}
+    `;
+
+/**
+ * __useTemplateQuery__
+ *
+ * To run a query within a React component, call `useTemplateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTemplateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTemplateQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTemplateQuery(baseOptions: Apollo.QueryHookOptions<TemplateQuery, TemplateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TemplateQuery, TemplateQueryVariables>(TemplateDocument, options);
+      }
+export function useTemplateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TemplateQuery, TemplateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TemplateQuery, TemplateQueryVariables>(TemplateDocument, options);
+        }
+export function useTemplateSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<TemplateQuery, TemplateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<TemplateQuery, TemplateQueryVariables>(TemplateDocument, options);
+        }
+export type TemplateQueryHookResult = ReturnType<typeof useTemplateQuery>;
+export type TemplateLazyQueryHookResult = ReturnType<typeof useTemplateLazyQuery>;
+export type TemplateSuspenseQueryHookResult = ReturnType<typeof useTemplateSuspenseQuery>;
+export type TemplateQueryResult = Apollo.QueryResult<TemplateQuery, TemplateQueryVariables>;
+export const SendMailDocument = gql`
+    query sendMail($id: Float!) {
+  sendMail(id: $id) {
+    html
+  }
+}
+    `;
+
+/**
+ * __useSendMailQuery__
+ *
+ * To run a query within a React component, call `useSendMailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSendMailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSendMailQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSendMailQuery(baseOptions: Apollo.QueryHookOptions<SendMailQuery, SendMailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SendMailQuery, SendMailQueryVariables>(SendMailDocument, options);
+      }
+export function useSendMailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SendMailQuery, SendMailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SendMailQuery, SendMailQueryVariables>(SendMailDocument, options);
+        }
+export function useSendMailSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<SendMailQuery, SendMailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SendMailQuery, SendMailQueryVariables>(SendMailDocument, options);
+        }
+export type SendMailQueryHookResult = ReturnType<typeof useSendMailQuery>;
+export type SendMailLazyQueryHookResult = ReturnType<typeof useSendMailLazyQuery>;
+export type SendMailSuspenseQueryHookResult = ReturnType<typeof useSendMailSuspenseQuery>;
+export type SendMailQueryResult = Apollo.QueryResult<SendMailQuery, SendMailQueryVariables>;

@@ -19,6 +19,7 @@ const Library = () => {
 	const values = Form.useWatch([], ImageForm);
 	const router = useRouter();
 	const slug = parseInt(router.query.slug as string, 10);
+	
 
 	const [getImageByUserId] = useImageByFolderIdLazyQuery({
 		fetchPolicy: 'no-cache',

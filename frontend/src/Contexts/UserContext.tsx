@@ -13,6 +13,7 @@ const defaultContext: UserContextType = {
 	user: false,
 	setUser: () => {},
 	verifyUser: () => {},
+	logout: () => {}
 };
 
 const UserContext = createContext<UserContextType>(defaultContext);
@@ -31,6 +32,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 					setUser({
 						id: parseInt(ParsedUser.id, 10),
 						username: ParsedUser.username,
+						mail: ParsedUser.mail,
+						role: ParsedUser.role,
 					});
 				} else {
 					sessionStorage.removeItem('user');
@@ -44,7 +47,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 			)
 				router.push('/dashboard');
 		}
-	}, [user]);
+	}, []);
 
 	const verifyUser = (callBack: () => void) => {
 		if (!user) {
@@ -55,6 +58,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 					setUser({
 						id: parseInt(ParsedUser.id, 10),
 						username: ParsedUser.username,
+						mail: ParsedUser.mail,
+						role: ParsedUser.role,
 					});
 					callBack();
 				} else {
@@ -72,8 +77,13 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		}
 	};
 
+	const logout = () => {
+		setUser(null)
+		sessionStorage.removeItem("user")
+		router.push('/');
+	}
 	return (
-		<UserContext.Provider value={{ user, setUser, verifyUser }}>
+		<UserContext.Provider value={{ user, setUser, verifyUser, logout }}>
 			{children}
 		</UserContext.Provider>
 	);

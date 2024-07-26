@@ -34,7 +34,7 @@ export default class User {
 
 	@Field({ nullable: true })
 	@Column({ nullable: true })
-	role?: role;
+	role: role;
 
 	@Field({ nullable: true })
 	@Column({ nullable: true, type: 'date' })
@@ -100,6 +100,10 @@ export class LoginResponse {
 	username: string;
 	@Field()
 	expirationDate: string;
+	@Field()
+	mail: string;
+	@Field({ nullable: true })
+	role: role;
 }
 
 @ObjectType()
@@ -107,7 +111,7 @@ export class Message {
 	@Field()
 	success: boolean;
 
-	@Field()
+	@Field({ nullable: true })
 	user: LoginResponse;
 
 	@Field()
@@ -122,7 +126,7 @@ export class CreateUserInput {
 	password: string;
 	@Field()
 	username: string;
-	@Field({ nullable: true })
+	@Field({defaultValue: "Freemium"})
 	role: role;
 	@Field({ nullable: true })
 	billing_date: string;

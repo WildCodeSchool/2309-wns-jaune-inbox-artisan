@@ -26,11 +26,18 @@ export default class ImageService {
 
 	async getImageByUserId(id: number) {
 		const user = await new UserService().getUserById(id);
-		const images = await this.db.findBy({
-			user: user,
+		const images = await this.db.find({
+			where: {
+				user: user,
+			}, relations: ["folder"]
 		});
-
-		return images;
+		const newImage = images.map((el) => ({
+			id: el.id,
+			name: el.name,
+			url: el.url,
+			folder: el.folder.name
+		}))
+		return newImage;
 	}
 
 	async getImageByFolderId(folder: Folder) {

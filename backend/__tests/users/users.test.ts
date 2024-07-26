@@ -86,7 +86,12 @@ describe('Test sur les user avec la base de données', () => {
 				},
 			},
 		});
+
 		assert(response.body.kind === 'single');
+		console.log(
+			'this is a response of update',
+			response.body.singleResult.errors
+		);
 		console.log('toto :', response.body.singleResult.errors);
 		console.log('tata :', response.body.singleResult.data);
 		expect(response.body.singleResult.data?.updateUser).not.toBeNull();

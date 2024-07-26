@@ -7,7 +7,9 @@ export const LOGIN = gql`
 			user {
 				id
 				username
+				mail
 				expirationDate
+				role
 			}
 			message
 		}

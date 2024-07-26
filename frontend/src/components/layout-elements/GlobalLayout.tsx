@@ -15,6 +15,7 @@ const GlobalLayout = ({
 	title,
 	description,
 	action,
+	hidden = false,
 }: GlobalLayoutProps) => {
 	const { isMobile, setIsMobile } = useBreackPoint();
 	const [loading, setLoading] = useState(true);
@@ -39,22 +40,26 @@ const GlobalLayout = ({
 
 	return (
 		<Layout style={{ minHeight: '100vh' }}>
-			<Header user={user} isLayout />
-			<Layout hasSider style={{ width: '100%' }}>
-				<Sidebar />
-				<Content style={{ margin: '0px 16px' }}>
-					<div style={{ padding: 24, minHeight: 360 }}>
-						<div className="pb-8 border-b">
-							<Title level={2}>{title}</Title>
-							<Text type="secondary" style={{ fontSize: 16 }}>
-								{description}
-							</Text>
-							<Divider />
+			<Header isLayout />
+			{!hidden ? (
+				<Layout hasSider style={{ width: '100%'}}>
+					<Sidebar />
+					<Content style={{ margin: '0px 16px', height: '100%' }}>
+						<div style={{ padding: 24, minHeight: 360 }}>
+							<div className="pb-8 border-b">
+								<Title level={2}>{title}</Title>
+								<Text type="secondary" style={{ fontSize: 16 }}>
+									{description}
+								</Text>
+								<Divider />
+							</div>
+							{children}
 						</div>
-						{children}
-					</div>
-				</Content>
-			</Layout>
+					</Content>
+				</Layout>
+			) : (
+				<Content className='flex flex-grow w-full h-full'>{children}</Content>
+			)}
 		</Layout>
 	);
 };
